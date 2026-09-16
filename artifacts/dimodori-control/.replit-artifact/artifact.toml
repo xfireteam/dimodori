@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "DIMODORI Control"
+description = "Panel público y minimalista para mostrar u ocultar remotamente el selector de servidores de la aplicación DIMODORI."
+version = "1.0.0"
+id = "artifacts/dimodori-control"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 26192
+
+[services.development]
+run = "pnpm --filter @workspace/dimodori-control run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/dimodori-control", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/dimodori-control/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "26192"
+BASE_PATH = "/"

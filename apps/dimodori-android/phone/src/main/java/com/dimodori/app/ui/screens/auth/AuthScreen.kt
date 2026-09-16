@@ -195,6 +195,21 @@ fun AuthScreen(
     var manualServerUrl by rememberSaveable {
         mutableStateOf(if (initialConnectionPreset == null) serverUrl.orEmpty() else "")
     }
+    var hideServerSelector by remember { mutableStateOf(false) }
+    var isServerSelectorConfigLoaded by remember { mutableStateOf(false) }
+
+    LaunchedEffect(currentStep) {
+        if (currentStep == AuthStep.SERVER_CONNECTION) {
+            isServerSelectorConfigLoaded = false
+            val shouldHideSelector = ServerSelectorRemoteConfig.shouldHideServerSelector()
+            hideServerSelector = shouldHideSelector
+            if (shouldHideSelector) {
+                isManualConnection = true
+                authViewModel.updateServerUrl(manualServerUrl)
+            }
+            isServerSelectorConfigLoaded = true
+        }
+    }
 
     LaunchedEffect(
         currentStep,
@@ -313,10 +328,12 @@ fun AuthScreen(
                     AuthStep.SERVER_CONNECTION -> ServerConnectionContent(
                         modifier = Modifier.fillMaxSize(),
                         serverUrl = uiState.serverUrl,
-                        isAwaitingSavedServers = showServerConnection,
+                        isAwaitingSavedServers =
+                            showServerConnection || !isServerSelectorConfigLoaded,
                         isLoading = uiState.isServerLoading,
                         errorMessage = uiState.serverErrorMessage,
                         isManualMode = isManualConnection,
+                        hideServerSelector = hideServerSelector,
                         selectedPresetKey = selectedPresetKey,
                         manualServerUrl = manualServerUrl,
                         onManualModeChange = { manual ->
@@ -491,6 +508,7 @@ private fun ServerConnectionContent(
     isLoading: Boolean,
     errorMessage: String?,
     isManualMode: Boolean,
+    hideServerSelector: Boolean,
     selectedPresetKey: String,
     manualServerUrl: String,
     onManualModeChange: (Boolean) -> Unit,
@@ -534,6 +552,7 @@ private fun ServerConnectionContent(
                 isLoading = isLoading,
                 errorMessage = errorMessage,
                 isManualMode = isManualMode,
+                hideServerSelector = hideServerSelector,
                 selectedPresetKey = selectedPresetKey,
                 manualServerUrl = manualServerUrl,
                 onManualModeChange = onManualModeChange,
@@ -598,6 +617,7 @@ private fun ConnectionForm(
     isLoading: Boolean,
     errorMessage: String?,
     isManualMode: Boolean,
+    hideServerSelector: Boolean,
     selectedPresetKey: String,
     manualServerUrl: String,
     onManualModeChange: (Boolean) -> Unit,
@@ -627,7 +647,7 @@ private fun ConnectionForm(
                 fontWeight = FontWeight.SemiBold
             )
 
-            if (isManualMode) {
+            if (hideServerSelector || isManualMode) {
                 OutlinedTextField(
                     value = manualServerUrl,
                     onValueChange = onManualServerUrlChange,
@@ -727,27 +747,29 @@ private fun ConnectionForm(
                 }
             }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = if (isManualMode) "Introducir servidor manualmente" else selectedPreset.url,
-                    color = Color.White.copy(alpha = 0.55f),
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.weight(1f)
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                OutlinedButton(
-                    onClick = {
-                        onManualModeChange(!isManualMode)
-                        isServerMenuExpanded = false
-                    },
-                    enabled = !isLoading,
-                    shape = RoundedCornerShape(10.dp)
+            if (!hideServerSelector) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(if (isManualMode) "LISTA" else "MANUAL")
+                    Text(
+                        text = if (isManualMode) "Introducir servidor manualmente" else selectedPreset.url,
+                        color = Color.White.copy(alpha = 0.55f),
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    OutlinedButton(
+                        onClick = {
+                            onManualModeChange(!isManualMode)
+                            isServerMenuExpanded = false
+                        },
+                        enabled = !isLoading,
+                        shape = RoundedCornerShape(10.dp)
+                    ) {
+                        Text(if (isManualMode) "LISTA" else "MANUAL")
+                    }
                 }
             }
 

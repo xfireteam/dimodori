@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: server-selector
+    description: Public DIMODORI server selector visibility control
 paths:
   /healthz:
     get:
@@ -24,6 +26,39 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /server-selector:
+    get:
+      operationId: getServerSelectorConfig
+      tags: [server-selector]
+      summary: Get server selector configuration
+      description: Returns whether DIMODORI should hide the preset server selector.
+      responses:
+        "200":
+          description: Current server selector configuration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerSelectorConfig"
+    patch:
+      operationId: updateServerSelectorConfig
+      tags: [server-selector]
+      summary: Update server selector configuration
+      description: Publicly updates whether DIMODORI should hide the preset server selector.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServerSelectorConfigUpdate"
+      responses:
+        "200":
+          description: Updated server selector configuration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerSelectorConfig"
+        "400":
+          description: Invalid request
 components:
   schemas:
     HealthStatus:
@@ -33,4 +68,22 @@ components:
           type: string
       required:
         - status
+    ServerSelectorConfig:
+      type: object
+      properties:
+        hideServerSelector:
+          type: boolean
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - hideServerSelector
+        - updatedAt
+    ServerSelectorConfigUpdate:
+      type: object
+      properties:
+        hideServerSelector:
+          type: boolean
+      required:
+        - hideServerSelector
 

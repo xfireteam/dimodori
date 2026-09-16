@@ -23,6 +23,7 @@ workflows:
           set -euo pipefail
 
           required_variables=(
+            DIMODORI_CONFIG_URL
             DIMODORI_KEYSTORE_BASE64
             DIMODORI_STORE_PASSWORD
             DIMODORI_KEY_ALIAS
@@ -40,6 +41,11 @@ workflows:
             printf 'Missing required Codemagic variables:\n' >&2
             printf ' - %s\n' "${missing_variables[@]}" >&2
             printf 'Add them to the dimodori_android_release variable group and mark them Secret.\n' >&2
+            exit 1
+          fi
+
+          if [[ ! "$DIMODORI_CONFIG_URL" =~ ^https://.+/api/server-selector$ ]]; then
+            echo "DIMODORI_CONFIG_URL must be the full HTTPS /api/server-selector endpoint." >&2
             exit 1
           fi
 

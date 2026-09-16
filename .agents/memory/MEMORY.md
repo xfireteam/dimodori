@@ -1,1 +1,2 @@
 - [DIMODORI identity boundaries](dimodori-identity-boundaries.md) — phone/tablet and TV share one app identity; protocol and shared-library identifiers stay compatible.
+- [Remote selector policy](remote-selector-policy.md) — the control is intentionally public; Android must default to showing server choices whenever remote config is unavailable or invalid.
