@@ -76,10 +76,10 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
 
-          cd "$CM_BUILD_DIR/apps/dimodori-android"
-          chmod +x gradlew
+          chmod +x "$CM_BUILD_DIR/gradlew"
+          cd "$CM_BUILD_DIR"
           ./gradlew :phone:assembleRelease :phone:bundleRelease --stacktrace
 
     artifacts:
-      - apps/dimodori-android/phone/build/outputs/apk/release/*.apk
-      - apps/dimodori-android/phone/build/outputs/bundle/release/*.aab
+      - phone/build/outputs/apk/release/*.apk
+      - phone/build/outputs/bundle/release/*.aab

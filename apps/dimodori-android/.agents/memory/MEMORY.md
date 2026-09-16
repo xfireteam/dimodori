@@ -1,0 +1,1 @@
+- [DIMODORI identity boundaries](dimodori-identity-boundaries.md) — phone/tablet and TV share one app identity; protocol and shared-library identifiers stay compatible.
