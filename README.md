@@ -128,8 +128,8 @@
 ## Project Structure
 
 ```
-phone/   — Phone app module (Compose UI, navigation, player, settings)
-tv/      — TV app module (leanback/DPAD, sidebar rail, TV-specific flows)
+phone/   — Unified Android app module (phone/tablet + Android TV)
+           └─ TV UI lives under com.dimodori.app.tv
 data/    — APIs, repositories, models; multiplatform networking
 core/    — Shared player, preferences, and utilities
 shared/  — Shared UI components and image infrastructure
@@ -148,14 +148,18 @@ shared/  — Shared UI components and image infrastructure
 ### Build
 
 ```bash
-# Phone
+# Unified Android app for phone, tablet, and TV
 ./gradlew :phone:assembleDebug
 
-# TV
-./gradlew :tv:assembleDebug
+# Google Play bundle
+./gradlew :phone:bundleRelease
 ```
 
-APK naming: `dimodori-{phone|tv}-{debug|release}-<version>.apk`
+APK naming: `dimodori-{debug|release}-<version>.apk`
+
+The same package, `com.dimodori.app`, contains separate launcher activities
+for touch devices and Android TV. Android TV opens the dedicated D-pad UI
+through `LEANBACK_LAUNCHER`.
 
 ---
 

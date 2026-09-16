@@ -1,1 +1,1 @@
-- [DIMODORI identity boundaries](dimodori-identity-boundaries.md) — client branding is DIMODORI, while media-server protocol and shared-library identifiers stay compatible.
+- [DIMODORI identity boundaries](dimodori-identity-boundaries.md) — phone/tablet and TV share one app identity; protocol and shared-library identifiers stay compatible.

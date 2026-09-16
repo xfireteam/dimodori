@@ -1,5 +1,7 @@
 HSPLcom/dimodori/app/ui/activity/DimodoriActivity;->onCreate(Landroid/os/Bundle;)V
 Lcom/dimodori/app/ui/activity/DimodoriActivity;
+HSPLcom/dimodori/app/tv/ui/activity/DimodoriTvActivity;->onCreate(Landroid/os/Bundle;)V
+Lcom/dimodori/app/tv/ui/activity/DimodoriTvActivity;
 
 Lcom/dimodori/app/ui/navigation/AppNavigationKt;
 Lcom/dimodori/app/ui/navigation/NavigationViewModel;
