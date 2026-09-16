@@ -127,7 +127,7 @@ private val presetServers = listOf(
     PresetServer(
         "DIMODORI BASIC",
         "S1",
-        "http://em.dimodori.com:8104",
+        "http://em.dimodori.com:8920",
         "http://192.168.0.236:8920"
     ),
     PresetServer(
@@ -135,6 +135,12 @@ private val presetServers = listOf(
         "S2",
         "http://em.dimodori.com:8102",
         "http://192.168.0.234:8102"
+    ),
+    PresetServer(
+        "DIMODORI BASIC",
+        "S3",
+        "http://em.dimodori.com:8104",
+        "http://192.168.0.236:8104"
     ),
     PresetServer(
         "DIMODORI",
