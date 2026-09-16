@@ -23,7 +23,6 @@ workflows:
           set -euo pipefail
 
           required_variables=(
-            DISCORD_PARTNER_SDK_AAR_BASE64
             DIMODORI_KEYSTORE_BASE64
             DIMODORI_STORE_PASSWORD
             DIMODORI_KEY_ALIAS
@@ -49,25 +48,11 @@ workflows:
           #!/usr/bin/env bash
           set -euo pipefail
 
-          mkdir -p "$CM_BUILD_DIR/core/libs" "$CM_BUILD_DIR/.codemagic"
-
-          printf '%s' "$DISCORD_PARTNER_SDK_AAR_BASE64" \
-            | base64 --decode \
-            > "$CM_BUILD_DIR/core/libs/discord_partner_sdk.aar"
+          mkdir -p "$CM_BUILD_DIR/.codemagic"
 
           printf '%s' "$DIMODORI_KEYSTORE_BASE64" \
             | base64 --decode \
             > "$CM_BUILD_DIR/.codemagic/dimodori-release.keystore"
-
-          if [[ ! -s "$CM_BUILD_DIR/core/libs/discord_partner_sdk.aar" ]]; then
-            echo "The restored Discord SDK AAR is empty." >&2
-            exit 1
-          fi
-
-          if ! unzip -tq "$CM_BUILD_DIR/core/libs/discord_partner_sdk.aar" >/dev/null; then
-            echo "DISCORD_PARTNER_SDK_AAR_BASE64 is not a valid AAR file." >&2
-            exit 1
-          fi
 
           if [[ ! -s "$CM_BUILD_DIR/.codemagic/dimodori-release.keystore" ]]; then
             echo "The restored Android keystore is empty." >&2

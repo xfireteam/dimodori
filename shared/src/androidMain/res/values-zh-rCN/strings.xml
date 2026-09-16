@@ -525,17 +525,7 @@
     <string name="interface_seerr_networks_subtitle">在主屏幕上显示 “网络” 部分。</string>
     <!-- Connections Settings -->
     <string name="settings_connections">连接</string>
-    <string name="settings_connections_subtitle">Seerr，Discord</string>
-    <!-- Discord Settings -->
-    <string name="settings_discord">Discord</string>
-    <string name="settings_discord_subtitle_connected">连接为 %1$s</string>
-    <string name="settings_discord_subtitle_disconnected">分享你正在看的内容</string>
-    <string name="settings_discord_status_connected">已连接</string>
-    <string name="settings_discord_show_activity">显示活动</string>
-    <string name="settings_discord_show_activity_subtitle">在 Discord 个人资料上显示你正在观看的内容</string>
-    <string name="settings_discord_connect_button">连接到 Discord</string>
-    <string name="settings_discord_disconnect_button">断开连接</string>
-    <string name="settings_discord_note_app_required">必须安装Discord应用程序，活动状态才能显示在您的个人资料中。</string>
+    <string name="settings_connections_subtitle">Seerr</string>
     <!-- Cache Settings -->
     <string name="cache_settings_cache_images">缓存图像</string>
     <string name="cache_settings_cache_images_summary">缓存图像以加快加载速度和更顺畅的滚动。</string>

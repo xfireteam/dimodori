@@ -587,18 +587,7 @@
 
     <!-- Connections Settings -->
     <string name="settings_connections">Connections</string>
-    <string name="settings_connections_subtitle">Seerr, Discord</string>
-
-    <!-- Discord Settings -->
-    <string name="settings_discord">Discord</string>
-    <string name="settings_discord_subtitle_connected">Connected as %1$s</string>
-    <string name="settings_discord_subtitle_disconnected">Share what you\'re watching</string>
-    <string name="settings_discord_status_connected">Connected</string>
-    <string name="settings_discord_show_activity">Show Activity</string>
-    <string name="settings_discord_show_activity_subtitle">Display what you\'re watching on your Discord profile</string>
-    <string name="settings_discord_connect_button">Connect to Discord</string>
-    <string name="settings_discord_disconnect_button">Disconnect</string>
-    <string name="settings_discord_note_app_required">Discord app must be installed for activity status to appear on your profile.</string>
+    <string name="settings_connections_subtitle">Seerr</string>
 
     <!-- Cache Settings -->
     <string name="cache_settings_cache_images">Cache Images</string>

@@ -48,8 +48,8 @@ keystore.properties
 .externalNativeBuild
 .cxx/
 
-# Discord Social SDK
-core/libs/discord_partner_sdk.aar
+# Locally generated Android signing material
+.signing/
 
 # Freeline
 freeline.py
