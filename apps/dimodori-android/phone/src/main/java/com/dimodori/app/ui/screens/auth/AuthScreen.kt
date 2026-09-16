@@ -1009,6 +1009,7 @@ private fun ServerConnectionContentPreview() {
         isLoading = false,
         errorMessage = null,
         isManualMode = false,
+        hideServerSelector = false,
         selectedPresetKey = presetServers.first().key,
         manualServerUrl = "",
         onManualModeChange = {},
