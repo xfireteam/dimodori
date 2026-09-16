@@ -110,7 +110,7 @@ private val presetServers = listOf(
     PresetServer("DIMODORI PREMIUM", "S3", "http://em.dimodori.com:8106"),
     PresetServer("DIMODORI BASIC", "S1", "http://em.dimodori.com:8104"),
     PresetServer("DIMODORI BASIC", "S2", "http://em.dimodori.com:8102"),
-    PresetServer("DIMODORI", "DIMODORI", "http://em.dimodori.com:32404")
+    PresetServer("DIMODORI", "JELLYFIN", "http://em.dimodori.com:32404")
 )
 
 @Composable
