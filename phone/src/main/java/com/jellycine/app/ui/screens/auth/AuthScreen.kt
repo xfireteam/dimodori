@@ -19,8 +19,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
@@ -28,6 +31,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Lock
+import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Translate
 import androidx.compose.material.icons.rounded.Visibility
@@ -37,6 +41,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
+import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -51,6 +59,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -86,6 +95,24 @@ enum class AuthStep {
     LOGIN
 }
 
+private data class PresetServer(
+    val section: String,
+    val label: String,
+    val url: String
+)
+
+private val PresetServer.key: String
+    get() = "$section|$label"
+
+private val presetServers = listOf(
+    PresetServer("DIMODORI PREMIUM", "S1", "http://em.dimodori.com:8100"),
+    PresetServer("DIMODORI PREMIUM", "S2", "http://em.dimodori.com:8100"),
+    PresetServer("DIMODORI PREMIUM", "S3", "http://em.dimodori.com:8106"),
+    PresetServer("DIMODORI BASIC", "S1", "http://em.dimodori.com:8104"),
+    PresetServer("DIMODORI BASIC", "S2", "http://em.dimodori.com:8102"),
+    PresetServer("JELLYFIN", "JELLYFIN", "http://em.dimodori.com:32404")
+)
+
 @Composable
 fun AuthScreen(
     serverUrl: String? = null,
@@ -119,6 +146,34 @@ fun AuthScreen(
     var selectedServerName by remember(serverName) { mutableStateOf(serverName) }
     var selectedServerUrl by remember(serverUrl) { mutableStateOf(serverUrl.orEmpty()) }
     val canNavigateBackToServerStep = currentStep == AuthStep.LOGIN && !login
+    val initialConnectionPreset = remember(serverUrl) {
+        presetServers.firstOrNull { it.url == serverUrl }
+    }
+    var isManualConnection by rememberSaveable {
+        mutableStateOf(!serverUrl.isNullOrBlank() && initialConnectionPreset == null)
+    }
+    var selectedPresetKey by rememberSaveable {
+        mutableStateOf((initialConnectionPreset ?: presetServers.first()).key)
+    }
+    var manualServerUrl by rememberSaveable {
+        mutableStateOf(if (initialConnectionPreset == null) serverUrl.orEmpty() else "")
+    }
+
+    LaunchedEffect(
+        currentStep,
+        isManualConnection,
+        selectedPresetKey,
+        manualServerUrl
+    ) {
+        if (currentStep == AuthStep.SERVER_CONNECTION) {
+            val activeUrl = if (isManualConnection) {
+                manualServerUrl
+            } else {
+                presetServers.first { it.key == selectedPresetKey }.url
+            }
+            authViewModel.updateServerUrl(activeUrl)
+        }
+    }
 
     LaunchedEffect(displaySavedServers, currentStep) {
         if (
@@ -223,7 +278,27 @@ fun AuthScreen(
                         isAwaitingSavedServers = showServerConnection,
                         isLoading = uiState.isServerLoading,
                         errorMessage = uiState.serverErrorMessage,
-                        onServerUrlChange = authViewModel::updateServerUrl,
+                        isManualMode = isManualConnection,
+                        selectedPresetKey = selectedPresetKey,
+                        manualServerUrl = manualServerUrl,
+                        onManualModeChange = { manual ->
+                            isManualConnection = manual
+                            authViewModel.updateServerUrl(
+                                if (manual) {
+                                    manualServerUrl
+                                } else {
+                                    presetServers.first { it.key == selectedPresetKey }.url
+                                }
+                            )
+                        },
+                        onPresetSelected = { preset ->
+                            selectedPresetKey = preset.key
+                            authViewModel.updateServerUrl(preset.url)
+                        },
+                        onManualServerUrlChange = {
+                            manualServerUrl = it
+                            authViewModel.updateServerUrl(it)
+                        },
                         onConnect = {
                             authViewModel.connectToServer { url, name ->
                                 selectedServerUrl = url
@@ -372,7 +447,12 @@ private fun ServerConnectionContent(
     isAwaitingSavedServers: Boolean,
     isLoading: Boolean,
     errorMessage: String?,
-    onServerUrlChange: (String) -> Unit,
+    isManualMode: Boolean,
+    selectedPresetKey: String,
+    manualServerUrl: String,
+    onManualModeChange: (Boolean) -> Unit,
+    onPresetSelected: (PresetServer) -> Unit,
+    onManualServerUrlChange: (String) -> Unit,
     onConnect: () -> Unit
 ) {
     Column(
@@ -410,7 +490,12 @@ private fun ServerConnectionContent(
                 serverUrl = serverUrl,
                 isLoading = isLoading,
                 errorMessage = errorMessage,
-                onServerUrlChange = onServerUrlChange,
+                isManualMode = isManualMode,
+                selectedPresetKey = selectedPresetKey,
+                manualServerUrl = manualServerUrl,
+                onManualModeChange = onManualModeChange,
+                onPresetSelected = onPresetSelected,
+                onManualServerUrlChange = onManualServerUrlChange,
                 onConnect = onConnect,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -463,16 +548,25 @@ private fun LoginContent(
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 private fun ConnectionForm(
     modifier: Modifier = Modifier,
     serverUrl: String,
     isLoading: Boolean,
     errorMessage: String?,
-    onServerUrlChange: (String) -> Unit,
+    isManualMode: Boolean,
+    selectedPresetKey: String,
+    manualServerUrl: String,
+    onManualModeChange: (Boolean) -> Unit,
+    onPresetSelected: (PresetServer) -> Unit,
+    onManualServerUrlChange: (String) -> Unit,
     onConnect: () -> Unit
 ) {
     val serverUrlBringIntoView = remember { BringIntoViewRequester() }
     val scope = rememberCoroutineScope()
+    var isServerMenuExpanded by remember { mutableStateOf(false) }
+    val selectedPreset = presetServers.first { it.key == selectedPresetKey }
+
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(24.dp),
@@ -490,29 +584,129 @@ private fun ConnectionForm(
                 fontWeight = FontWeight.SemiBold
             )
 
-            OutlinedTextField(
-                value = serverUrl,
-                onValueChange = onServerUrlChange,
-                label = { Text(stringResource(R.string.server_url)) },
-                placeholder = {
-                    Text(
-                        stringResource(R.string.auth_server_url_placeholder),
-                        color = Color.White.copy(alpha = 0.6f)
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .bringIntoViewRequester(serverUrlBringIntoView)
-                    .onFocusEvent { state ->
-                        if (state.isFocused) {
-                            scope.launch { serverUrlBringIntoView.bringIntoView() }
-                        }
+            if (isManualMode) {
+                OutlinedTextField(
+                    value = manualServerUrl,
+                    onValueChange = onManualServerUrlChange,
+                    label = { Text(stringResource(R.string.server_url)) },
+                    placeholder = {
+                        Text(
+                            stringResource(R.string.auth_server_url_placeholder),
+                            color = Color.White.copy(alpha = 0.6f)
+                        )
                     },
-                enabled = !isLoading,
-                singleLine = true,
-                shape = RoundedCornerShape(14.dp),
-                colors = amoledAuthFieldColors()
-            )
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .bringIntoViewRequester(serverUrlBringIntoView)
+                        .onFocusEvent { state ->
+                            if (state.isFocused) {
+                                scope.launch { serverUrlBringIntoView.bringIntoView() }
+                            }
+                        },
+                    enabled = !isLoading,
+                    singleLine = true,
+                    shape = RoundedCornerShape(14.dp),
+                    colors = amoledAuthFieldColors()
+                )
+            } else {
+                ExposedDropdownMenuBox(
+                    expanded = isServerMenuExpanded,
+                    onExpandedChange = {
+                        if (!isLoading) isServerMenuExpanded = it
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    OutlinedTextField(
+                        value = "${selectedPreset.section} · ${selectedPreset.label}",
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Servidor") },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Rounded.KeyboardArrowDown,
+                                contentDescription = "Abrir lista de servidores"
+                            )
+                        },
+                        modifier = Modifier
+                            .menuAnchor(
+                                type = ExposedDropdownMenuAnchorType.PrimaryNotEditable,
+                                enabled = !isLoading
+                            )
+                            .fillMaxWidth(),
+                        enabled = !isLoading,
+                        singleLine = true,
+                        shape = RoundedCornerShape(14.dp),
+                        colors = amoledAuthFieldColors()
+                    )
+
+                    ExposedDropdownMenu(
+                        expanded = isServerMenuExpanded,
+                        onDismissRequest = { isServerMenuExpanded = false },
+                        containerColor = Color(0xFF151515)
+                    ) {
+                        presetServers.groupBy { it.section }.forEach { (section, servers) ->
+                            Text(
+                                text = section,
+                                color = JellyBlue,
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(
+                                    start = 16.dp,
+                                    end = 16.dp,
+                                    top = 12.dp,
+                                    bottom = 4.dp
+                                )
+                            )
+                            servers.forEach { server ->
+                                DropdownMenuItem(
+                                    text = {
+                                        Column {
+                                            Text(
+                                                text = server.label,
+                                                color = Color.White,
+                                                fontWeight = FontWeight.SemiBold
+                                            )
+                                            Text(
+                                                text = server.url,
+                                                color = Color.White.copy(alpha = 0.62f),
+                                                style = MaterialTheme.typography.bodySmall
+                                            )
+                                        }
+                                    },
+                                    onClick = {
+                                        onPresetSelected(server)
+                                        isServerMenuExpanded = false
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = if (isManualMode) "Introducir servidor manualmente" else selectedPreset.url,
+                    color = Color.White.copy(alpha = 0.55f),
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.weight(1f)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                OutlinedButton(
+                    onClick = {
+                        onManualModeChange(!isManualMode)
+                        isServerMenuExpanded = false
+                    },
+                    enabled = !isLoading,
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Text(if (isManualMode) "LISTA" else "MANUAL")
+                }
+            }
 
             AnimatedVisibility(
                 visible = errorMessage != null,
@@ -749,7 +943,12 @@ private fun ServerConnectionContentPreview() {
         isAwaitingSavedServers = false,
         isLoading = false,
         errorMessage = null,
-        onServerUrlChange = {},
+        isManualMode = false,
+        selectedPresetKey = presetServers.first().key,
+        manualServerUrl = "",
+        onManualModeChange = {},
+        onPresetSelected = {},
+        onManualServerUrlChange = {},
         onConnect = {}
     )
 }
