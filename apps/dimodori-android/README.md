@@ -216,8 +216,12 @@ To build:
 5. Download the APK and AAB from the build's **Artifacts** section.
 
 The workflow has no automatic trigger. It validates the signing variables,
-keystore password, and alias before running Gradle. Private signing files and
-credentials remain excluded by `.gitignore` and must never be committed.
+keystore password, alias, and the public remote-control endpoint before running
+Gradle. `DIMODORI_CONFIG_URL` is defined in `codemagic.yaml` as
+`https://dimodori.replit.app/api/server-selector`; it is public configuration,
+not a secret. Republish the Replit project after API changes so that endpoint
+is available before releasing Android. Private signing files and credentials
+remain excluded by `.gitignore` and must never be committed.
 
 ---
 

@@ -9,6 +9,7 @@ workflows:
       groups:
         - dimodori_android_release
       vars:
+        DIMODORI_CONFIG_URL: "https://dimodori.replit.app/api/server-selector"
         GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx6g"
 
     cache:
@@ -23,7 +24,6 @@ workflows:
           set -euo pipefail
 
           required_variables=(
-            DIMODORI_CONFIG_URL
             DIMODORI_KEYSTORE_BASE64
             DIMODORI_STORE_PASSWORD
             DIMODORI_KEY_ALIAS
