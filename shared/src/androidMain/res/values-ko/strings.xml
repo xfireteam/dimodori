@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">젤리신</string>
+    <string name="app_name">DIMODORI</string>
+    <string name="server_url_hint">https://your-media-server.com</string>
+    <string name="auth_connect_subtitle">스트리밍을 시작하려면 미디어 서버 URL을 입력하세요.</string>
+    <string name="my_media_empty_message">서버에서 미디어 라이브러리를 설정하세요</string>
+    <string name="interface_emby_poster_overlays">서버 포스터 오버레이</string>
+    <string name="interface_emby_poster_overlays_subtitle">서버에서 제공하는 포스터 오버레이를 비활성화합니다.</string>
     <!-- General -->
     <string name="loading">로드 중…</string>
     <string name="error">오류</string>
@@ -13,7 +18,6 @@
     <string name="settings">설정</string>
     <!-- Server Connection -->
     <string name="server_url">서버 URL</string>
-    <string name="server_url_hint">https://your-jellyfin-server.com</string>
     <string name="connect">커넥트</string>
     <string name="connecting">연결 중…</string>
     <string name="connection_failed">연결 실패</string>
@@ -28,7 +32,6 @@
     <string name="login_failed">로그인 실패</string>
     <string name="invalid_credentials">잘못된 사용자 이름 또는 암호</string>
     <string name="auth_connect_title">서버 연결</string>
-    <string name="auth_connect_subtitle">젤리핀 또는 엠비 URL을 설정하여 스트리밍을 시작하세요.</string>
     <string name="auth_welcome_back">웰컴 백</string>
     <string name="auth_sign_in_subtitle">계속하려면 로그인하세요</string>
     <string name="auth_connection_settings">연결 설정</string>
@@ -123,7 +126,6 @@
     <string name="my_media_unknown_error">뭔가 잘못됐어</string>
     <string name="try_again">다시 시도하세요</string>
     <string name="my_media_empty_title">라이브러리를 찾을 수 없음</string>
-    <string name="my_media_empty_message">Jellyfin에서 미디어 라이브러리 설정하기</string>
     <string name="my_media_library_fallback">라이브러리</string>
     <string name="my_media_library_type_library">라이브러리</string>
     <string name="dashboard_failed_load_libraries">라이브러리 로드 실패</string>
@@ -321,7 +323,7 @@
     <string name="downloads_settings_selected_folder">선택한 폴더</string>
     <string name="downloads_settings_change_folder">폴더 변경</string>
     <string name="downloads_settings_use_default">기본값 사용</string>
-    <string name="downloads_settings_legacy_permission_hint">Android 8/9에서는 JellyCine이 공개 다운로드 폴더에 쓰기 전에 파일 액세스를 요청합니다.</string>
+    <string name="downloads_settings_legacy_permission_hint">Android 8/9에서는 DIMODORI이 공개 다운로드 폴더에 쓰기 전에 파일 액세스를 요청합니다.</string>
     <string name="downloads_queue_options">대기열 옵션</string>
     <string name="downloads_series_fallback">시리즈</string>
     <string name="downloads_season_number">시즌 %1$d</string>
@@ -492,17 +494,13 @@
     <string name="about_section_project">법률</string>
     <string name="about_section_connect">커넥트</string>
     <string name="about_privacy_policy">개인정보 보호 정책</string>
-    <string name="about_privacy_policy_subtitle">JellyCine이 재생 데이터 및 개인 정보 보호를 어떻게 처리하는지 읽어보세요</string>
+    <string name="about_privacy_policy_subtitle">DIMODORI이 재생 데이터 및 개인 정보 보호를 어떻게 처리하는지 읽어보세요</string>
     <string name="about_open_source_license">라이선스</string>
     <string name="about_open_source_license_subtitle">GNU 일반 공중 사용 허가서 v3.0</string>
-    <string name="about_source_code">소스 코드</string>
     <string name="about_rate_app">구글 플레이 평점</string>
-    <string name="about_rate_app_subtitle">더 많은 사람들이 JellyCine을 찾을 수 있도록 평점이나 리뷰를 남겨주세요.</string>
-    <string name="about_contact_developer">개발자에게 문의하기</string>
-    <string name="about_contact_developer_subtitle">피드백, 버그 리포트 또는 개인정보 보호 질문을 이메일로 보내기</string>
-    <string name="about_feedback_subject">젤리신 피드백</string>
-    <string name="about_buy_me_a_coffee">커피 한 잔 사주세요</string>
-    <string name="about_patreon">파트레온</string>
+    <string name="about_rate_app_subtitle">더 많은 사람들이 DIMODORI을 찾을 수 있도록 평점이나 리뷰를 남겨주세요.</string>
+    <string name="about_contact_developer">DIMODORI</string>
+    <string name="about_contact_developer_subtitle">dimodori.com</string>
     <!-- Interface Settings -->
     <string name="interface_feature_carousel">기능 캐러셀</string>
     <string name="interface_feature_carousel_subtitle">홈 화면에 추천 콘텐츠 캐러셀을 표시합니다.</string>
@@ -520,8 +518,6 @@
     <string name="interface_use_my_media_tab_subtitle">Discover 탭을 클래식 라이브러리 그리드로 교체합니다.</string>
     <string name="interface_merge_versions">버전 병합</string>
     <string name="interface_merge_versions_subtitle">일치하는 로컬 동영상 파일을 하나의 세부 정보 화면에 표시합니다.</string>
-    <string name="interface_emby_poster_overlays">엠비 포스터 오버레이</string>
-    <string name="interface_emby_poster_overlays_subtitle">Emby 포스터 오버레이를 비활성화합니다.</string>
     <string name="interface_seerr_settings">서버 설정</string>
     <string name="interface_seerr_studios">시어 스튜디오</string>
     <string name="interface_seerr_studios_subtitle">홈 화면에 스튜디오 섹션을 표시합니다.</string>

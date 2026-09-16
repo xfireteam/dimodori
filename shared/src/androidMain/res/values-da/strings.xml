@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">JellyCine</string>
+    <string name="app_name">DIMODORI</string>
+    <string name="server_url_hint">https://your-media-server.com</string>
+    <string name="auth_connect_subtitle">Indtast URL-adressen til din medieserver for at starte streaming.</string>
+    <string name="my_media_empty_message">Opsæt dine mediebiblioteker på din server</string>
+    <string name="interface_emby_poster_overlays">Plakat-overlejringer fra server</string>
+    <string name="interface_emby_poster_overlays_subtitle">Deaktiver plakat-overlejringer leveret af serveren.</string>
     <!-- General -->
     <string name="loading">Indlæser…</string>
     <string name="error">Fejl</string>
@@ -13,7 +18,6 @@
     <string name="settings">Indstillinger</string>
     <!-- Server Connection -->
     <string name="server_url">Server-URL</string>
-    <string name="server_url_hint">https://your-jellyfin-server.com</string>
     <string name="connect">Forbind</string>
     <string name="connecting">Forbinder…</string>
     <string name="connection_failed">Forbindelsen mislykkedes</string>
@@ -28,7 +32,6 @@
     <string name="login_failed">Login mislykkedes</string>
     <string name="invalid_credentials">Ugyldigt brugernavn eller adgangskode</string>
     <string name="auth_connect_title">Tilslut din server</string>
-    <string name="auth_connect_subtitle">Indstil din Jellyfin eller Emby URL for at starte streaming.</string>
     <string name="auth_welcome_back">Velkommen tilbage</string>
     <string name="auth_sign_in_subtitle">Log ind for at fortsætte</string>
     <string name="auth_connection_settings">Forbindelsesindstillinger</string>
@@ -123,7 +126,6 @@
     <string name="my_media_unknown_error">Noget gik galt</string>
     <string name="try_again">Prøv igen</string>
     <string name="my_media_empty_title">Ingen biblioteker fundet</string>
-    <string name="my_media_empty_message">Opsæt dine mediebiblioteker i Jellyfin</string>
     <string name="my_media_library_fallback">Bibliotek</string>
     <string name="my_media_library_type_library">Bibliotek</string>
     <string name="dashboard_failed_load_libraries">Det lykkedes ikke at indlæse biblioteker</string>
@@ -325,7 +327,7 @@
     <string name="downloads_settings_selected_folder">Valgt mappe</string>
     <string name="downloads_settings_change_folder">Skift mappe</string>
     <string name="downloads_settings_use_default">Brug standard</string>
-    <string name="downloads_settings_legacy_permission_hint">Android 8/9 beder om filadgang, før JellyCine kan skrive til den offentlige Downloads-mappe.</string>
+    <string name="downloads_settings_legacy_permission_hint">Android 8/9 beder om filadgang, før DIMODORI kan skrive til den offentlige Downloads-mappe.</string>
     <string name="downloads_queue_options">Køindstillinger</string>
     <string name="downloads_series_fallback">Serie</string>
     <string name="downloads_season_number">Sæson %1$d</string>
@@ -505,17 +507,13 @@
     <string name="about_section_project">Juridisk</string>
     <string name="about_section_connect">Forbind</string>
     <string name="about_privacy_policy">Privatlivspolitik</string>
-    <string name="about_privacy_policy_subtitle">Læs, hvordan JellyCine håndterer afspilningsdata og privatliv</string>
+    <string name="about_privacy_policy_subtitle">Læs, hvordan DIMODORI håndterer afspilningsdata og privatliv</string>
     <string name="about_open_source_license">Licens</string>
     <string name="about_open_source_license_subtitle">GNU General Public License v3.0</string>
-    <string name="about_source_code">Kildekode</string>
     <string name="about_rate_app">Bedøm på Google Play</string>
-    <string name="about_rate_app_subtitle">Skriv en bedømmelse eller anmeldelse for at hjælpe flere mennesker med at finde JellyCine</string>
-    <string name="about_contact_developer">Kontakt Udvikler</string>
-    <string name="about_contact_developer_subtitle">Send feedback, fejlrapporter eller spørgsmål om beskyttelse af personlige oplysninger via e-mail</string>
-    <string name="about_feedback_subject">JellyCine Feedback</string>
-    <string name="about_buy_me_a_coffee">Køb mig en kaffe</string>
-    <string name="about_patreon">Patreon</string>
+    <string name="about_rate_app_subtitle">Skriv en bedømmelse eller anmeldelse for at hjælpe flere mennesker med at finde DIMODORI</string>
+    <string name="about_contact_developer">DIMODORI</string>
+    <string name="about_contact_developer_subtitle">dimodori.com</string>
     <!-- Interface Settings -->
     <string name="interface_feature_carousel">Funktionskarrusel</string>
     <string name="interface_feature_carousel_subtitle">Vis fremhævet indholdskarrusel på startskærmen.</string>
@@ -533,8 +531,6 @@
     <string name="interface_use_my_media_tab_subtitle">Erstat fanen Discover med det klassiske biblioteksgitter.</string>
     <string name="interface_merge_versions">Flet versioner</string>
     <string name="interface_merge_versions_subtitle">Vis matchende lokale filmfiler på en detaljeskærm.</string>
-    <string name="interface_emby_poster_overlays">Emby plakatoverlejringer</string>
-    <string name="interface_emby_poster_overlays_subtitle">Deaktiver Emby-plakatoverlejringer.</string>
     <string name="interface_seerr_settings">Seerr-indstillinger</string>
     <string name="interface_seerr_studios">Seerr Studios</string>
     <string name="interface_seerr_studios_subtitle">Vis afsnittet Studios på startskærmen.</string>

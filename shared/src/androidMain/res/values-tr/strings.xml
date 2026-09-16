@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">JellyCine</string>
+    <string name="app_name">DIMODORI</string>
+    <string name="server_url_hint">https://your-media-server.com</string>
+    <string name="auth_connect_subtitle">Akışa başlamak için medya sunucusu URL\'nizi girin.</string>
+    <string name="my_media_empty_message">Medya kitaplıklarınızı sunucunuzda ayarlayın</string>
+    <string name="interface_emby_poster_overlays">Sunucu afiş katmanları</string>
+    <string name="interface_emby_poster_overlays_subtitle">Sunucu tarafından sağlanan afiş katmanlarını devre dışı bırakın.</string>
     <!-- General -->
     <string name="loading">Yükleniyor…</string>
     <string name="error">Hata</string>
@@ -13,7 +18,6 @@
     <string name="settings">Ayarlar</string>
     <!-- Server Connection -->
     <string name="server_url">Sunucu URL\'si</string>
-    <string name="server_url_hint">https://your-jellyfin-server.com</string>
     <string name="connect">Bağlan</string>
     <string name="connecting">Bağlanıyor…</string>
     <string name="connection_failed">Bağlantı başarısız oldu</string>
@@ -28,7 +32,6 @@
     <string name="login_failed">Giriş başarısız oldu</string>
     <string name="invalid_credentials">Geçersiz kullanıcı adı veya şifre</string>
     <string name="auth_connect_title">Sunucunuzu Bağlayın</string>
-    <string name="auth_connect_subtitle">Akışı başlatmak için Jellyfin veya Emby URL\'nizi ayarlayın.</string>
     <string name="auth_welcome_back">Tekrar Hoş Geldiniz</string>
     <string name="auth_sign_in_subtitle">Devamlamak için oturum açın</string>
     <string name="auth_connection_settings">Bağlantı Ayarları</string>
@@ -123,7 +126,6 @@
     <string name="my_media_unknown_error">Bir şeyler ters gitti</string>
     <string name="try_again">Tekrar dene</string>
     <string name="my_media_empty_title">Kütüphane bulunamadı</string>
-    <string name="my_media_empty_message">Medya kitaplıklarınızı Jellyfin\'de kurun</string>
     <string name="my_media_library_fallback">Kütüphane</string>
     <string name="my_media_library_type_library">Kütüphane</string>
     <string name="dashboard_failed_load_libraries">Kitaplıklar yüklenemedi</string>
@@ -325,7 +327,7 @@
     <string name="downloads_settings_selected_folder">Seçilen klasör</string>
     <string name="downloads_settings_change_folder">Klasörü değiştir</string>
     <string name="downloads_settings_use_default">Varsayılanı kullan</string>
-    <string name="downloads_settings_legacy_permission_hint">Android 8/9, JellyCine genel İndirilenler klasörüne yazmadan önce dosya erişimi ister.</string>
+    <string name="downloads_settings_legacy_permission_hint">Android 8/9, DIMODORI genel İndirilenler klasörüne yazmadan önce dosya erişimi ister.</string>
     <string name="downloads_queue_options">Kuyruk seçenekleri</string>
     <string name="downloads_series_fallback">Dizi</string>
     <string name="downloads_season_number">Sezon %1$d</string>
@@ -505,17 +507,13 @@
     <string name="about_section_project">Yasal</string>
     <string name="about_section_connect">Bağlan</string>
     <string name="about_privacy_policy">Gizlilik Politikası</string>
-    <string name="about_privacy_policy_subtitle">JellyCine\'in oynatma verilerini ve gizliliğini nasıl ele aldığını okuyun</string>
+    <string name="about_privacy_policy_subtitle">DIMODORI\'in oynatma verilerini ve gizliliğini nasıl ele aldığını okuyun</string>
     <string name="about_open_source_license">Lisans</string>
     <string name="about_open_source_license_subtitle">GNU Genel Kamu Lisansı v3.0</string>
-    <string name="about_source_code">Kaynak Kodu</string>
     <string name="about_rate_app">Google Play\'de puanlama</string>
-    <string name="about_rate_app_subtitle">Daha fazla kişinin JellyCine\'i bulmasına yardımcı olmak için bir puan veya inceleme bırakın</string>
-    <string name="about_contact_developer">Geliştiriciye Ulaşın</string>
-    <string name="about_contact_developer_subtitle">E-posta ile geri bildirim, hata raporları veya gizlilik soruları gönderin</string>
-    <string name="about_feedback_subject">JellyCine Geribildirim</string>
-    <string name="about_buy_me_a_coffee">Bana bir kahve ısmarla</string>
-    <string name="about_patreon">Patreon</string>
+    <string name="about_rate_app_subtitle">Daha fazla kişinin DIMODORI\'i bulmasına yardımcı olmak için bir puan veya inceleme bırakın</string>
+    <string name="about_contact_developer">DIMODORI</string>
+    <string name="about_contact_developer_subtitle">dimodori.com</string>
     <!-- Interface Settings -->
     <string name="interface_feature_carousel">Özellik Atlıkarınca</string>
     <string name="interface_feature_carousel_subtitle">Ana ekranda öne çıkan içerik karuselini göster.</string>
@@ -533,8 +531,6 @@
     <string name="interface_use_my_media_tab_subtitle">Keşfet sekmesini klasik kitaplık ızgarasıyla değiştirin.</string>
     <string name="interface_merge_versions">Sürümleri Birleştirme</string>
     <string name="interface_merge_versions_subtitle">Eşleşen yerel film dosyalarını tek bir ayrıntı ekranında göster.</string>
-    <string name="interface_emby_poster_overlays">Emby Poster Kaplamaları</string>
-    <string name="interface_emby_poster_overlays_subtitle">Emby poster kaplamalarını devre dışı bırakın.</string>
     <string name="interface_seerr_settings">Seerr Ayarları</string>
     <string name="interface_seerr_studios">Seerr Stüdyoları</string>
     <string name="interface_seerr_studios_subtitle">Ana ekranda Stüdyolar bölümünü göster.</string>

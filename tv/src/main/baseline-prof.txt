@@ -1,16 +1,16 @@
-HSPLcom/jellycine/app/ui/activity/JellyCineActivity;->onCreate(Landroid/os/Bundle;)V
-Lcom/jellycine/app/ui/activity/JellyCineActivity;
+HSPLcom/dimodori/app/ui/activity/DimodoriActivity;->onCreate(Landroid/os/Bundle;)V
+Lcom/dimodori/app/ui/activity/DimodoriActivity;
 
-Lcom/jellycine/app/ui/navigation/AppNavigationKt;
-Lcom/jellycine/app/ui/navigation/NavigationViewModel;
+Lcom/dimodori/app/ui/navigation/AppNavigationKt;
+Lcom/dimodori/app/ui/navigation/NavigationViewModel;
 
-Lcom/jellycine/app/ui/screens/dashboard/home/DashboardKt;
-Lcom/jellycine/app/ui/screens/dashboard/home/FeatureTabKt;
-Lcom/jellycine/app/ui/screens/dashboard/home/DashboardContainerKt;
-Lcom/jellycine/app/ui/screens/dashboard/search/SearchContainerKt;
+Lcom/dimodori/app/ui/screens/dashboard/home/DashboardKt;
+Lcom/dimodori/app/ui/screens/dashboard/home/FeatureTabKt;
+Lcom/dimodori/app/ui/screens/dashboard/home/DashboardContainerKt;
+Lcom/dimodori/app/ui/screens/dashboard/search/SearchContainerKt;
 
-Lcom/jellycine/app/ui/screens/auth/AuthScreenKt;
-Lcom/jellycine/app/ui/screens/auth/AuthScreenViewModel;
+Lcom/dimodori/app/ui/screens/auth/AuthScreenKt;
+Lcom/dimodori/app/ui/screens/auth/AuthScreenViewModel;
 
 Lcom/jellycine/data/repository/AuthRepository;
 Lcom/jellycine/data/repository/MediaRepository;

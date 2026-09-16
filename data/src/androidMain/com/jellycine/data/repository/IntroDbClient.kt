@@ -4,7 +4,7 @@ import com.jellycine.data.model.BaseItemDto
 import com.jellycine.data.model.PlaybackSegmentSource
 import com.jellycine.data.model.PlaybackSegmentWindow
 import com.jellycine.data.model.PlaybackSegments
-import com.jellycine.data.network.JellyCineJson
+import com.jellycine.data.network.DimodoriJson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
@@ -126,7 +126,7 @@ internal class IntroDbClient(
             if (!response.isSuccessful) return null
 
             val responseBody = response.body?.string()?.takeIf { it.isNotBlank() } ?: return null
-            val payload = JellyCineJson.decodeFromString<IntroDbSegmentsResponse>(responseBody)
+            val payload = DimodoriJson.decodeFromString<IntroDbSegmentsResponse>(responseBody)
             val startMs = payload.intro?.startMs ?: return null
             val endMs = payload.intro?.endMs ?: return null
             if (endMs <= startMs) return null

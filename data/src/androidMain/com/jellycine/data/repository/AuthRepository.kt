@@ -21,7 +21,7 @@ import com.jellycine.data.preferences.NetworkPreferences
 import com.jellycine.data.security.AuthSessionIds
 import com.jellycine.data.security.LEGACY_ACCESS_TOKEN_KEY
 import com.jellycine.data.security.SecureSessionStore
-import com.jellycine.data.network.JellyCineJson
+import com.jellycine.data.network.DimodoriJson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -155,7 +155,7 @@ class AuthRepository(private val context: Context) {
     private fun persistedSavedServers(raw: String?): List<StoredSavedServer> {
         if (raw.isNullOrBlank()) return emptyList()
         return runCatching {
-            JellyCineJson.decodeFromString<List<StoredSavedServer>>(raw)
+            DimodoriJson.decodeFromString<List<StoredSavedServer>>(raw)
                 ?.filter {
                     it.id.isNotBlank() &&
                         it.serverUrl.isNotBlank() &&
@@ -174,7 +174,7 @@ class AuthRepository(private val context: Context) {
     }
 
     private fun serializeSavedServers(savedServers: List<SavedServer>): String {
-        return JellyCineJson.encodeToString(savedServers)
+        return DimodoriJson.encodeToString(savedServers)
     }
 
     private fun upsertSavedServer(

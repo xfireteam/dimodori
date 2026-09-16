@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">เจลลีซีน</string>
+    <string name="app_name">DIMODORI</string>
+    <string name="server_url_hint">https://your-media-server.com</string>
+    <string name="auth_connect_subtitle">ป้อน URL ของเซิร์ฟเวอร์สื่อของคุณเพื่อเริ่มสตรีม</string>
+    <string name="my_media_empty_message">ตั้งค่าคลังสื่อของคุณบนเซิร์ฟเวอร์</string>
+    <string name="interface_emby_poster_overlays">การซ้อนทับโปสเตอร์จากเซิร์ฟเวอร์</string>
+    <string name="interface_emby_poster_overlays_subtitle">ปิดใช้งานการซ้อนทับโปสเตอร์ที่จัดหาโดยเซิร์ฟเวอร์</string>
     <!-- General -->
     <string name="loading">กำลังโหลด…</string>
     <string name="error">ข้อผิดพลาด</string>
@@ -13,7 +18,6 @@
     <string name="settings">การตั้งค่า</string>
     <!-- Server Connection -->
     <string name="server_url">URL เซิร์ฟเวอร์</string>
-    <string name="server_url_hint">https://your-jellyfin-server.com</string>
     <string name="connect">เชื่อมต่อ</string>
     <string name="connecting">การเชื่อมต่อ…</string>
     <string name="connection_failed">การเชื่อมต่อล้มเหลว</string>
@@ -28,7 +32,6 @@
     <string name="login_failed">เข้าสู่ระบบล้มเหลว</string>
     <string name="invalid_credentials">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</string>
     <string name="auth_connect_title">เชื่อมต่อเซิร์ฟเวอร์ของคุณ</string>
-    <string name="auth_connect_subtitle">ตั้งค่า Jellyfin หรือ Emby URL ของคุณเพื่อเริ่มสตรีม</string>
     <string name="auth_welcome_back">ยินดีต้อนรับ</string>
     <string name="auth_sign_in_subtitle">ลงชื่อเข้าใช้เพื่อดำเนินการต่อ</string>
     <string name="auth_connection_settings">การตั้งค่าการเชื่อมต่อ</string>
@@ -123,7 +126,6 @@
     <string name="my_media_unknown_error">มีบางอย่างผิดพลาด</string>
     <string name="try_again">ลองอีกครั้ง</string>
     <string name="my_media_empty_title">ไม่พบห้องสมุด</string>
-    <string name="my_media_empty_message">ตั้งค่าไลบรารีสื่อของคุณใน Jellyfin</string>
     <string name="my_media_library_fallback">ห้องสมุด</string>
     <string name="my_media_library_type_library">ห้องสมุด</string>
     <string name="dashboard_failed_load_libraries">ล้มเหลวในการโหลดไลบรารี</string>
@@ -321,7 +323,7 @@
     <string name="downloads_settings_selected_folder">โฟลเดอร์ที่เลือก</string>
     <string name="downloads_settings_change_folder">เปลี่ยนโฟลเดอร์</string>
     <string name="downloads_settings_use_default">ใช้ค่าเริ่มต้น</string>
-    <string name="downloads_settings_legacy_permission_hint">Android 8/9 ขอการเข้าถึงไฟล์ก่อนที่ JellyCine สามารถเขียนไปยังโฟลเดอร์ดาวน์โหลดสาธารณะได้</string>
+    <string name="downloads_settings_legacy_permission_hint">Android 8/9 ขอการเข้าถึงไฟล์ก่อนที่ DIMODORI สามารถเขียนไปยังโฟลเดอร์ดาวน์โหลดสาธารณะได้</string>
     <string name="downloads_queue_options">ตัวเลือกคิว</string>
     <string name="downloads_series_fallback">ซีรี่ส์</string>
     <string name="downloads_season_number">ฤดูกาล %1$d</string>
@@ -492,17 +494,13 @@
     <string name="about_section_project">กฎหมาย</string>
     <string name="about_section_connect">เชื่อมต่อ</string>
     <string name="about_privacy_policy">นโยบายความเป็นส่วนตัว</string>
-    <string name="about_privacy_policy_subtitle">อ่านวิธีที่ JellyCine จัดการข้อมูลการเล่นและความเป็นส่วนตัว</string>
+    <string name="about_privacy_policy_subtitle">อ่านวิธีที่ DIMODORI จัดการข้อมูลการเล่นและความเป็นส่วนตัว</string>
     <string name="about_open_source_license">ใบอนุญาต</string>
     <string name="about_open_source_license_subtitle">ใบอนุญาตสาธารณะทั่วไป GNU v3.0</string>
-    <string name="about_source_code">ซอร์สโค้ด</string>
     <string name="about_rate_app">ให้คะแนนบน Google Play</string>
-    <string name="about_rate_app_subtitle">แสดงคะแนนหรือรีวิวเพื่อช่วยให้ผู้คนค้นหา JellyCine ได้มากขึ้น</string>
-    <string name="about_contact_developer">ติดต่อนักพัฒนา</string>
-    <string name="about_contact_developer_subtitle">ส่งข้อเสนอแนะ รายงานข้อบกพร่อง หรือคำถามเกี่ยวกับความเป็นส่วนตัวทางอีเมล</string>
-    <string name="about_feedback_subject">ข้อเสนอแนะ JellyCine</string>
-    <string name="about_buy_me_a_coffee">ซื้อกาแฟให้ฉัน</string>
-    <string name="about_patreon">ปาเทรอน</string>
+    <string name="about_rate_app_subtitle">แสดงคะแนนหรือรีวิวเพื่อช่วยให้ผู้คนค้นหา DIMODORI ได้มากขึ้น</string>
+    <string name="about_contact_developer">DIMODORI</string>
+    <string name="about_contact_developer_subtitle">dimodori.com</string>
     <!-- Interface Settings -->
     <string name="interface_feature_carousel">คุณลักษณะ ม้าหมุน</string>
     <string name="interface_feature_carousel_subtitle">แสดงม้าหมุนเนื้อหาที่โดดเด่นบนหน้าจอหลัก</string>
@@ -520,8 +518,6 @@
     <string name="interface_use_my_media_tab_subtitle">แทนที่แท็บ Discover ด้วยตารางไลบรารีคลาสสิก</string>
     <string name="interface_merge_versions">ผสานเวอร์ชัน</string>
     <string name="interface_merge_versions_subtitle">แสดงไฟล์ภาพยนตร์ท้องถิ่นที่ตรงกันบนหน้าจอรายละเอียด</string>
-    <string name="interface_emby_poster_overlays">ซ้อนทับโปสเตอร์ Emby</string>
-    <string name="interface_emby_poster_overlays_subtitle">ปิดใช้งานการซ้อนทับโปสเตอร์ Emby</string>
     <string name="interface_seerr_settings">การตั้งค่า Seerr</string>
     <string name="interface_seerr_studios">เซียร์ สตูดิโอ</string>
     <string name="interface_seerr_studios_subtitle">แสดงส่วนสตูดิโอบนหน้าจอหลัก</string>

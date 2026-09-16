@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">جيلي سين</string>
+    <string name="app_name">DIMODORI</string>
+    <string name="server_url_hint">https://your-media-server.com</string>
+    <string name="auth_connect_subtitle">أدخل عنوان URL الخاص بخادم الوسائط للبدء في البث.</string>
+    <string name="my_media_empty_message">قم بإعداد مكتبات الوسائط الخاصة بك على خادمك</string>
+    <string name="interface_emby_poster_overlays">تراكبات ملصقات الخادم</string>
+    <string name="interface_emby_poster_overlays_subtitle">تعطيل تراكبات الملصقات المقدمة من الخادم.</string>
     <!-- General -->
     <string name="loading">جاري التحميل…</string>
     <string name="error">خطأ</string>
@@ -13,7 +18,6 @@
     <string name="settings">إعدادات</string>
     <!-- Server Connection -->
     <string name="server_url">عنوان URL الخاص بالخادم</string>
-    <string name="server_url_hint">https://your-jellyfin-server.com</string>
     <string name="connect">قم بالاتصال</string>
     <string name="connecting">جاري الاتصال…</string>
     <string name="connection_failed">فشل الاتصال</string>
@@ -28,7 +32,6 @@
     <string name="login_failed">فشل تسجيل الدخول</string>
     <string name="invalid_credentials">اسم مستخدم أو كلمة مرور غير صالحة</string>
     <string name="auth_connect_title">قم بتوصيل الخادم الخاص بك</string>
-    <string name="auth_connect_subtitle">قم بتعيين عنوان URL الخاص بـ Jellyfin أو Emby لبدء البث.</string>
     <string name="auth_welcome_back">مرحبًا بك مرة أخرى</string>
     <string name="auth_sign_in_subtitle">قم بتسجيل الدخول للمتابعة</string>
     <string name="auth_connection_settings">إعدادات الاتصال</string>
@@ -123,7 +126,6 @@
     <string name="my_media_unknown_error">حدث خطأ ما</string>
     <string name="try_again">حاول مرة أخرى</string>
     <string name="my_media_empty_title">لم يتم العثور على مكتبات</string>
-    <string name="my_media_empty_message">قم بإعداد مكتبات الوسائط الخاصة بك في Jellyfin</string>
     <string name="my_media_library_fallback">مكتبة</string>
     <string name="my_media_library_type_library">مكتبة</string>
     <string name="dashboard_failed_load_libraries">فشل تحميل المكتبات</string>
@@ -341,7 +343,7 @@
     <string name="downloads_settings_selected_folder">المجلد المحدد</string>
     <string name="downloads_settings_change_folder">تغيير المجلد</string>
     <string name="downloads_settings_use_default">استخدم الإعداد الافتراضي</string>
-    <string name="downloads_settings_legacy_permission_hint">يطلب Android 8/9 الوصول إلى الملفات قبل أن تتمكن JellyCine من الكتابة إلى مجلد التنزيلات العام.</string>
+    <string name="downloads_settings_legacy_permission_hint">يطلب Android 8/9 الوصول إلى الملفات قبل أن تتمكن DIMODORI من الكتابة إلى مجلد التنزيلات العام.</string>
     <string name="downloads_queue_options">خيارات قائمة الانتظار</string>
     <string name="downloads_series_fallback">سلسلة</string>
     <string name="downloads_season_number">الموسم %1$d</string>
@@ -557,17 +559,13 @@
     <string name="about_section_project">قانوني</string>
     <string name="about_section_connect">قم بالاتصال</string>
     <string name="about_privacy_policy">سياسة الخصوصية</string>
-    <string name="about_privacy_policy_subtitle">اقرأ كيف تتعامل JellyCine مع بيانات التشغيل والخصوصية</string>
+    <string name="about_privacy_policy_subtitle">اقرأ كيف تتعامل DIMODORI مع بيانات التشغيل والخصوصية</string>
     <string name="about_open_source_license">الترخيص</string>
     <string name="about_open_source_license_subtitle">رخصة غنو العمومية v3.0</string>
-    <string name="about_source_code">كود المصدر</string>
     <string name="about_rate_app">السعر على جوجل بلاي</string>
-    <string name="about_rate_app_subtitle">اترك تقييمًا أو مراجعة لمساعدة المزيد من الأشخاص في العثور على JellyCine</string>
-    <string name="about_contact_developer">اتصل بالمطور</string>
-    <string name="about_contact_developer_subtitle">إرسال التعليقات أو تقارير الأخطاء أو أسئلة الخصوصية عبر البريد الإلكتروني</string>
-    <string name="about_feedback_subject">ملاحظات جيلي سين</string>
-    <string name="about_buy_me_a_coffee">اشتر لي قهوة</string>
-    <string name="about_patreon">باتريون</string>
+    <string name="about_rate_app_subtitle">اترك تقييمًا أو مراجعة لمساعدة المزيد من الأشخاص في العثور على DIMODORI</string>
+    <string name="about_contact_developer">DIMODORI</string>
+    <string name="about_contact_developer_subtitle">dimodori.com</string>
     <!-- Interface Settings -->
     <string name="interface_feature_carousel">ميزة كاروسيل</string>
     <string name="interface_feature_carousel_subtitle">اعرض دائرة المحتوى المميز على الشاشة الرئيسية.</string>
@@ -585,8 +583,6 @@
     <string name="interface_use_my_media_tab_subtitle">استبدل علامة تبويب Discover بشبكة المكتبة الكلاسيكية.</string>
     <string name="interface_merge_versions">دمج الإصدارات</string>
     <string name="interface_merge_versions_subtitle">اعرض ملفات الأفلام المحلية المطابقة على شاشة تفاصيل واحدة.</string>
-    <string name="interface_emby_poster_overlays">تراكبات ملصق Emby</string>
-    <string name="interface_emby_poster_overlays_subtitle">قم بتعطيل تراكبات ملصقات Emby.</string>
     <string name="interface_seerr_settings">إعدادات السيرفر</string>
     <string name="interface_seerr_studios">استوديوهات سييرا</string>
     <string name="interface_seerr_studios_subtitle">اعرض قسم الاستوديوهات على الشاشة الرئيسية.</string>

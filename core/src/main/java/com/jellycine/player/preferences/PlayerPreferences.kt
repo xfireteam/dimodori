@@ -14,7 +14,7 @@ class PlayerPreferences(context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     
     companion object {
-        private const val PREFS_NAME = "jellycine_player_prefs"
+        private const val PREFS_NAME = "dimodori_player_prefs"
         private const val KEY_PLAYER_BRIGHTNESS = "player_brightness"
         private const val KEY_PLAYER_VOLUME = "player_volume"
         private const val KEY_PLAYER_ENGINE = "player_engine"

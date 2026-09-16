@@ -81,7 +81,7 @@ class NetworkPreferences(context: Context) {
         const val DEFAULT_IMAGE_MEMORY_CACHE_MB = 120
         const val DEFAULT_IMAGE_CACHING_ENABLED = true
 
-        private const val PREFS_NAME = "jellycine_network_prefs"
+        private const val PREFS_NAME = "dimodori_network_prefs"
         private const val KEY_REQUEST_TIMEOUT = "request_timeout_ms"
         private const val KEY_CONNECTION_TIMEOUT = "connection_timeout_ms"
         private const val KEY_SOCKET_TIMEOUT = "socket_timeout_ms"

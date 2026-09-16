@@ -18,7 +18,7 @@ private fun createDataStore(): DataStore<Preferences> {
         create = false,
         error = null
     )
-    val dataStoreFile = requireNotNull(documentDirectory?.path) + "/jellycine_auth_prefs.preferences_pb"
+    val dataStoreFile = requireNotNull(documentDirectory?.path) + "/dimodori_auth_prefs.preferences_pb"
 
     return PreferenceDataStoreFactory.createWithPath(
         produceFile = { dataStoreFile.toPath() }

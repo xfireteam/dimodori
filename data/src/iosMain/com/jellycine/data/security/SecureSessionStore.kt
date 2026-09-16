@@ -107,6 +107,6 @@ class SecureSessionStore {
     }
 
     companion object {
-        private const val SERVICE_NAME = "com.jellycine.app.secure_auth_store"
+        private const val SERVICE_NAME = "com.dimodori.app.secure_auth_store"
     }
 }

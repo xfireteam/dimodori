@@ -32,7 +32,7 @@ import com.jellycine.data.model.SystemInfoFull
 import com.jellycine.data.model.UserDto
 import com.jellycine.data.model.toSearchQueries
 import com.jellycine.data.network.HttpStatusException
-import com.jellycine.data.network.JellyCineJson
+import com.jellycine.data.network.DimodoriJson
 import com.jellycine.data.network.NetworkModule
 import com.jellycine.data.network.ServerType
 import com.jellycine.data.network.trimTrailingSlash
@@ -1716,7 +1716,7 @@ class MediaRepository(private val context: Context) {
 
             val displayName = itemDisplayName
                 ?: mediaSource?.name?.takeIf { it.isNotBlank() }
-                ?: "jellycine_$itemId"
+                ?: "dimodori_$itemId"
 
             val extension = itemExtension
                 ?: mediaSource?.container
@@ -1760,7 +1760,7 @@ class MediaRepository(private val context: Context) {
             }
 
             val item = getItemById(itemId).getOrNull()
-            val displayName = item?.name?.takeIf { it.isNotBlank() } ?: "jellycine_$itemId"
+            val displayName = item?.name?.takeIf { it.isNotBlank() } ?: "dimodori_$itemId"
 
             val playbackInfo = getPlaybackInfo(
                 itemId = itemId,
@@ -2331,7 +2331,7 @@ class MediaRepository(private val context: Context) {
                 preconfigured = okHttpClient
             }
             install(ContentNegotiation) {
-                json(JellyCineJson)
+                json(DimodoriJson)
             }
         }
     }

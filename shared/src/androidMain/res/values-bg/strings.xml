@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Желицин</string>
+    <string name="app_name">DIMODORI</string>
+    <string name="server_url_hint">https://your-media-server.com</string>
+    <string name="auth_connect_subtitle">Въведете URL адреса на вашия медиен сървър, за да започнете стрийминг.</string>
+    <string name="my_media_empty_message">Настройте вашите медийни библиотеки на вашия сървър</string>
+    <string name="interface_emby_poster_overlays">Наслоявания върху плакати от сървъра</string>
+    <string name="interface_emby_poster_overlays_subtitle">Деактивирайте наслояванията върху плакати, предоставени от сървъра.</string>
     <!-- General -->
     <string name="loading">Зареждане…</string>
     <string name="error">Грешка</string>
@@ -13,7 +18,6 @@
     <string name="settings">Настройки</string>
     <!-- Server Connection -->
     <string name="server_url">URL адрес на сървъра</string>
-    <string name="server_url_hint">https://your-jellyfin-server.com</string>
     <string name="connect">Свържете се</string>
     <string name="connecting">Свързване…</string>
     <string name="connection_failed">Връзката се провали</string>
@@ -28,7 +32,6 @@
     <string name="login_failed">Влизането е неуспешно</string>
     <string name="invalid_credentials">Невалидно потребителско име или парола</string>
     <string name="auth_connect_title">Свържете вашия сървър</string>
-    <string name="auth_connect_subtitle">Задайте вашия Jellyfin или Emby URL адрес, за да започнете стрийминг.</string>
     <string name="auth_welcome_back">Добре дошли обратно</string>
     <string name="auth_sign_in_subtitle">Влезте, за да продължите</string>
     <string name="auth_connection_settings">Настройки за връзка</string>
@@ -123,7 +126,6 @@
     <string name="my_media_unknown_error">Нещо се обърка</string>
     <string name="try_again">Опитайте отново</string>
     <string name="my_media_empty_title">Не са намерени библиотеки</string>
-    <string name="my_media_empty_message">Настройте вашите медийни библиотеки в Jellyfin</string>
     <string name="my_media_library_fallback">Библиотека</string>
     <string name="my_media_library_type_library">Библиотека</string>
     <string name="dashboard_failed_load_libraries">Неуспешно зареждане на библиотеки</string>
@@ -325,7 +327,7 @@
     <string name="downloads_settings_selected_folder">Избрана папка</string>
     <string name="downloads_settings_change_folder">Промяна на папката</string>
     <string name="downloads_settings_use_default">Използвайте по подразбиране</string>
-    <string name="downloads_settings_legacy_permission_hint">Android 8/9 иска достъп до файлове, преди JellyCine да може да пише в публичната папка за изтегляне.</string>
+    <string name="downloads_settings_legacy_permission_hint">Android 8/9 иска достъп до файлове, преди DIMODORI да може да пише в публичната папка за изтегляне.</string>
     <string name="downloads_queue_options">Опции за опашка</string>
     <string name="downloads_series_fallback">Серия</string>
     <string name="downloads_season_number">Сезон %1$d</string>
@@ -505,17 +507,13 @@
     <string name="about_section_project">Юридически</string>
     <string name="about_section_connect">Свържете се</string>
     <string name="about_privacy_policy">Политика за поверителност</string>
-    <string name="about_privacy_policy_subtitle">Прочетете как JellyCine обработва данни за възпроизвеждане и поверителност</string>
+    <string name="about_privacy_policy_subtitle">Прочетете как DIMODORI обработва данни за възпроизвеждане и поверителност</string>
     <string name="about_open_source_license">Лиценз</string>
     <string name="about_open_source_license_subtitle">Общ публичен лиценз на GNU v3.0</string>
-    <string name="about_source_code">Изходен код</string>
     <string name="about_rate_app">Оценете в Google Play</string>
-    <string name="about_rate_app_subtitle">Оставете оценка или отзив, за да помогнете на повече хора да намерят JellyCine</string>
-    <string name="about_contact_developer">Контакт с разработчика</string>
-    <string name="about_contact_developer_subtitle">Изпращайте обратна връзка, доклади за грешки или въпроси за поверителност по имейл</string>
-    <string name="about_feedback_subject">JellyCine Обратна връзка</string>
-    <string name="about_buy_me_a_coffee">Купи ми кафе</string>
-    <string name="about_patreon">Патреон</string>
+    <string name="about_rate_app_subtitle">Оставете оценка или отзив, за да помогнете на повече хора да намерят DIMODORI</string>
+    <string name="about_contact_developer">DIMODORI</string>
+    <string name="about_contact_developer_subtitle">dimodori.com</string>
     <!-- Interface Settings -->
     <string name="interface_feature_carousel">Характерна въртележка</string>
     <string name="interface_feature_carousel_subtitle">Показване на въртележката с представено съдържание на началния екран.</string>
@@ -533,8 +531,6 @@
     <string name="interface_use_my_media_tab_subtitle">Заменете раздела Откриване с класическата библиотечна мрежа.</string>
     <string name="interface_merge_versions">Обединяване на версии</string>
     <string name="interface_merge_versions_subtitle">Показване на съвпадащи локални филмови файлове на един екран с подробности.</string>
-    <string name="interface_emby_poster_overlays">Накласквания на плакати Emby</string>
-    <string name="interface_emby_poster_overlays_subtitle">Деактивирайте наслагванията на плакати на Emby.</string>
     <string name="interface_seerr_settings">Настройки на Seerr</string>
     <string name="interface_seerr_studios">Студиа Сиер</string>
     <string name="interface_seerr_studios_subtitle">Покажете секцията Студиа на началния екран.</string>

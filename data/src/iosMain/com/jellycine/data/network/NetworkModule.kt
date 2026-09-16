@@ -32,11 +32,11 @@ import platform.SystemConfiguration.kSCNetworkReachabilityFlagsReachable
 @OptIn(ExperimentalForeignApi::class)
 object NetworkModule {
 
-    private const val CLIENT_NAME = "JellyCine"
+    private const val CLIENT_NAME = "DIMODORI"
     private const val DEVICE_NAME = "iOS"
     private const val OFFLINE_DEBOUNCE_MS = 4000L
     private val deviceId by lazy {
-        "jellycine-ios-${NSUUID().UUIDString}"
+        "dimodori-ios-${NSUUID().UUIDString}"
     }
     private val apiCache = mutableMapOf<String, MediaServerApi>()
 
@@ -180,7 +180,7 @@ object NetworkModule {
             }
 
             install(ContentNegotiation) {
-                json(JellyCineJson)
+                json(DimodoriJson)
             }
         }
     }

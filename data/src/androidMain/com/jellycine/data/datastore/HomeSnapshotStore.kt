@@ -4,7 +4,7 @@ import android.util.AtomicFile
 import com.jellycine.data.model.BaseItemDto
 import com.jellycine.data.model.HomeLibrarySectionData
 import com.jellycine.data.model.PersistedHomeSnapshot
-import com.jellycine.data.network.JellyCineJson
+import com.jellycine.data.network.DimodoriJson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -18,7 +18,7 @@ class HomeSnapshotStore(
     private val filesDir: File
 ) {
     private val homeSnapshotMutex = Mutex()
-    private val homeSnapshotFileName = "JellyCineSnapshot.json"
+    private val homeSnapshotFileName = "DIMODORISnapshot.json"
 
     fun getPersistedHomeSnapshot(): PersistedHomeSnapshot? {
         return runCatching {
@@ -111,7 +111,7 @@ class HomeSnapshotStore(
         if (!file.exists()) return null
         return runCatching {
             val rawJson = file.readText()
-            JellyCineJson.decodeFromString<PersistedHomeSnapshot>(rawJson)
+            DimodoriJson.decodeFromString<PersistedHomeSnapshot>(rawJson)
         }.getOrElse {
             file.delete()
             null
@@ -126,7 +126,7 @@ class HomeSnapshotStore(
         var stream: java.io.FileOutputStream? = null
         try {
             stream = atomicFile.startWrite()
-            stream.write(JellyCineJson.encodeToString(snapshot).toByteArray(StandardCharsets.UTF_8))
+            stream.write(DimodoriJson.encodeToString(snapshot).toByteArray(StandardCharsets.UTF_8))
             stream.flush()
             atomicFile.finishWrite(stream)
         } catch (error: Exception) {

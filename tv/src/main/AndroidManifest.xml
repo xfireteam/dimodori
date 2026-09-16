@@ -25,7 +25,7 @@
         android:required="false" />
 
     <application
-        android:name=".JellyCineApplication"
+        android:name=".DimodoriApplication"
         android:allowBackup="true"
         android:largeHeap="true"
         android:enableOnBackInvokedCallback="true"
@@ -36,7 +36,7 @@
         android:localeConfig="@xml/locales_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.JellyCine"
+        android:theme="@style/Theme.Dimodori"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
@@ -50,9 +50,9 @@
         </service>
         
         <activity
-            android:name=".ui.activity.JellyCineActivity"
+            android:name=".ui.activity.DimodoriActivity"
             android:exported="true"
-            android:theme="@style/Theme.JellyCine.Splash"
+            android:theme="@style/Theme.Dimodori.Splash"
             android:launchMode="singleTop"
             android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>

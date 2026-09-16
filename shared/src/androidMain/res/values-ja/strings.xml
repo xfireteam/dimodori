@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ジェリーシネ</string>
+    <string name="app_name">DIMODORI</string>
+    <string name="server_url_hint">https://your-media-server.com</string>
+    <string name="auth_connect_subtitle">ストリーミングを開始するには、メディアサーバーのURLを入力してください。</string>
+    <string name="my_media_empty_message">サーバー上でメディアライブラリを設定してください</string>
+    <string name="interface_emby_poster_overlays">サーバーのポスターオーバーレイ</string>
+    <string name="interface_emby_poster_overlays_subtitle">サーバーから提供されるポスターオーバーレイを無効にします。</string>
     <!-- General -->
     <string name="loading">読み込み中…</string>
     <string name="error">[エラー]</string>
@@ -13,7 +18,6 @@
     <string name="settings">[設定]</string>
     <!-- Server Connection -->
     <string name="server_url">サーバー URL</string>
-    <string name="server_url_hint">https://your-jellyfin-server.com</string>
     <string name="connect">接続</string>
     <string name="connecting">接続中…</string>
     <string name="connection_failed">接続失敗</string>
@@ -28,7 +32,6 @@
     <string name="login_failed">ログイン失敗</string>
     <string name="invalid_credentials">ユーザー名またはパスワードが無効です</string>
     <string name="auth_connect_title">サーバーを接続</string>
-    <string name="auth_connect_subtitle">ストリーミングを開始するには、JellyfinまたはEmbyのURLを設定してください。</string>
     <string name="auth_welcome_back">おかえりなさい</string>
     <string name="auth_sign_in_subtitle">ログインして続行</string>
     <string name="auth_connection_settings">接続設定</string>
@@ -123,7 +126,6 @@
     <string name="my_media_unknown_error">何かがおかしくなった</string>
     <string name="try_again">もう一度試す</string>
     <string name="my_media_empty_title">ライブラリが見つかりません</string>
-    <string name="my_media_empty_message">Jellyfinでメディアライブラリを設定する</string>
     <string name="my_media_library_fallback">図書館</string>
     <string name="my_media_library_type_library">図書館</string>
     <string name="dashboard_failed_load_libraries">ライブラリを読み込めませんでした</string>
@@ -321,7 +323,7 @@
     <string name="downloads_settings_selected_folder">選択したフォルダー</string>
     <string name="downloads_settings_change_folder">フォルダを変更</string>
     <string name="downloads_settings_use_default">デフォルトを使用</string>
-    <string name="downloads_settings_legacy_permission_hint">Android 8/9は、JellyCineがパブリックダウンロードフォルダーに書き込む前にファイルへのアクセスを要求します。</string>
+    <string name="downloads_settings_legacy_permission_hint">Android 8/9は、DIMODORIがパブリックダウンロードフォルダーに書き込む前にファイルへのアクセスを要求します。</string>
     <string name="downloads_queue_options">キューオプション</string>
     <string name="downloads_series_fallback">シリーズ</string>
     <string name="downloads_season_number">シーズン %1$d</string>
@@ -492,17 +494,13 @@
     <string name="about_section_project">リーガル</string>
     <string name="about_section_connect">接続</string>
     <string name="about_privacy_policy">プライバシーポリシー</string>
-    <string name="about_privacy_policy_subtitle">JellyCineが再生データとプライバシーをどのように処理するかを読んでください</string>
+    <string name="about_privacy_policy_subtitle">DIMODORIが再生データとプライバシーをどのように処理するかを読んでください</string>
     <string name="about_open_source_license">ライセンス</string>
     <string name="about_open_source_license_subtitle">GNU 一般公衆利用許諾契約書 v3.0</string>
-    <string name="about_source_code">[ソースコード]</string>
     <string name="about_rate_app">グーグルプレイでのレート</string>
-    <string name="about_rate_app_subtitle">より多くの人がJellyCineを見つけられるように、評価またはレビューを残してください</string>
-    <string name="about_contact_developer">開発者に連絡</string>
-    <string name="about_contact_developer_subtitle">フィードバック、バグレポート、プライバシーに関する質問をメールで送信する</string>
-    <string name="about_feedback_subject">ジェリーシネフィードバック</string>
-    <string name="about_buy_me_a_coffee">コーヒーを買って</string>
-    <string name="about_patreon">パトレオン</string>
+    <string name="about_rate_app_subtitle">より多くの人がDIMODORIを見つけられるように、評価またはレビューを残してください</string>
+    <string name="about_contact_developer">DIMODORI</string>
+    <string name="about_contact_developer_subtitle">dimodori.com</string>
     <!-- Interface Settings -->
     <string name="interface_feature_carousel">フィーチャーカルーセル</string>
     <string name="interface_feature_carousel_subtitle">ホーム画面に注目コンテンツカルーセルを表示します。</string>
@@ -520,8 +518,6 @@
     <string name="interface_use_my_media_tab_subtitle">Discover タブを従来のライブラリグリッドに置き換えます。</string>
     <string name="interface_merge_versions">バージョンを結合</string>
     <string name="interface_merge_versions_subtitle">一致するローカルムービーファイルを 1 つの詳細画面に表示します。</string>
-    <string name="interface_emby_poster_overlays">Emby ポスターオーバーレイ</string>
-    <string name="interface_emby_poster_overlays_subtitle">Embyポスターオーバーレイを無効にします。</string>
     <string name="interface_seerr_settings">サーバー設定</string>
     <string name="interface_seerr_studios">シアー・スタジオ</string>
     <string name="interface_seerr_studios_subtitle">ホーム画面にスタジオセクションを表示します。</string>

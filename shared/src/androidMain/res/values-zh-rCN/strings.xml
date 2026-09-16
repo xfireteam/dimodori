@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">JellyCine</string>
+    <string name="app_name">DIMODORI</string>
+    <string name="server_url_hint">https://your-media-server.com</string>
+    <string name="auth_connect_subtitle">输入您的媒体服务器 URL 以开始串流。</string>
+    <string name="my_media_empty_message">在服务器上设置您的媒体库</string>
+    <string name="interface_emby_poster_overlays">服务器海报覆盖层</string>
+    <string name="interface_emby_poster_overlays_subtitle">禁用服务器提供的海报覆盖层。</string>
     <!-- General -->
     <string name="loading">加载中…</string>
     <string name="error">错误</string>
@@ -13,7 +18,6 @@
     <string name="settings">设置</string>
     <!-- Server Connection -->
     <string name="server_url">服务器网址</string>
-    <string name="server_url_hint">https://your-jellyfin-server.com</string>
     <string name="connect">连接</string>
     <string name="connecting">正在连接…</string>
     <string name="connection_failed">连接失败</string>
@@ -28,7 +32,6 @@
     <string name="login_failed">登录失败</string>
     <string name="invalid_credentials">用户名或密码无效</string>
     <string name="auth_connect_title">连接您的服务器</string>
-    <string name="auth_connect_subtitle">设置你的 Jellyfin 或 Emby 网址即可开始直播。</string>
     <string name="auth_welcome_back">欢迎回来</string>
     <string name="auth_sign_in_subtitle">登录继续</string>
     <string name="auth_connection_settings">连接设置</string>
@@ -123,7 +126,6 @@
     <string name="my_media_unknown_error">出了点问题</string>
     <string name="try_again">再试一次</string>
     <string name="my_media_empty_title">未找到任何库</string>
-    <string name="my_media_empty_message">在 Jellyfin 中设置您的媒体库</string>
     <string name="my_media_library_fallback">图书馆</string>
     <string name="my_media_library_type_library">图书馆</string>
     <string name="dashboard_failed_load_libraries">加载库失败</string>
@@ -321,7 +323,7 @@
     <string name="downloads_settings_selected_folder">选定的文件夹</string>
     <string name="downloads_settings_change_folder">更改文件夹</string>
     <string name="downloads_settings_use_default">使用默认</string>
-    <string name="downloads_settings_legacy_permission_hint">在 JellyCine 写入公共下载文件夹之前，Android 8/9 要求访问文件。</string>
+    <string name="downloads_settings_legacy_permission_hint">在 DIMODORI 写入公共下载文件夹之前，Android 8/9 要求访问文件。</string>
     <string name="downloads_queue_options">队列选项</string>
     <string name="downloads_series_fallback">系列</string>
     <string name="downloads_season_number">赛季 %1$d</string>
@@ -492,17 +494,13 @@
     <string name="about_section_project">合法</string>
     <string name="about_section_connect">连接</string>
     <string name="about_privacy_policy">隐私政策</string>
-    <string name="about_privacy_policy_subtitle">阅读 JellyCine 如何处理播放数据和隐私</string>
+    <string name="about_privacy_policy_subtitle">阅读 DIMODORI 如何处理播放数据和隐私</string>
     <string name="about_open_source_license">执照</string>
     <string name="about_open_source_license_subtitle">GNU 通用公共许可证 v3.0</string>
-    <string name="about_source_code">源代码</string>
     <string name="about_rate_app">在 Google Play 上评分</string>
-    <string name="about_rate_app_subtitle">留下评分或评论以帮助更多人找到 JellyCine</string>
-    <string name="about_contact_developer">联系开发者</string>
-    <string name="about_contact_developer_subtitle">通过电子邮件发送反馈、错误报告或隐私问题</string>
-    <string name="about_feedback_subject">JellyCine 反馈</string>
-    <string name="about_buy_me_a_coffee">给我买杯咖啡</string>
-    <string name="about_patreon">Patreon</string>
+    <string name="about_rate_app_subtitle">留下评分或评论以帮助更多人找到 DIMODORI</string>
+    <string name="about_contact_developer">DIMODORI</string>
+    <string name="about_contact_developer_subtitle">dimodori.com</string>
     <!-- Interface Settings -->
     <string name="interface_feature_carousel">功能旋转木马</string>
     <string name="interface_feature_carousel_subtitle">在主屏幕上显示精选内容轮播。</string>
@@ -520,8 +518,6 @@
     <string name="interface_use_my_media_tab_subtitle">将 “发现” 选项卡替换为经典库网格。</string>
     <string name="interface_merge_versions">合并版本</string>
     <string name="interface_merge_versions_subtitle">在一个详细信息屏幕上显示匹配的本地电影文件。</string>
-    <string name="interface_emby_poster_overlays">Emby 海报叠加层</string>
-    <string name="interface_emby_poster_overlays_subtitle">禁用 Emby 海报叠加层。</string>
     <string name="interface_seerr_settings">Seerr 设置</string>
     <string name="interface_seerr_studios">Seerr 工作室</string>
     <string name="interface_seerr_studios_subtitle">在主屏幕上显示工作室部分。</string>

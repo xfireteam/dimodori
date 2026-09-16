@@ -36,11 +36,11 @@ import java.util.concurrent.TimeUnit
 
 object NetworkModule {
 
-    private const val CLIENT_NAME = "JellyCine"
+    private const val CLIENT_NAME = "DIMODORI"
     private const val DEVICE_NAME = "Android"
-    private const val NETWORK_LOG_TAG = "JellyCineNetwork"
+    private const val NETWORK_LOG_TAG = "DIMODORINetwork"
     private const val OFFLINE_DEBOUNCE_MS = 4000L
-    private val deviceId by lazy { "jellycine-android-${UUID.randomUUID()}" }
+    private val deviceId by lazy { "dimodori-android-${UUID.randomUUID()}" }
     private val apiCache = ConcurrentHashMap<String, MediaServerApi>()
 
     fun getClientDeviceId(): String = deviceId
@@ -318,7 +318,7 @@ object NetworkModule {
                 url(baseUrl)
             }
             install(ContentNegotiation) {
-                json(JellyCineJson)
+                json(DimodoriJson)
             }
         }
     }

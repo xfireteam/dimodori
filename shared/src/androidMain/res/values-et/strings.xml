@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">JellyCine</string>
+    <string name="app_name">DIMODORI</string>
+    <string name="server_url_hint">https://your-media-server.com</string>
+    <string name="auth_connect_subtitle">Voogesituse alustamiseks sisestage oma meediaserveri URL.</string>
+    <string name="my_media_empty_message">Seadistage oma meediateegid serveris</string>
+    <string name="interface_emby_poster_overlays">Serveri plakati ülekatteid</string>
+    <string name="interface_emby_poster_overlays_subtitle">Keela serveri poolt pakutavad plakati ülekatteid.</string>
     <!-- General -->
     <string name="loading">Laadimine…</string>
     <string name="error">Viga</string>
@@ -13,7 +18,6 @@
     <string name="settings">Seadistused</string>
     <!-- Server Connection -->
     <string name="server_url">Serveri URL</string>
-    <string name="server_url_hint">https://your-jellyfin-server.com</string>
     <string name="connect">Ühenda</string>
     <string name="connecting">Ühendamine…</string>
     <string name="connection_failed">Ühendus ebaõnnestus</string>
@@ -28,7 +32,6 @@
     <string name="login_failed">Logimine ebaõnnestus</string>
     <string name="invalid_credentials">Vale kasutajanimi või parool</string>
     <string name="auth_connect_title">Ühendage oma server</string>
-    <string name="auth_connect_subtitle">Voogesituse alustamiseks määrake oma Jellyfini või Emby URL.</string>
     <string name="auth_welcome_back">Tere tulemast tagasi</string>
     <string name="auth_sign_in_subtitle">Jätkamiseks logige sisse</string>
     <string name="auth_connection_settings">Ühenduse seaded</string>
@@ -123,7 +126,6 @@
     <string name="my_media_unknown_error">Midagi läks valesti</string>
     <string name="try_again">Proovige uuesti</string>
     <string name="my_media_empty_title">Raamatukogusid ei leitud</string>
-    <string name="my_media_empty_message">Seadistage oma meediumiteegid Jellyfinis</string>
     <string name="my_media_library_fallback">Raamatukogu</string>
     <string name="my_media_library_type_library">Raamatukogu</string>
     <string name="dashboard_failed_load_libraries">Teekide laadimine ebaõnnestus</string>
@@ -325,7 +327,7 @@
     <string name="downloads_settings_selected_folder">Valitud kaust</string>
     <string name="downloads_settings_change_folder">Muuda kausta</string>
     <string name="downloads_settings_use_default">Kasutage vaikimisi</string>
-    <string name="downloads_settings_legacy_permission_hint">Android 8/9 küsib failidele juurdepääsu enne, kui JellyCine saab avalikku allalaadimiskausta kirjutada.</string>
+    <string name="downloads_settings_legacy_permission_hint">Android 8/9 küsib failidele juurdepääsu enne, kui DIMODORI saab avalikku allalaadimiskausta kirjutada.</string>
     <string name="downloads_queue_options">Järjekorra valikud</string>
     <string name="downloads_series_fallback">Seeria</string>
     <string name="downloads_season_number">Hooaeg %1$d</string>
@@ -505,17 +507,13 @@
     <string name="about_section_project">Juriidiline</string>
     <string name="about_section_connect">Ühenda</string>
     <string name="about_privacy_policy">Privaatsuspoliitika</string>
-    <string name="about_privacy_policy_subtitle">Lugege, kuidas JellyCine käsitleb taasesitusandmeid ja privaatsust</string>
+    <string name="about_privacy_policy_subtitle">Lugege, kuidas DIMODORI käsitleb taasesitusandmeid ja privaatsust</string>
     <string name="about_open_source_license">Litsents</string>
     <string name="about_open_source_license_subtitle">GNU üldine avalik litsents v3.0</string>
-    <string name="about_source_code">Lähtekood</string>
     <string name="about_rate_app">Hinda Google Plays</string>
-    <string name="about_rate_app_subtitle">Jäta hinnang või arvustus, et aidata rohkematel inimestel JellyCine\'i leida</string>
-    <string name="about_contact_developer">Võtke ühendust arendajaga</string>
-    <string name="about_contact_developer_subtitle">Saatke e-posti teel tagasisidet, veateated või privaatsusküsimusi</string>
-    <string name="about_feedback_subject">JellyCine Tagasiside</string>
-    <string name="about_buy_me_a_coffee">Osta mulle kohvi</string>
-    <string name="about_patreon">Patreon</string>
+    <string name="about_rate_app_subtitle">Jäta hinnang või arvustus, et aidata rohkematel inimestel DIMODORI\'i leida</string>
+    <string name="about_contact_developer">DIMODORI</string>
+    <string name="about_contact_developer_subtitle">dimodori.com</string>
     <!-- Interface Settings -->
     <string name="interface_feature_carousel">Funktsioonikarussell</string>
     <string name="interface_feature_carousel_subtitle">Kuva esiletõstetud sisukarussell avaekraanil.</string>
@@ -533,8 +531,6 @@
     <string name="interface_use_my_media_tab_subtitle">Asendage vahekaart Discover klassikalise raamatukogu ruudustikuga.</string>
     <string name="interface_merge_versions">Ühendage versioonid</string>
     <string name="interface_merge_versions_subtitle">Näidake ühel detailiekraanil sobivaid kohalikke filmifaile.</string>
-    <string name="interface_emby_poster_overlays">Emby plakati ülekatted</string>
-    <string name="interface_emby_poster_overlays_subtitle">Keela Emby plakati ülekatted.</string>
     <string name="interface_seerr_settings">Seerri seaded</string>
     <string name="interface_seerr_studios">Seerri stuudiod</string>
     <string name="interface_seerr_studios_subtitle">Kuva avaekraanil jaotis Stuudiod.</string>

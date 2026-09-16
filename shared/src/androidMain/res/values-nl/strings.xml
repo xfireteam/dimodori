@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Jelly Cine</string>
+    <string name="app_name">DIMODORI</string>
+    <string name="server_url_hint">https://your-media-server.com</string>
+    <string name="auth_connect_subtitle">Voer de URL van je mediaserver in om te beginnen met streamen.</string>
+    <string name="my_media_empty_message">Stel je mediabibliotheken in op je server</string>
+    <string name="interface_emby_poster_overlays">Server poster overlays</string>
+    <string name="interface_emby_poster_overlays_subtitle">Schakel door de server geleverde poster overlays uit.</string>
     <!-- General -->
     <string name="loading">Aan het laden…</string>
     <string name="error">Fout</string>
@@ -13,7 +18,6 @@
     <string name="settings">Instellingen</string>
     <!-- Server Connection -->
     <string name="server_url">URL van de server</string>
-    <string name="server_url_hint">https://your-jellyfin-server.com</string>
     <string name="connect">Verbind</string>
     <string name="connecting">Aansluiten…</string>
     <string name="connection_failed">Verbinding is mislukt</string>
@@ -28,7 +32,6 @@
     <string name="login_failed">Inloggen is mislukt</string>
     <string name="invalid_credentials">Ongeldige gebruikersnaam of wachtwoord</string>
     <string name="auth_connect_title">Verbind je server</string>
-    <string name="auth_connect_subtitle">Stel je Jellyfin- of Emby-URL in om te beginnen met streamen.</string>
     <string name="auth_welcome_back">Welkom terug</string>
     <string name="auth_sign_in_subtitle">Meld je aan om verder te gaan</string>
     <string name="auth_connection_settings">Verbindingsinstellingen</string>
@@ -123,7 +126,6 @@
     <string name="my_media_unknown_error">Er is iets misgegaan</string>
     <string name="try_again">Probeer het opnieuw</string>
     <string name="my_media_empty_title">Geen bibliotheken gevonden</string>
-    <string name="my_media_empty_message">Stel je mediabibliotheken in Jellyfin in</string>
     <string name="my_media_library_fallback">Bibliotheek</string>
     <string name="my_media_library_type_library">Bibliotheek</string>
     <string name="dashboard_failed_load_libraries">Het laden van bibliotheken is mislukt</string>
@@ -325,7 +327,7 @@
     <string name="downloads_settings_selected_folder">Geselecteerde map</string>
     <string name="downloads_settings_change_folder">Map wijzigen</string>
     <string name="downloads_settings_use_default">Gebruik de standaardinstelling</string>
-    <string name="downloads_settings_legacy_permission_hint">Android 8/9 vraagt om toegang tot bestanden voordat JellyCine naar de openbare map Downloads kan schrijven.</string>
+    <string name="downloads_settings_legacy_permission_hint">Android 8/9 vraagt om toegang tot bestanden voordat DIMODORI naar de openbare map Downloads kan schrijven.</string>
     <string name="downloads_queue_options">Wachtrij-opties</string>
     <string name="downloads_series_fallback">Serie</string>
     <string name="downloads_season_number">Seizoen %1$d</string>
@@ -505,17 +507,13 @@
     <string name="about_section_project">Juridisch</string>
     <string name="about_section_connect">Verbind</string>
     <string name="about_privacy_policy">Privacybeleid</string>
-    <string name="about_privacy_policy_subtitle">Lees hoe JellyCine omgaat met afspeelgegevens en privacy</string>
+    <string name="about_privacy_policy_subtitle">Lees hoe DIMODORI omgaat met afspeelgegevens en privacy</string>
     <string name="about_open_source_license">Licentie</string>
     <string name="about_open_source_license_subtitle">GNU General Public License v3.0</string>
-    <string name="about_source_code">Broncode</string>
     <string name="about_rate_app">Beoordeel op Google Play</string>
-    <string name="about_rate_app_subtitle">Laat een beoordeling of recensie achter zodat meer mensen JellyCine kunnen vinden</string>
-    <string name="about_contact_developer">Contact opnemen met de ontwikkelaar</string>
-    <string name="about_contact_developer_subtitle">Feedback, bugrapporten of privacyvragen per e-mail verzenden</string>
-    <string name="about_feedback_subject">JellyCine terugkoppeling</string>
-    <string name="about_buy_me_a_coffee">Koop koffie voor me</string>
-    <string name="about_patreon">Patreon</string>
+    <string name="about_rate_app_subtitle">Laat een beoordeling of recensie achter zodat meer mensen DIMODORI kunnen vinden</string>
+    <string name="about_contact_developer">DIMODORI</string>
+    <string name="about_contact_developer_subtitle">dimodori.com</string>
     <!-- Interface Settings -->
     <string name="interface_feature_carousel">Functiecarrousel</string>
     <string name="interface_feature_carousel_subtitle">Toon de carrousel met aanbevolen inhoud op het startscherm.</string>
@@ -533,8 +531,6 @@
     <string name="interface_use_my_media_tab_subtitle">Vervang het tabblad Ontdekken door het klassieke bibliotheekraster.</string>
     <string name="interface_merge_versions">Versies samenvoegen</string>
     <string name="interface_merge_versions_subtitle">Toon overeenkomende lokale filmbestanden op één detailscherm.</string>
-    <string name="interface_emby_poster_overlays">Emby-posteroverlays</string>
-    <string name="interface_emby_poster_overlays_subtitle">Schakel Emby-posteroverlays uit.</string>
     <string name="interface_seerr_settings">Serer-instellingen</string>
     <string name="interface_seerr_studios">Serr Studios</string>
     <string name="interface_seerr_studios_subtitle">De sectie Studios op het startscherm weergeven.</string>

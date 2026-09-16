@@ -2,7 +2,7 @@ package com.jellycine.data.api
 
 import com.jellycine.data.model.AwardMode
 import com.jellycine.data.model.AwardTitleRef
-import com.jellycine.data.network.JellyCineJson
+import com.jellycine.data.network.DimodoriJson
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
 import io.ktor.client.request.get
@@ -29,7 +29,7 @@ internal class WikidataAwardsClient(
             header(HttpHeaders.UserAgent, USER_AGENT)
         }.bodyAsText()
 
-        val parsed = JellyCineJson.decodeFromString<SparqlResponse>(raw)
+        val parsed = DimodoriJson.decodeFromString<SparqlResponse>(raw)
         val grouped = LinkedHashMap<String, MutableList<AwardTitleRef>>()
         for (binding in parsed.results.bindings) {
             val qid = binding["cat"]?.value?.substringAfterLast("/")?.takeIf { it.isNotBlank() }
@@ -71,6 +71,6 @@ internal class WikidataAwardsClient(
 
     private companion object {
         private const val SPARQL_ENDPOINT = "https://query.wikidata.org/sparql"
-        private const val USER_AGENT = "JellyCine/awards (https://github.com/jellycine)"
+        private const val USER_AGENT = "DIMODORI/awards (https://dimodori.com)"
     }
 }

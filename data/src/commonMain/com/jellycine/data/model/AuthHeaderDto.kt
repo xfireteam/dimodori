@@ -4,7 +4,7 @@ import com.jellycine.data.network.ServerType
 
 data class AuthHeaderDto(
     val scheme: String,
-    val clientName: String = "JellyCine",
+    val clientName: String = "DIMODORI",
     val deviceName: String = "Android",
     val deviceId: String,
     val version: String,
@@ -30,7 +30,7 @@ data class AuthHeaderDto(
             deviceId: String,
             version: String,
             accessToken: String? = null,
-            clientName: String = "JellyCine",
+            clientName: String = "DIMODORI",
             deviceName: String = "Android"
         ): AuthHeaderDto {
             val scheme = if (serverType == ServerType.EMBY) "Emby" else "MediaBrowser"

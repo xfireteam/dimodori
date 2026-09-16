@@ -27,7 +27,7 @@
         android:maxSdkVersion="28" />
 
     <application
-        android:name=".JellyCineApplication"
+        android:name=".DimodoriApplication"
         android:allowBackup="true"
         android:largeHeap="true"
         android:enableOnBackInvokedCallback="true"
@@ -38,13 +38,13 @@
         android:localeConfig="@xml/locales_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.JellyCine"
+        android:theme="@style/Theme.Dimodori"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
-            android:value="com.jellycine.app.cast.JellyCineCastOptionsProvider" />
+            android:value="com.dimodori.app.cast.DimodoriCastOptionsProvider" />
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
@@ -56,9 +56,9 @@
         </service>
         
         <activity
-            android:name=".ui.activity.JellyCineActivity"
+            android:name=".ui.activity.DimodoriActivity"
             android:exported="true"
-            android:theme="@style/Theme.JellyCine.Splash"
+            android:theme="@style/Theme.Dimodori.Splash"
             android:launchMode="singleTop"
             android:configChanges="orientation|screenSize|keyboardHidden|colorMode">
             <intent-filter>
@@ -97,7 +97,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:scheme="jellycine"
+                    android:scheme="dimodori"
                     android:host="discord"
                     android:path="/callback" />
             </intent-filter>

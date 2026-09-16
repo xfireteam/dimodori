@@ -1,29 +1,24 @@
 <p align="center">
-  <img src="phone/src/main/assets/jellycine_logo.png" alt="JellyCine" width="200">
+  <img src="phone/src/main/assets/dimodori_logo.png" alt="DIMODORI" width="200">
 </p>
 
-<h1 align="center">JellyCine</h1>
+<h1 align="center">DIMODORI</h1>
 
 <p align="center">
-   A Jetpack Compose based client for <strong>Jellyfin</strong> and <strong>Emby</strong> — designed for phone, TV, and beyond.
+   The official DIMODORI media client — designed for phone, TV, and beyond.
 </p>
 
 <p align="center">
-  <a href="https://play.google.com/store/apps/details?id=com.jellycine.app">
+  <a href="https://play.google.com/store/apps/details?id=com.dimodori.app">
     <img src="https://img.shields.io/badge/Google_Play-Download-34A853?style=for-the-badge&logo=google-play&logoColor=white" alt="Google Play">
   </a>
-  <a href="https://github.com/sureshfizzy/JellyCine/releases">
-    <img src="https://img.shields.io/badge/GitHub-APK_Download-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Releases">
+  <a href="https://dimodori.com">
+    <img src="https://img.shields.io/badge/DIMODORI-Website-111111?style=for-the-badge" alt="DIMODORI website">
   </a>
 </p>
 
 <p align="center">
-  <a href="https://www.buymeacoffee.com/Sureshfizzy">
-    <img src="https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee">
-  </a>
-  <a href="https://www.patreon.com/c/sureshs/membership">
-    <img src="https://img.shields.io/badge/Patreon-FF424D?style=for-the-badge&logo=patreon&logoColor=white" alt="Patreon">
-  </a>
+  <a href="https://dimodori.com">dimodori.com</a>
 </p>
 
 ---
@@ -38,7 +33,7 @@
 - Audio passthrough (TrueHD, DTS-HD, Atmos) when supported by device/output
 - Spatial audio passthrough on compatible devices
 - Media3 ExoPlayer fallback when MPV cannot render
-- Jellyfin FFmpeg extension integration for broad codec coverage
+- FFmpeg extension integration for broad codec coverage
 - In-player quality selection, audio transcoding controls, and configurable player cache
 - Gesture controls (seek, volume, brightness), lock mode, and start-maximized preference
 - Skip Intro button when IntroDB/TheIntroDB markers are available
@@ -87,7 +82,7 @@
 
 ### Multi-Server & Connections
 
-- Jellyfin and Emby support with automatic endpoint resolution
+- Media server support with automatic endpoint resolution
 - Merge-version support with local version selection (no server-side changes required)
 - **Discord Rich Presence** via official Social SDK with connection management
 - **Admin Panel** with live server info, now-playing sessions, and activity log
@@ -160,17 +155,13 @@ shared/  — Shared UI components and image infrastructure
 ./gradlew :tv:assembleDebug
 ```
 
-APK naming: `jellycine-{debug|release}-<version>.apk`
+APK naming: `dimodori-{phone|tv}-{debug|release}-<version>.apk`
 
 ---
 
-## Translating
+## Website
 
-<a href="https://weblate.jellycine.org/engage/jellycine/">
-<img src="https://weblate.jellycine.org/widget/jellycine/multi-auto.svg" alt="Translation status" />
-</a>
-
-Help translate JellyCine into your language on [Weblate](https://weblate.jellycine.org/engage/jellycine/).
+Visit [dimodori.com](https://dimodori.com) for support and product information.
 
 ---
 
@@ -178,7 +169,7 @@ Help translate JellyCine into your language on [Weblate](https://weblate.jellyci
 
 Issues and pull requests are welcome. For large feature work, open an issue first to align on scope.
 
-For community discussions and support, see [Discussions](https://github.com/sureshfizzy/JellyCine/discussions).
+For community discussions and support, see [Discussions](https://dimodori.com).
 
 ---
 

@@ -181,7 +181,7 @@ class DownloadStorage(
             val values = ContentValues().apply {
                 put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
                 put(MediaStore.MediaColumns.MIME_TYPE, mimeTypeForExtension(extension))
-                put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_DOWNLOADS}/JellyCine")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_DOWNLOADS}/DIMODORI")
                 put(MediaStore.MediaColumns.IS_PENDING, 1)
             }
             appContext.contentResolver.insert(
@@ -192,7 +192,7 @@ class DownloadStorage(
             }
         }
 
-        val baseDir = publicDownloadsDir().resolve("JellyCine")
+        val baseDir = publicDownloadsDir().resolve("DIMODORI")
         if (!baseDir.exists()) {
             baseDir.mkdirs()
         }

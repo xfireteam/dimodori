@@ -10,7 +10,7 @@ import com.jellycine.data.api.TmdbApi
 import com.jellycine.data.network.ApiResponse
 import com.jellycine.data.network.ApiHeaders
 import com.jellycine.data.model.*
-import com.jellycine.data.network.JellyCineJson
+import com.jellycine.data.network.DimodoriJson
 import com.jellycine.data.network.canonicalServerUrl
 import com.jellycine.data.preferences.NetworkPreferences
 import io.ktor.client.HttpClient
@@ -1114,7 +1114,7 @@ class SeerrRepository(context: Context) {
                 preconfigured = okHttpClient
             }
             install(ContentNegotiation) {
-                json(JellyCineJson)
+                json(DimodoriJson)
             }
         }
     }

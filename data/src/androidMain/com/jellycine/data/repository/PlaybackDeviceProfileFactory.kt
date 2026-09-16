@@ -16,7 +16,7 @@ internal object PlaybackDeviceProfileFactory {
         val videoTranscodeAudioCodecs = videoTranscodeAudioCodecs(audioTranscodeMode)
 
         return DeviceProfile(
-            name = "JellyCine Android",
+            name = "DIMODORI Android",
             maxStreamingBitrate = bitrate,
             maxStaticBitrate = bitrate,
             supportedMediaTypes = "Video,Audio",

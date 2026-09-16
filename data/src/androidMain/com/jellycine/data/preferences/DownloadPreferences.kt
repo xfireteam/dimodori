@@ -78,7 +78,7 @@ class DownloadPreferences(context: Context) {
 
         const val DEFAULT_TRACKED_REFRESH_INTERVAL_MS = 1000L
 
-        private const val PREFS_NAME = "jellycine_download_prefs"
+        private const val PREFS_NAME = "dimodori_download_prefs"
         private const val KEY_STORAGE_BEHAVIOR = "storage_behavior"
         private const val KEY_DEVICE_DOWNLOADS_TREE_URI = "device_downloads_tree_uri"
         private const val KEY_MAX_CONCURRENT_DOWNLOADS = "max_concurrent_downloads"

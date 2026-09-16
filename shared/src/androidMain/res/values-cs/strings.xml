@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">JellyCine</string>
+    <string name="app_name">DIMODORI</string>
+    <string name="server_url_hint">https://your-media-server.com</string>
+    <string name="auth_connect_subtitle">Pro zahájení streamování zadejte URL adresu vašeho multimediálního serveru.</string>
+    <string name="my_media_empty_message">Nastavte si své knihovny médií na serveru</string>
+    <string name="interface_emby_poster_overlays">Překryvy plakátů ze serveru</string>
+    <string name="interface_emby_poster_overlays_subtitle">Zakázat překryvy plakátů dodávané serverem.</string>
     <!-- General -->
     <string name="loading">Načítání…</string>
     <string name="error">Chyba</string>
@@ -13,7 +18,6 @@
     <string name="settings">Nastavení</string>
     <!-- Server Connection -->
     <string name="server_url">URL serveru</string>
-    <string name="server_url_hint">https://your-jellyfin-server.com</string>
     <string name="connect">Připojit</string>
     <string name="connecting">Připojuji se…</string>
     <string name="connection_failed">Připojení se nezdařilo</string>
@@ -28,7 +32,6 @@
     <string name="login_failed">Přihlášení se nezdařilo</string>
     <string name="invalid_credentials">Neplatné uživatelské jméno nebo heslo</string>
     <string name="auth_connect_title">Připojte svůj server</string>
-    <string name="auth_connect_subtitle">Nastavte adresu URL Jellyfin nebo Emby a začněte streamovat.</string>
     <string name="auth_welcome_back">Vítejte zpět</string>
     <string name="auth_sign_in_subtitle">Chcete-li pokračovat, přihlaste se</string>
     <string name="auth_connection_settings">Nastavení připojení</string>
@@ -123,7 +126,6 @@
     <string name="my_media_unknown_error">Něco se pokazilo</string>
     <string name="try_again">Zkuste to znovu</string>
     <string name="my_media_empty_title">Nenalezeny žádné knihovny</string>
-    <string name="my_media_empty_message">Nastavte knihovny médií v Jellyfinu</string>
     <string name="my_media_library_fallback">Knihovna</string>
     <string name="my_media_library_type_library">Knihovna</string>
     <string name="dashboard_failed_load_libraries">Nepodařilo se načíst knihovny</string>
@@ -333,7 +335,7 @@
     <string name="downloads_settings_selected_folder">Vybraná složka</string>
     <string name="downloads_settings_change_folder">Změnit složku</string>
     <string name="downloads_settings_use_default">Použít výchozí</string>
-    <string name="downloads_settings_legacy_permission_hint">Android 8/9 požádá o přístup k souborům, než může JellyCine zapsat do veřejné složky Stahování.</string>
+    <string name="downloads_settings_legacy_permission_hint">Android 8/9 požádá o přístup k souborům, než může DIMODORI zapsat do veřejné složky Stahování.</string>
     <string name="downloads_queue_options">Možnosti fronty</string>
     <string name="downloads_series_fallback">Série</string>
     <string name="downloads_season_number">Sezóna %1$d</string>
@@ -531,17 +533,13 @@
     <string name="about_section_project">Právní</string>
     <string name="about_section_connect">Připojit</string>
     <string name="about_privacy_policy">Zásady ochrany osobních údajů</string>
-    <string name="about_privacy_policy_subtitle">Přečtěte si, jak společnost JellyCine zpracovává data přehrávání a soukromí</string>
+    <string name="about_privacy_policy_subtitle">Přečtěte si, jak společnost DIMODORI zpracovává data přehrávání a soukromí</string>
     <string name="about_open_source_license">Licence</string>
     <string name="about_open_source_license_subtitle">Obecná veřejná licence GNU v3.0</string>
-    <string name="about_source_code">Zdrojový kód</string>
     <string name="about_rate_app">Ohodnoťte na Google Play</string>
-    <string name="about_rate_app_subtitle">Zanechte hodnocení nebo recenzi, abyste pomohli více lidem najít JellyCine</string>
-    <string name="about_contact_developer">Kontaktovat vývojáře</string>
-    <string name="about_contact_developer_subtitle">Posílejte zpětnou vazbu, hlášení chyb nebo otázky týkající se ochrany osobních údajů e-mailem</string>
-    <string name="about_feedback_subject">JellyCine Zpětná vazba</string>
-    <string name="about_buy_me_a_coffee">Kupte mi kávu</string>
-    <string name="about_patreon">Patreon</string>
+    <string name="about_rate_app_subtitle">Zanechte hodnocení nebo recenzi, abyste pomohli více lidem najít DIMODORI</string>
+    <string name="about_contact_developer">DIMODORI</string>
+    <string name="about_contact_developer_subtitle">dimodori.com</string>
     <!-- Interface Settings -->
     <string name="interface_feature_carousel">Funkce Carousel</string>
     <string name="interface_feature_carousel_subtitle">Zobrazit karusel doporučeného obsahu na domovské obrazovce.</string>
@@ -559,8 +557,6 @@
     <string name="interface_use_my_media_tab_subtitle">Nahraďte kartu Objevit klasickou mřížkou knihovny.</string>
     <string name="interface_merge_versions">Sloučit verze</string>
     <string name="interface_merge_versions_subtitle">Zobrazit odpovídající místní filmové soubory na jedné obrazovce podrobností.</string>
-    <string name="interface_emby_poster_overlays">Překryvy plakátů Emby</string>
-    <string name="interface_emby_poster_overlays_subtitle">Zakázat překryvy plakátů Emby.</string>
     <string name="interface_seerr_settings">Nastavení Seerr</string>
     <string name="interface_seerr_studios">Studia Seerr</string>
     <string name="interface_seerr_studios_subtitle">Zobrazte sekci Studia na domovské obrazovce.</string>

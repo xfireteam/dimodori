@@ -80,7 +80,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun JellyCineTheme(
+fun DimodoriTheme(
     darkTheme: Boolean = true,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit

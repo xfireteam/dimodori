@@ -9,7 +9,7 @@ import com.jellycine.data.model.AwardRefsState
 import com.jellycine.data.model.AwardRow
 import com.jellycine.data.model.AwardTitleRef
 import com.jellycine.data.model.SeerrRecommendationTitle
-import com.jellycine.data.network.JellyCineJson
+import com.jellycine.data.network.DimodoriJson
 import com.jellycine.data.preferences.NetworkPreferences
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -161,7 +161,7 @@ class AwardsRepository(
         return HttpClient(OkHttp) {
             expectSuccess = false
             engine { preconfigured = okHttpClient }
-            install(ContentNegotiation) { json(JellyCineJson) }
+            install(ContentNegotiation) { json(DimodoriJson) }
         }
     }
 

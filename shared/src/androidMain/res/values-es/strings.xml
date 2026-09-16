@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Jelly Cine</string>
+    <string name="app_name">DIMODORI</string>
+    <string name="server_url_hint">https://your-media-server.com</string>
+    <string name="auth_connect_subtitle">Introduce la URL de tu servidor multimedia para comenzar a reproducir.</string>
+    <string name="my_media_empty_message">Configura tus bibliotecas multimedia en tu servidor</string>
+    <string name="interface_emby_poster_overlays">Superposiciones de póster del servidor</string>
+    <string name="interface_emby_poster_overlays_subtitle">Desactivar las superposiciones de póster suministradas por el servidor.</string>
     <!-- General -->
     <string name="loading">Cargando…</string>
     <string name="error">Error</string>
@@ -13,7 +18,6 @@
     <string name="settings">Ajustes</string>
     <!-- Server Connection -->
     <string name="server_url">URL del servidor</string>
-    <string name="server_url_hint">https://your-jellyfin-server.com</string>
     <string name="connect">Conectar</string>
     <string name="connecting">Conectando…</string>
     <string name="connection_failed">Fallo en la conexión</string>
@@ -28,7 +32,6 @@
     <string name="login_failed">No se pudo iniciar sesión</string>
     <string name="invalid_credentials">Nombre de usuario o contraseña no válidos</string>
     <string name="auth_connect_title">Conecta tu servidor</string>
-    <string name="auth_connect_subtitle">Configura tu URL de Jellyfin o Emby para iniciar la transmisión.</string>
     <string name="auth_welcome_back">Bienvenido de nuevo</string>
     <string name="auth_sign_in_subtitle">Inicia sesión para continuar</string>
     <string name="auth_connection_settings">Configuración de conexión</string>
@@ -123,7 +126,6 @@
     <string name="my_media_unknown_error">Algo salió mal</string>
     <string name="try_again">Inténtalo de nuevo</string>
     <string name="my_media_empty_title">No se ha encontrado ninguna biblioteca</string>
-    <string name="my_media_empty_message">Configura tus bibliotecas multimedia en Jellyfin</string>
     <string name="my_media_library_fallback">Biblioteca</string>
     <string name="my_media_library_type_library">Biblioteca</string>
     <string name="dashboard_failed_load_libraries">No se pudieron cargar las bibliotecas</string>
@@ -329,7 +331,7 @@
     <string name="downloads_settings_selected_folder">Carpeta seleccionada</string>
     <string name="downloads_settings_change_folder">Cambiar carpeta</string>
     <string name="downloads_settings_use_default">Usar predeterminado</string>
-    <string name="downloads_settings_legacy_permission_hint">Android 8/9 solicita el acceso a los archivos antes de que JellyCine pueda escribir en la carpeta pública de descargas.</string>
+    <string name="downloads_settings_legacy_permission_hint">Android 8/9 solicita el acceso a los archivos antes de que DIMODORI pueda escribir en la carpeta pública de descargas.</string>
     <string name="downloads_queue_options">Opciones de cola</string>
     <string name="downloads_series_fallback">Serie</string>
     <string name="downloads_season_number">Temporada %1$d</string>
@@ -518,17 +520,13 @@
     <string name="about_section_project">Jurídico</string>
     <string name="about_section_connect">Conectar</string>
     <string name="about_privacy_policy">Política de privacidad</string>
-    <string name="about_privacy_policy_subtitle">Lea cómo JellyCine gestiona los datos de reproducción y la privacidad</string>
+    <string name="about_privacy_policy_subtitle">Lea cómo DIMODORI gestiona los datos de reproducción y la privacidad</string>
     <string name="about_open_source_license">Licencia</string>
     <string name="about_open_source_license_subtitle">Licencia pública general GNU v3.0</string>
-    <string name="about_source_code">Código fuente</string>
     <string name="about_rate_app">Valora en Google Play</string>
-    <string name="about_rate_app_subtitle">Deja una valoración o reseña para ayudar a más personas a encontrar JellyCine</string>
-    <string name="about_contact_developer">Contactar con el desarrollador</string>
-    <string name="about_contact_developer_subtitle">Envía comentarios, informes de errores o preguntas sobre privacidad por correo electrónico</string>
-    <string name="about_feedback_subject">Comentarios sobre JellyCine</string>
-    <string name="about_buy_me_a_coffee">Cómprame un café</string>
-    <string name="about_patreon">Patreon</string>
+    <string name="about_rate_app_subtitle">Deja una valoración o reseña para ayudar a más personas a encontrar DIMODORI</string>
+    <string name="about_contact_developer">DIMODORI</string>
+    <string name="about_contact_developer_subtitle">dimodori.com</string>
     <!-- Interface Settings -->
     <string name="interface_feature_carousel">Carrusel de funciones</string>
     <string name="interface_feature_carousel_subtitle">Muestra el carrusel de contenido destacado en la pantalla de inicio.</string>
@@ -546,8 +544,6 @@
     <string name="interface_use_my_media_tab_subtitle">Sustituya la pestaña Descubrir por la cuadrícula de biblioteca clásica.</string>
     <string name="interface_merge_versions">Combinar versiones</string>
     <string name="interface_merge_versions_subtitle">Muestra los archivos de películas locales coincidentes en una pantalla de detalles.</string>
-    <string name="interface_emby_poster_overlays">Superposiciones de póster Emby</string>
-    <string name="interface_emby_poster_overlays_subtitle">Desactiva las superposiciones de pósters de Emby.</string>
     <string name="interface_seerr_settings">Configuración de Seerr</string>
     <string name="interface_seerr_studios">Estudios Seerr</string>
     <string name="interface_seerr_studios_subtitle">Muestra la sección Estudios en la pantalla de inicio.</string>

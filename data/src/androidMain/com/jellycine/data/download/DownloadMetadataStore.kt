@@ -4,7 +4,7 @@ import android.content.Context
 import com.jellycine.data.model.BaseItemDto
 import com.jellycine.data.model.DownloadStatus
 import com.jellycine.data.model.PersistedDownloadMetadata
-import com.jellycine.data.network.JellyCineJson
+import com.jellycine.data.network.DimodoriJson
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import java.util.concurrent.atomic.AtomicLong
@@ -14,11 +14,11 @@ class DownloadMetadataStore(context: Context) {
 
     fun read(itemId: String): PersistedDownloadMetadata? {
         val raw = prefs.getString(metadataKey(itemId), null) ?: return null
-        return runCatching { JellyCineJson.decodeFromString<PersistedDownloadMetadata>(raw) }.getOrNull()
+        return runCatching { DimodoriJson.decodeFromString<PersistedDownloadMetadata>(raw) }.getOrNull()
     }
 
     fun persist(metadata: PersistedDownloadMetadata) {
-        prefs.edit().putString(metadataKey(metadata.itemId), JellyCineJson.encodeToString(metadata)).apply()
+        prefs.edit().putString(metadataKey(metadata.itemId), DimodoriJson.encodeToString(metadata)).apply()
     }
 
     fun remove(itemId: String) {
@@ -54,12 +54,12 @@ class DownloadMetadataStore(context: Context) {
 
     fun serializeItem(item: BaseItemDto?): String? {
         if (item == null) return null
-        return runCatching { JellyCineJson.encodeToString(item) }.getOrNull()
+        return runCatching { DimodoriJson.encodeToString(item) }.getOrNull()
     }
 
     fun parseItem(raw: String?, fallbackItemId: String? = null): BaseItemDto? {
         if (raw.isNullOrBlank()) return null
-        return runCatching { JellyCineJson.decodeFromString<BaseItemDto>(raw) }
+        return runCatching { DimodoriJson.decodeFromString<BaseItemDto>(raw) }
             .getOrNull()
             ?.let { item ->
                 if (item.id.isNullOrBlank() && !fallbackItemId.isNullOrBlank()) {
@@ -79,7 +79,7 @@ class DownloadMetadataStore(context: Context) {
     private fun metadataKey(itemId: String): String = "$METADATA_PREFIX$itemId"
 
     private companion object {
-        private const val PREFS_NAME = "jellycine_download_state"
+        private const val PREFS_NAME = "dimodori_download_state"
         private const val DOWNLOAD_PREFIX = "download_item_"
         private const val METADATA_PREFIX = "download_meta_"
         private val ID_GENERATOR = AtomicLong(System.currentTimeMillis())

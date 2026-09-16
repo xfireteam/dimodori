@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">JellyCine</string>
+    <string name="app_name">DIMODORI</string>
+    <string name="server_url_hint">https://your-media-server.com</string>
+    <string name="auth_connect_subtitle">Nhập URL máy chủ phương tiện của bạn để bắt đầu phát trực tuyến.</string>
+    <string name="my_media_empty_message">Thiết lập thư viện phương tiện của bạn trên máy chủ</string>
+    <string name="interface_emby_poster_overlays">Lớp phủ áp phích từ máy chủ</string>
+    <string name="interface_emby_poster_overlays_subtitle">Tắt các lớp phủ áp phích do máy chủ cung cấp.</string>
     <!-- General -->
     <string name="loading">Đang tải…</string>
     <string name="error">Lỗi</string>
@@ -13,7 +18,6 @@
     <string name="settings">Cài đặt</string>
     <!-- Server Connection -->
     <string name="server_url">URL máy chủ</string>
-    <string name="server_url_hint">https://your-jellyfin-server.com</string>
     <string name="connect">Kết nối</string>
     <string name="connecting">Kết nối…</string>
     <string name="connection_failed">Kết nối không thành công</string>
@@ -28,7 +32,6 @@
     <string name="login_failed">Đăng nhập không thành công</string>
     <string name="invalid_credentials">Tên người dùng hoặc mật khẩu không hợp lệ</string>
     <string name="auth_connect_title">Kết nối máy chủ của bạn</string>
-    <string name="auth_connect_subtitle">Đặt URL Jellyfin hoặc Emby của bạn để bắt đầu phát trực tuyến.</string>
     <string name="auth_welcome_back">Chào mừng trở lại</string>
     <string name="auth_sign_in_subtitle">Đăng nhập để tiếp tục</string>
     <string name="auth_connection_settings">Cài đặt kết nối</string>
@@ -123,7 +126,6 @@
     <string name="my_media_unknown_error">Có gì đó không ổn</string>
     <string name="try_again">Thử lại</string>
     <string name="my_media_empty_title">Không tìm thấy thư viện</string>
-    <string name="my_media_empty_message">Thiết lập thư viện phương tiện của bạn trong Jellyfin</string>
     <string name="my_media_library_fallback">Thư viện</string>
     <string name="my_media_library_type_library">Thư viện</string>
     <string name="dashboard_failed_load_libraries">Không tải thư viện</string>
@@ -321,7 +323,7 @@
     <string name="downloads_settings_selected_folder">Thư mục đã chọn</string>
     <string name="downloads_settings_change_folder">Thay đổi thư mục</string>
     <string name="downloads_settings_use_default">Sử dụng mặc định</string>
-    <string name="downloads_settings_legacy_permission_hint">Android 8/9 yêu cầu quyền truy cập tệp trước khi JellyCine có thể ghi vào thư mục Tải xuống công khai.</string>
+    <string name="downloads_settings_legacy_permission_hint">Android 8/9 yêu cầu quyền truy cập tệp trước khi DIMODORI có thể ghi vào thư mục Tải xuống công khai.</string>
     <string name="downloads_queue_options">Tùy chọn hàng đợi</string>
     <string name="downloads_series_fallback">Sê-ri</string>
     <string name="downloads_season_number">Mùa %1$d</string>
@@ -492,17 +494,13 @@
     <string name="about_section_project">Pháp lý</string>
     <string name="about_section_connect">Kết nối</string>
     <string name="about_privacy_policy">Chính sách bảo mật</string>
-    <string name="about_privacy_policy_subtitle">Đọc cách JellyCine xử lý dữ liệu phát lại và quyền riêng tư</string>
+    <string name="about_privacy_policy_subtitle">Đọc cách DIMODORI xử lý dữ liệu phát lại và quyền riêng tư</string>
     <string name="about_open_source_license">Giấy phép</string>
     <string name="about_open_source_license_subtitle">Giấy phép công cộng chung GNU v3.0</string>
-    <string name="about_source_code">Mã nguồn</string>
     <string name="about_rate_app">Đánh giá trên Google Play</string>
-    <string name="about_rate_app_subtitle">Để lại đánh giá hoặc đánh giá để giúp nhiều người tìm thấy JellyCine</string>
-    <string name="about_contact_developer">Liên hệ với nhà phát triển</string>
-    <string name="about_contact_developer_subtitle">Gửi phản hồi, báo cáo lỗi hoặc câu hỏi về quyền riêng tư qua email</string>
-    <string name="about_feedback_subject">Phản hồi của JellyCine</string>
-    <string name="about_buy_me_a_coffee">Mua cho tôi một ly cà phê</string>
-    <string name="about_patreon">Patreon</string>
+    <string name="about_rate_app_subtitle">Để lại đánh giá hoặc đánh giá để giúp nhiều người tìm thấy DIMODORI</string>
+    <string name="about_contact_developer">DIMODORI</string>
+    <string name="about_contact_developer_subtitle">dimodori.com</string>
     <!-- Interface Settings -->
     <string name="interface_feature_carousel">Tính năng Carousel</string>
     <string name="interface_feature_carousel_subtitle">Hiển thị băng chuyền nội dung nổi bật trên Màn hình chính.</string>
@@ -520,8 +518,6 @@
     <string name="interface_use_my_media_tab_subtitle">Thay thế tab Khám phá bằng lưới thư viện cổ điển.</string>
     <string name="interface_merge_versions">Hợp nhất phiên bản</string>
     <string name="interface_merge_versions_subtitle">Hiển thị các tệp phim cục bộ phù hợp trên một màn hình chi tiết.</string>
-    <string name="interface_emby_poster_overlays">Lớp phủ áp phích Emby</string>
-    <string name="interface_emby_poster_overlays_subtitle">Vô hiệu hóa lớp phủ áp phích Emby.</string>
     <string name="interface_seerr_settings">Cài đặt Seerr</string>
     <string name="interface_seerr_studios">Xưởng phim Seerr</string>
     <string name="interface_seerr_studios_subtitle">Hiển thị phần Studios trên Màn hình chính.</string>

@@ -12,7 +12,7 @@ class Preferences(context: Context) {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     companion object {
-        private const val PREFS_NAME = "jellycine_download_prefs"
+        private const val PREFS_NAME = "dimodori_download_prefs"
         private const val KEY_WIFI_ONLY_DOWNLOADS = "wifi_only_downloads"
         private const val KEY_FEATURE_CAROUSEL_ENABLED = "feature_carousel_enabled"
         private const val KEY_FEATURE_CAROUSEL_HEIGHT = "feature_carousel_height"
