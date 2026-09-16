@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Safe zone for circular icons is about 66dp diameter within 108dp canvas -->
+    <!-- The meaningful artwork remains inside the adaptive icon safe zone. -->
     <item
-        android:drawable="@drawable/dimodori_logo"
+        android:drawable="@drawable/ic_launcher_artwork"
         android:gravity="center"
-        android:width="66dp"
-        android:height="50dp" />
+        android:width="72dp"
+        android:height="72dp" />
 </layer-list>
