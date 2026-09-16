@@ -4,6 +4,7 @@ import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from 'sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import Home from '@/pages/Home';
+import ReservedHome from '@/pages/ReservedHome';
 import NotFound from '@/pages/not-found';
 import {
   Route,
@@ -18,7 +19,8 @@ function Router() {
   return (
     <RoutedErrorBoundary>
       <Switch>
-        <Route path="/" component={Home} />
+        <Route path="/" component={ReservedHome} />
+        <Route path="/admiin" component={Home} />
         <Route component={NotFound} />
       </Switch>
     </RoutedErrorBoundary>
