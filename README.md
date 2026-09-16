@@ -161,6 +161,68 @@ The same package, `com.dimodori.app`, contains separate launcher activities
 for touch devices and Android TV. Android TV opens the dedicated D-pad UI
 through `LEANBACK_LAUNCHER`.
 
+### Codemagic: signed APK and AAB
+
+The root `codemagic.yaml` defines the manual workflow
+**DIMODORI Android - APK and AAB**. It builds the single `:phone` application
+module and produces:
+
+- `phone/build/outputs/apk/release/dimodori-release-<version>.apk` for manual
+  installation and testing;
+- `phone/build/outputs/bundle/release/phone-release.aab` for Google Play.
+
+Before starting the workflow, create an environment variable group in
+Codemagic named `dimodori_android_release`. Add all of these variables to that
+group and mark them **Secret**:
+
+| Variable | Value |
+| --- | --- |
+| `DISCORD_PARTNER_SDK_AAR_BASE64` | Base64 contents of `core/libs/discord_partner_sdk.aar` |
+| `DIMODORI_KEYSTORE_BASE64` | Base64 contents of the existing DIMODORI Android keystore |
+| `DIMODORI_STORE_PASSWORD` | Keystore password |
+| `DIMODORI_KEY_ALIAS` | Signing key alias |
+| `DIMODORI_KEY_PASSWORD` | Signing key password |
+
+Do not add `DIMODORI_STORE_FILE` in Codemagic. The workflow restores the
+keystore in a private build directory and sets that path automatically.
+
+Encode each binary file locally without committing it:
+
+```bash
+# Linux
+base64 -w 0 core/libs/discord_partner_sdk.aar
+base64 -w 0 /path/to/dimodori-release.keystore
+
+# macOS
+base64 < core/libs/discord_partner_sdk.aar | tr -d '\n'
+base64 < /path/to/dimodori-release.keystore | tr -d '\n'
+```
+
+On Windows PowerShell:
+
+```powershell
+[Convert]::ToBase64String(
+  [IO.File]::ReadAllBytes("core/libs/discord_partner_sdk.aar")
+)
+[Convert]::ToBase64String(
+  [IO.File]::ReadAllBytes("C:\path\to\dimodori-release.keystore")
+)
+```
+
+To build:
+
+1. Commit and push `codemagic.yaml` with the rest of the source code.
+2. In Codemagic, open **Environment variables**, create the
+   `dimodori_android_release` group, and add the five values above.
+3. Click **Check for configuration files** if the workflow is not listed yet.
+4. Click **Start new build**, select the branch and
+   **DIMODORI Android - APK and AAB**, then start the build manually.
+5. Download the APK and AAB from the build's **Artifacts** section.
+
+The workflow has no automatic trigger. It validates the variables, AAR,
+keystore password, and alias before running Gradle. Private binaries and
+credentials remain excluded by `.gitignore` and must never be committed.
+
 ---
 
 ## Website

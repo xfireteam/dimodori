@@ -1,0 +1,100 @@
+workflows:
+  android-unified-release:
+    name: DIMODORI Android - APK and AAB
+    instance_type: linux_x2
+    max_build_duration: 120
+
+    environment:
+      java: 17
+      groups:
+        - dimodori_android_release
+      vars:
+        GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx6g"
+
+    cache:
+      cache_paths:
+        - "$HOME/.gradle/caches"
+        - "$HOME/.gradle/wrapper"
+
+    scripts:
+      - name: Validate release variables
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+
+          required_variables=(
+            DISCORD_PARTNER_SDK_AAR_BASE64
+            DIMODORI_KEYSTORE_BASE64
+            DIMODORI_STORE_PASSWORD
+            DIMODORI_KEY_ALIAS
+            DIMODORI_KEY_PASSWORD
+          )
+
+          missing_variables=()
+          for variable_name in "${required_variables[@]}"; do
+            if [[ -z "${!variable_name:-}" ]]; then
+              missing_variables+=("$variable_name")
+            fi
+          done
+
+          if (( ${#missing_variables[@]} > 0 )); then
+            printf 'Missing required Codemagic variables:\n' >&2
+            printf ' - %s\n' "${missing_variables[@]}" >&2
+            printf 'Add them to the dimodori_android_release variable group and mark them Secret.\n' >&2
+            exit 1
+          fi
+
+      - name: Restore private build files
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+
+          mkdir -p "$CM_BUILD_DIR/core/libs" "$CM_BUILD_DIR/.codemagic"
+
+          printf '%s' "$DISCORD_PARTNER_SDK_AAR_BASE64" \
+            | base64 --decode \
+            > "$CM_BUILD_DIR/core/libs/discord_partner_sdk.aar"
+
+          printf '%s' "$DIMODORI_KEYSTORE_BASE64" \
+            | base64 --decode \
+            > "$CM_BUILD_DIR/.codemagic/dimodori-release.keystore"
+
+          if [[ ! -s "$CM_BUILD_DIR/core/libs/discord_partner_sdk.aar" ]]; then
+            echo "The restored Discord SDK AAR is empty." >&2
+            exit 1
+          fi
+
+          if ! unzip -tq "$CM_BUILD_DIR/core/libs/discord_partner_sdk.aar" >/dev/null; then
+            echo "DISCORD_PARTNER_SDK_AAR_BASE64 is not a valid AAR file." >&2
+            exit 1
+          fi
+
+          if [[ ! -s "$CM_BUILD_DIR/.codemagic/dimodori-release.keystore" ]]; then
+            echo "The restored Android keystore is empty." >&2
+            exit 1
+          fi
+
+          if ! keytool -list \
+            -keystore "$CM_BUILD_DIR/.codemagic/dimodori-release.keystore" \
+            -storepass "$DIMODORI_STORE_PASSWORD" \
+            -alias "$DIMODORI_KEY_ALIAS" >/dev/null; then
+            echo "The keystore password or key alias is invalid." >&2
+            exit 1
+          fi
+
+          printf 'DIMODORI_STORE_FILE=%s\n' \
+            "$CM_BUILD_DIR/.codemagic/dimodori-release.keystore" \
+            >> "$CM_ENV"
+
+      - name: Build unified release APK and AAB
+        script: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+
+          chmod +x "$CM_BUILD_DIR/gradlew"
+          cd "$CM_BUILD_DIR"
+          ./gradlew :phone:assembleRelease :phone:bundleRelease --stacktrace
+
+    artifacts:
+      - phone/build/outputs/apk/release/*.apk
+      - phone/build/outputs/bundle/release/*.aab
