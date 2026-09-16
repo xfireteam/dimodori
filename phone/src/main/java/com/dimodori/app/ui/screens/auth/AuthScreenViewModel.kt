@@ -50,7 +50,10 @@ class AuthScreenViewModel(application: Application) : AndroidViewModel(applicati
         _uiState.value = _uiState.value.copy(loginErrorMessage = mapLoginError(error))
     }
     
-    fun connectToServer(onSuccess: (serverUrl: String, serverName: String?) -> Unit) {
+    fun connectToServer(
+        localFallbackUrl: String? = null,
+        onSuccess: (serverUrl: String, serverName: String?) -> Unit
+    ) {
         val currentState = _uiState.value
         
         if (currentState.serverUrl.isBlank()) {
@@ -66,16 +69,26 @@ class AuthScreenViewModel(application: Application) : AndroidViewModel(applicati
         )
         
         viewModelScope.launch {
-            val result = authRepository.testServerConnection(currentState.serverUrl)
+            var connectedUrl = currentState.serverUrl
+            var result = authRepository.testServerConnection(connectedUrl)
+
+            val fallbackUrl = localFallbackUrl
+                ?.trim()
+                ?.takeIf { it.isNotEmpty() && it != connectedUrl }
+            if (result.isFailure && fallbackUrl != null) {
+                connectedUrl = fallbackUrl
+                result = authRepository.testServerConnection(connectedUrl)
+            }
             
             result.fold(
                 onSuccess = { serverInfo ->
                     _uiState.value = _uiState.value.copy(
                         isServerLoading = false,
+                        serverUrl = connectedUrl,
                         serverInfo = serverInfo,
                         isServerConnected = true
                     )
-                    onSuccess(currentState.serverUrl, serverInfo.serverName)
+                    onSuccess(connectedUrl, serverInfo.serverName)
                 },
                 onFailure = { error ->
                     _uiState.value = _uiState.value.copy(
@@ -217,6 +230,15 @@ class AuthScreenViewModel(application: Application) : AndroidViewModel(applicati
     
     fun clearLoginError() {
         _uiState.value = _uiState.value.copy(loginErrorMessage = null)
+    }
+
+    fun cancelQuickConnect() {
+        quickConnectPollingJob?.cancel()
+        quickConnectPollingJob = null
+        _uiState.value = _uiState.value.copy(
+            isQuickConnectLoading = false,
+            quickConnectCode = null
+        )
     }
 
     fun logout() {

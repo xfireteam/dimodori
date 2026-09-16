@@ -98,19 +98,50 @@ enum class AuthStep {
 private data class PresetServer(
     val section: String,
     val label: String,
-    val url: String
+    val url: String,
+    val localUrl: String
 )
 
 private val PresetServer.key: String
     get() = "$section|$label"
 
 private val presetServers = listOf(
-    PresetServer("DIMODORI PREMIUM", "S1", "http://em.dimodori.com:8100"),
-    PresetServer("DIMODORI PREMIUM", "S2", "http://em.dimodori.com:8100"),
-    PresetServer("DIMODORI PREMIUM", "S3", "http://em.dimodori.com:8106"),
-    PresetServer("DIMODORI BASIC", "S1", "http://em.dimodori.com:8104"),
-    PresetServer("DIMODORI BASIC", "S2", "http://em.dimodori.com:8102"),
-    PresetServer("DIMODORI", "JELLYFIN", "http://em.dimodori.com:32404")
+    PresetServer(
+        "DIMODORI PREMIUM",
+        "S1",
+        "http://em.dimodori.com:8100",
+        "http://192.168.0.246:8100"
+    ),
+    PresetServer(
+        "DIMODORI PREMIUM",
+        "S2",
+        "http://em.dimodori.com:8098",
+        "http://192.168.0.248:8098"
+    ),
+    PresetServer(
+        "DIMODORI PREMIUM",
+        "S3",
+        "http://em.dimodori.com:8106",
+        "http://192.168.0.240:8106"
+    ),
+    PresetServer(
+        "DIMODORI BASIC",
+        "S1",
+        "http://em.dimodori.com:8104",
+        "http://192.168.0.236:8920"
+    ),
+    PresetServer(
+        "DIMODORI BASIC",
+        "S2",
+        "http://em.dimodori.com:8102",
+        "http://192.168.0.234:8102"
+    ),
+    PresetServer(
+        "DIMODORI",
+        "JELLYFIN",
+        "http://em.dimodori.com:32404",
+        "http://192.168.0.246:32400"
+    )
 )
 
 @Composable
@@ -147,7 +178,7 @@ fun AuthScreen(
     var selectedServerUrl by remember(serverUrl) { mutableStateOf(serverUrl.orEmpty()) }
     val canNavigateBackToServerStep = currentStep == AuthStep.LOGIN && !login
     val initialConnectionPreset = remember(serverUrl) {
-        presetServers.firstOrNull { it.url == serverUrl }
+        presetServers.firstOrNull { it.url == serverUrl || it.localUrl == serverUrl }
     }
     var isManualConnection by rememberSaveable {
         mutableStateOf(!serverUrl.isNullOrBlank() && initialConnectionPreset == null)
@@ -187,6 +218,7 @@ fun AuthScreen(
     }
 
     BackHandler(enabled = canNavigateBackToServerStep && !uiState.isLoginLoading) {
+        authViewModel.cancelQuickConnect()
         authViewModel.clearLoginError()
         currentStep = AuthStep.SERVER_CONNECTION
     }
@@ -300,7 +332,12 @@ fun AuthScreen(
                             authViewModel.updateServerUrl(it)
                         },
                         onConnect = {
-                            authViewModel.connectToServer { url, name ->
+                            val localFallbackUrl = if (isManualConnection) {
+                                null
+                            } else {
+                                presetServers.first { it.key == selectedPresetKey }.localUrl
+                            }
+                            authViewModel.connectToServer(localFallbackUrl) { url, name ->
                                 selectedServerUrl = url
                                 selectedServerName = name
                                 currentStep = AuthStep.LOGIN
