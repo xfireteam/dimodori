@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Visibility
@@ -33,6 +34,10 @@ import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
+import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
@@ -46,6 +51,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,6 +74,10 @@ import com.jellycine.shared.R
 import com.jellycine.shared.ui.theme.JellyBlue
 import com.jellycine.shared.ui.theme.JellyRed
 import com.jellycine.data.repository.AuthRepositoryProvider
+import com.dimodori.app.ui.screens.auth.PresetServer
+import com.dimodori.app.ui.screens.auth.ServerSelectorRemoteConfig
+import com.dimodori.app.ui.screens.auth.key
+import com.dimodori.app.ui.screens.auth.presetServers
 
 enum class AuthStep {
     SERVER_CONNECTION,
@@ -107,6 +117,51 @@ fun AuthScreen(
     var selectedServerName by remember(serverName) { mutableStateOf(serverName) }
     var selectedServerUrl by remember(serverUrl) { mutableStateOf(serverUrl.orEmpty()) }
     val canNavigateBackToServerStep = currentStep == AuthStep.LOGIN && !login
+    val initialConnectionPreset = remember(serverUrl) {
+        presetServers.firstOrNull { it.url == serverUrl || it.localUrl == serverUrl }
+    }
+    var isManualConnection by rememberSaveable {
+        mutableStateOf(!serverUrl.isNullOrBlank() && initialConnectionPreset == null)
+    }
+    var selectedPresetKey by rememberSaveable {
+        mutableStateOf((initialConnectionPreset ?: presetServers.first()).key)
+    }
+    var manualServerUrl by rememberSaveable {
+        mutableStateOf(if (initialConnectionPreset == null) serverUrl.orEmpty() else "")
+    }
+    var hideServerSelector by remember { mutableStateOf(false) }
+    var isServerSelectorConfigLoaded by remember { mutableStateOf(false) }
+
+    LaunchedEffect(currentStep) {
+        if (currentStep == AuthStep.SERVER_CONNECTION) {
+            isServerSelectorConfigLoaded = false
+            val shouldHideSelector = ServerSelectorRemoteConfig.shouldHideServerSelector()
+            hideServerSelector = shouldHideSelector
+            if (shouldHideSelector) {
+                if (manualServerUrl.isBlank()) {
+                    manualServerUrl = selectedServerUrl
+                        .takeIf { it.isNotBlank() }
+                        ?: uiState.serverUrl.takeIf { it.isNotBlank() }
+                        ?: presetServers.first { it.key == selectedPresetKey }.url
+                }
+                isManualConnection = true
+                authViewModel.updateServerUrl(manualServerUrl)
+            }
+            isServerSelectorConfigLoaded = true
+        }
+    }
+
+    LaunchedEffect(currentStep, isManualConnection, selectedPresetKey, manualServerUrl) {
+        if (currentStep == AuthStep.SERVER_CONNECTION) {
+            authViewModel.updateServerUrl(
+                if (isManualConnection) {
+                    manualServerUrl
+                } else {
+                    presetServers.first { it.key == selectedPresetKey }.url
+                }
+            )
+        }
+    }
 
     LaunchedEffect(displaySavedServers, currentStep) {
         if (
@@ -231,7 +286,7 @@ fun AuthScreen(
                 ) {
                     when (currentStep) {
                         AuthStep.SERVER_CONNECTION -> {
-                            if (showServerConnection) {
+                            if (showServerConnection || !isServerSelectorConfigLoaded) {
                                 CircularProgressIndicator(
                                     color = Color.White,
                                     strokeWidth = 2.dp
@@ -241,9 +296,39 @@ fun AuthScreen(
                                     serverUrl = uiState.serverUrl,
                                     isLoading = uiState.isServerLoading,
                                     errorMessage = uiState.serverErrorMessage,
-                                    onServerUrlChange = authViewModel::updateServerUrl,
+                                    isManualMode = isManualConnection,
+                                    hideServerSelector = hideServerSelector,
+                                    selectedPresetKey = selectedPresetKey,
+                                    manualServerUrl = manualServerUrl,
+                                    onManualModeChange = { manual ->
+                                        isManualConnection = manual
+                                        authViewModel.updateServerUrl(
+                                            if (manual) {
+                                                manualServerUrl
+                                            } else {
+                                                presetServers.first {
+                                                    it.key == selectedPresetKey
+                                                }.url
+                                            }
+                                        )
+                                    },
+                                    onPresetSelected = { preset ->
+                                        selectedPresetKey = preset.key
+                                        authViewModel.updateServerUrl(preset.url)
+                                    },
+                                    onManualServerUrlChange = {
+                                        manualServerUrl = it
+                                        authViewModel.updateServerUrl(it)
+                                    },
                                     onConnect = {
-                                        authViewModel.connectToServer { url, name ->
+                                        val localFallbackUrl = if (isManualConnection) {
+                                            null
+                                        } else {
+                                            presetServers.first {
+                                                it.key == selectedPresetKey
+                                            }.localUrl
+                                        }
+                                        authViewModel.connectToServer(localFallbackUrl) { url, name ->
                                             selectedServerUrl = url
                                             selectedServerName = name
                                             currentStep = AuthStep.LOGIN
@@ -347,14 +432,24 @@ private fun AnimatedBrandHero(
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 private fun ConnectionForm(
     serverUrl: String,
     isLoading: Boolean,
     errorMessage: String?,
-    onServerUrlChange: (String) -> Unit,
+    isManualMode: Boolean,
+    hideServerSelector: Boolean,
+    selectedPresetKey: String,
+    manualServerUrl: String,
+    onManualModeChange: (Boolean) -> Unit,
+    onPresetSelected: (PresetServer) -> Unit,
+    onManualServerUrlChange: (String) -> Unit,
     onConnect: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var isServerMenuExpanded by remember { mutableStateOf(false) }
+    val selectedPreset = presetServers.first { it.key == selectedPresetKey }
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -366,22 +461,101 @@ private fun ConnectionForm(
             fontWeight = FontWeight.SemiBold
         )
 
-        OutlinedTextField(
-            value = serverUrl,
-            onValueChange = onServerUrlChange,
-            label = { Text(stringResource(R.string.server_url)) },
-            placeholder = {
-                Text(
-                    stringResource(R.string.auth_server_url_placeholder),
-                    color = Color.White.copy(alpha = 0.5f)
+        if (hideServerSelector || isManualMode) {
+            OutlinedTextField(
+                value = manualServerUrl,
+                onValueChange = onManualServerUrlChange,
+                label = { Text(stringResource(R.string.server_url)) },
+                placeholder = {
+                    Text(
+                        stringResource(R.string.auth_server_url_placeholder),
+                        color = Color.White.copy(alpha = 0.5f)
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+                enabled = !isLoading,
+                singleLine = true,
+                shape = RoundedCornerShape(12.dp),
+                colors = tvTextFieldColors()
+            )
+        } else {
+            ExposedDropdownMenuBox(
+                expanded = isServerMenuExpanded,
+                onExpandedChange = {
+                    if (!isLoading) isServerMenuExpanded = it
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                OutlinedTextField(
+                    value = "${selectedPreset.section} · ${selectedPreset.label}",
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Servidor") },
+                    trailingIcon = {
+                        Icon(
+                            imageVector = Icons.Rounded.KeyboardArrowDown,
+                            contentDescription = "Abrir lista de servidores"
+                        )
+                    },
+                    modifier = Modifier
+                        .menuAnchor(
+                            type = ExposedDropdownMenuAnchorType.PrimaryNotEditable,
+                            enabled = !isLoading
+                        )
+                        .fillMaxWidth(),
+                    enabled = !isLoading,
+                    singleLine = true,
+                    shape = RoundedCornerShape(12.dp),
+                    colors = tvTextFieldColors()
                 )
-            },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = !isLoading,
-            singleLine = true,
-            shape = RoundedCornerShape(12.dp),
-            colors = tvTextFieldColors()
-        )
+                ExposedDropdownMenu(
+                    expanded = isServerMenuExpanded,
+                    onDismissRequest = { isServerMenuExpanded = false },
+                    containerColor = Color(0xFF151515)
+                ) {
+                    presetServers.groupBy { it.section }.forEach { (section, servers) ->
+                        Text(
+                            text = section,
+                            color = JellyBlue,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
+                        servers.forEach { server ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = server.label,
+                                        color = Color.White,
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                },
+                                onClick = {
+                                    onPresetSelected(server)
+                                    isServerMenuExpanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!hideServerSelector) {
+            OutlinedButton(
+                onClick = { onManualModeChange(!isManualMode) },
+                enabled = !isLoading,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text(
+                    text = if (isManualMode) {
+                        "Elegir servidor de la lista"
+                    } else {
+                        "Introducir servidor manualmente"
+                    }
+                )
+            }
+        }
 
         AnimatedVisibility(visible = errorMessage != null) {
             Text(
