@@ -183,7 +183,7 @@ private fun BrowseScreen(
 
         when {
             state == null -> LoadingBox()
-            state.rows.isEmpty() -> AwardsNotice("No award data available right now.")
+            state.rows.isEmpty() -> AwardsNotice("No hay datos de premios disponibles.")
             else -> LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(top = 6.dp, bottom = 110.dp)
@@ -191,7 +191,7 @@ private fun BrowseScreen(
                 if (state.decades.isNotEmpty()) {
                     item(key = "decades") {
                         NavPillSection(
-                            title = "Browse by Decade",
+                            title = "Explorar por década",
                             labels = state.decades.map { "${it}s" to it },
                             onClick = onOpenDecade
                         )
@@ -240,7 +240,7 @@ private fun DecadeScreen(
         if (years.isNotEmpty()) {
             item(key = "years") {
                 NavPillSection(
-                    title = "Browse by Year",
+                    title = "Explorar por año",
                     labels = years.map { it.toString() to it },
                     onClick = onOpenYear
                 )

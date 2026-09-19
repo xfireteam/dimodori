@@ -145,16 +145,16 @@ fun DetailContent(
     val isPartiallyWatched = runtimeTicks != null && playbackPositionTicks > 0L && playbackPositionTicks < runtimeTicks
     val playButtonText = if (isPartiallyWatched) {
         val remainingTicks = (runtimeTicks - playbackPositionTicks).coerceAtLeast(0L)
-        "${CodecUtils.formatRuntime(remainingTicks)} left"
+        "Quedan ${CodecUtils.formatRuntime(remainingTicks)}"
     } else {
-        "Play"
+        "Reproducir"
     }
     val logoFallbackTitle = if (isEpisode) {
         item.seriesName?.takeIf { it.isNotBlank() }
             ?: item.name?.takeIf { it.isNotBlank() }
-            ?: "Unknown"
+            ?: "Desconocido"
     } else {
-        item.name?.takeIf { it.isNotBlank() } ?: "Unknown"
+        item.name?.takeIf { it.isNotBlank() } ?: "Desconocido"
     }
     val showTitleFallback = !isLoading && !logoLookup && (logoImageUrl.isNullOrBlank() || logoLoadError)
     val genresText = remember(item.genres) {
@@ -356,10 +356,10 @@ fun DetailContent(
     }
 
     val moreFromSeasonTitle = remember(item.seasonName, item.parentIndexNumber) {
-        val seasonLabel = item.parentIndexNumber?.let { "Season $it" }
+        val seasonLabel = item.parentIndexNumber?.let { "Temporada $it" }
             ?: item.seasonName?.takeIf { it.isNotBlank() }
-            ?: "Season"
-        "More from $seasonLabel"
+            ?: "Temporada"
+        "Más de $seasonLabel"
     }
 
     val baseVideoOptions = remember(effectiveMediaStreams) { buildVideoOptions(effectiveMediaStreams) }
@@ -538,7 +538,7 @@ fun DetailContent(
             if (!userProfileImageUrl.isNullOrBlank()) {
                 JellyfinPosterImage(
                     imageUrl = userProfileImageUrl,
-                    contentDescription = "User",
+                    contentDescription = "Usuario",
                     modifier = Modifier.fillMaxSize().clip(CircleShape),
                     context = context,
                     contentScale = ContentScale.Crop
@@ -546,7 +546,7 @@ fun DetailContent(
             } else {
                 Icon(
                     imageVector = Icons.Rounded.Person,
-                    contentDescription = "User",
+                    contentDescription = "Usuario",
                     tint = Color.White.copy(alpha = 0.7f),
                     modifier = Modifier.size(20.dp)
                 )

@@ -225,7 +225,7 @@ class QueryManager(private val scope: CoroutineScope) {
                             data = currentState.data,
                             isLoading = false,
                             isError = true,
-                            error = lastException.message ?: "Unknown error",
+                            error = lastException.message ?: "Error desconocido",
                             lastFetched = currentState.lastFetched
                         ))
                         break
@@ -1115,7 +1115,7 @@ data class StableBaseItem(
     val collectionType: String?
 ) {
     val displayName: String by lazy {
-        name ?: "Unknown Title"
+        name ?: "Título desconocido"
     }
 
     val hasProgress: Boolean by lazy {
@@ -1234,7 +1234,7 @@ fun Dashboard(
     }
     val HeaderUserName = currentUsername
         ?.takeIf { it.isNotBlank() }
-        ?: "User"
+        ?: "Usuario"
     var noCarouselProfileImageUrl by remember(dashboardSessionKey) {
         mutableStateOf(persistedHomeSnapshot?.profileImageUrl)
     }
@@ -1549,7 +1549,7 @@ fun Dashboard(
                         val libraryId = section.library.id ?: return@mapNotNull null
                         HomeLibrarySectionUi(
                             libraryId = libraryId,
-                            libraryName = section.library.name ?: "Library",
+                            libraryName = section.library.name ?: "Biblioteca",
                             collectionType = section.library.collectionType,
                             items = section.items
                         )
@@ -1852,7 +1852,7 @@ fun Dashboard(
                                 onNavigateToViewAll(
                                     contentType,
                                     library.id,
-                                    library.name ?: "Library"
+                                    library.name ?: "Biblioteca"
                                 )
                             }
                         )
@@ -2606,7 +2606,7 @@ private fun ContinueWatchingCard(
         val playbackPositionTicks = item.userData?.playbackPositionTicks ?: 0L
         if (runtimeTicks != null && runtimeTicks > 0L && playbackPositionTicks > 0L && playbackPositionTicks < runtimeTicks) {
             val remainingTicks = (runtimeTicks - playbackPositionTicks).coerceAtLeast(0L)
-            "${CodecUtils.formatRuntime(remainingTicks)} left"
+            "Quedan ${CodecUtils.formatRuntime(remainingTicks)}"
         } else {
             ""
         }

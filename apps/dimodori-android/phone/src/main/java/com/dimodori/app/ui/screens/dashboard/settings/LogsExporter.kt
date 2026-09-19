@@ -52,23 +52,23 @@ object LogsExporter {
         val crashes = runCatching { CrashLogStore.readCrashFiles(context) }.getOrDefault(emptyList())
 
         return buildString {
-            append("=== DIMODORI Logs — ").append(timeFormat.format(Date())).append(" ===\n")
-            append("App: ").append(context.packageName).append('\n')
-            append("Device: ")
+            append("=== Registros de DIMODORI — ").append(timeFormat.format(Date())).append(" ===\n")
+            append("Aplicación: ").append(context.packageName).append('\n')
+            append("Dispositivo: ")
                 .append(android.os.Build.MANUFACTURER).append(' ')
                 .append(android.os.Build.MODEL)
                 .append(" (Android ").append(android.os.Build.VERSION.RELEASE).append(")\n\n")
 
-            append("----- LOGCAT (").append(merged.size).append(" lines) -----\n")
+            append("----- LOGCAT (").append(merged.size).append(" líneas) -----\n")
             if (merged.isEmpty()) {
-                append("(no log entries captured)\n")
+                append("(no se capturaron entradas de registro)\n")
             } else {
                 merged.forEach { append(formatLine(it)).append('\n') }
             }
 
-            append("\n----- CRASHES (").append(crashes.size).append(") -----\n")
+            append("\n----- BLOQUEOS (").append(crashes.size).append(") -----\n")
             if (crashes.isEmpty()) {
-                append("(no crash reports)\n")
+                append("(no hay informes de bloqueos)\n")
             } else {
                 crashes.forEach { crash ->
                     append("----- ").append(crash.name).append(" -----\n")

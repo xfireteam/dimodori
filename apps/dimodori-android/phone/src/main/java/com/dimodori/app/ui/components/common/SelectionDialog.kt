@@ -111,7 +111,7 @@ fun AmoledSelectionDialog(
                                 )
                                 if (option.isDefault) {
                                     Text(
-                                        text = "Default",
+                                        text = "Predeterminado",
                                         style = MaterialTheme.typography.labelSmall,
                                         color = accentColor,
                                         modifier = Modifier

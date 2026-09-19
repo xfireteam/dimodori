@@ -75,7 +75,7 @@ fun AudioTrackSelectionDialog(
         itemsIndexed(audioTracks, key = { _, t -> t.id }) { index, track ->
             val isSelected = track.id == currentAudioTrack?.id
             TvTrackItem(
-                title = track.label.takeIf { it.isNotBlank() } ?: "Track ${index + 1}",
+                title = track.label.takeIf { it.isNotBlank() } ?: "Pista ${index + 1}",
                 subtitle = buildAudioTrackSubtitle(track),
                 description = buildAudioTrackDescription(track),
                 isSelected = isSelected,
@@ -107,7 +107,7 @@ fun SubtitleTrackSelectionDialog(
         itemsIndexed(subtitleTracks, key = { _, t -> t.id }) { index, track ->
             val isSelected = track.id == currentSubtitleTrack?.id
             TvTrackItem(
-                title = track.label.takeIf { it.isNotBlank() } ?: "Track ${index + 1}",
+                title = track.label.takeIf { it.isNotBlank() } ?: "Pista ${index + 1}",
                 subtitle = buildSubtitleTrackSubtitle(track),
                 description = buildSubtitleTrackDescription(track),
                 isSelected = isSelected,
@@ -251,7 +251,7 @@ private fun TvSidePanel(
                             fontWeight = FontWeight.SemiBold
                         )
                         Text(
-                            text = "$trackCount available",
+                            text = "$trackCount disponibles",
                             color = Color.White.copy(alpha = 0.5f),
                             fontSize = 11.sp
                         )
@@ -424,12 +424,12 @@ private fun buildAudioTrackDescription(track: AudioTrackInfo): String {
     return buildList {
         track.codec?.lowercase()?.let { codec ->
             when {
-                codec.contains("truehd") || codec.contains("flac") -> add("Lossless")
-                codec.contains("dts") -> add("High Quality")
-                codec.contains("eac3") -> add("Enhanced")
+                codec.contains("truehd") || codec.contains("flac") -> add("Sin pérdida")
+                codec.contains("dts") -> add("Alta calidad")
+                codec.contains("eac3") -> add("Mejorado")
             }
         }
-        if (track.channelCount >= 6) add("Surround")
+        if (track.channelCount >= 6) add("Envolvente")
     }.joinToString(" • ")
 }
 
@@ -445,7 +445,7 @@ private fun buildSubtitleTrackSubtitle(track: SubtitleTrackInfo): String {
 
 private fun buildSubtitleTrackDescription(track: SubtitleTrackInfo): String {
     return buildList {
-        if (track.isForced) add("Forced subtitles")
-        if (track.isDefault) add("Default track")
+        if (track.isForced) add("Subtítulos forzados")
+        if (track.isDefault) add("Pista predeterminada")
     }.joinToString(" • ")
 }

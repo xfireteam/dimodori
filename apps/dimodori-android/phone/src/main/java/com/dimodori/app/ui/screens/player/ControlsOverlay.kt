@@ -144,7 +144,7 @@ fun ControlsOverlay(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = "Atrás",
                             tint = Color.White,
                             modifier = Modifier.size(24.dp)
                         )
@@ -153,7 +153,7 @@ fun ControlsOverlay(
                     if (logoRequest != null) {
                         AsyncImage(
                             model = logoRequest,
-                            contentDescription = "$title logo",
+                            contentDescription = "Logotipo de $title",
                             contentScale = ContentScale.Fit,
                             modifier = Modifier
                                 .height(24.dp)
@@ -181,7 +181,7 @@ fun ControlsOverlay(
                     IconButton(onClick = onShowMediaInfo) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
-                            contentDescription = "Media Information",
+                            contentDescription = "Información multimedia",
                             tint = Color(0xFF4CAF50),
                             modifier = Modifier.size(24.dp)
                         )
@@ -189,7 +189,7 @@ fun ControlsOverlay(
                     IconButton(onClick = onCycleAspectRatio) {
                         Icon(
                             imageVector = Icons.Outlined.AspectRatio,
-                            contentDescription = "Aspect Ratio",
+                            contentDescription = "Relación de aspecto",
                             tint = Color.White,
                             modifier = Modifier.size(24.dp)
                         )
@@ -198,7 +198,7 @@ fun ControlsOverlay(
                         IconButton(onClick = onShowPlaybackSettings) {
                             Icon(
                                 imageVector = Icons.Outlined.Settings,
-                                contentDescription = "Playback Settings ($currentStreamingQuality)",
+                                contentDescription = "Ajustes de reproducción ($currentStreamingQuality)",
                                 tint = Color.White,
                                 modifier = Modifier.size(24.dp)
                             )
@@ -207,7 +207,7 @@ fun ControlsOverlay(
                     IconButton(onClick = onShowAudioTrackSelection) {
                         Icon(
                             imageVector = Icons.Outlined.Audiotrack,
-                            contentDescription = "Audio Tracks",
+                            contentDescription = "Pistas de audio",
                             tint = Color.White,
                             modifier = Modifier.size(24.dp)
                         )
@@ -215,7 +215,7 @@ fun ControlsOverlay(
                     IconButton(onClick = onShowSubtitleTrackSelection) {
                         Icon(
                             imageVector = Icons.Outlined.Subtitles,
-                            contentDescription = "Subtitles",
+                            contentDescription = "Subtítulos",
                             tint = Color.White,
                             modifier = Modifier.size(24.dp)
                         )
@@ -223,7 +223,7 @@ fun ControlsOverlay(
                     IconButton(onClick = onToggleLock) {
                         Icon(
                             imageVector = Icons.Outlined.LockOpen,
-                            contentDescription = "Lock",
+                            contentDescription = "Bloquear",
                             tint = Color.White,
                             modifier = Modifier.size(24.dp)
                         )
@@ -234,7 +234,7 @@ fun ControlsOverlay(
                 IconButton(onClick = onToggleLock) {
                     Icon(
                         imageVector = Icons.Filled.Lock,
-                        contentDescription = "Unlock",
+                        contentDescription = "Desbloquear",
                         tint = Color.White,
                         modifier = Modifier.size(24.dp)
                     )
@@ -274,7 +274,7 @@ fun ControlsOverlay(
             ) {
                 Icon(
                     imageVector = replayIcon(seekBackwardSeconds),
-                    contentDescription = "Replay $seekBackwardSeconds seconds",
+                        contentDescription = "Retroceder $seekBackwardSeconds segundos",
                     tint = Color.White,
                     modifier = Modifier.size(44.dp)
                 )
@@ -306,7 +306,7 @@ fun ControlsOverlay(
                 } else {
                     Icon(
                         imageVector = Icons.Rounded.PlayArrow,
-                        contentDescription = "Play",
+                        contentDescription = "Reproducir",
                         tint = Color.White,
                         modifier = Modifier.size(64.dp)
                     )
@@ -320,7 +320,7 @@ fun ControlsOverlay(
             ) {
                 Icon(
                     imageVector = replayforwardIcon(seekForwardSeconds),
-                    contentDescription = "Forward $seekForwardSeconds seconds",
+                        contentDescription = "Avanzar $seekForwardSeconds segundos",
                     tint = Color.White,
                     modifier = Modifier
                         .size(44.dp)
@@ -448,7 +448,7 @@ fun ControlsOverlay(
                                     )
 
                                     Text(
-                                        text = "Spatial Audio",
+                                        text = "Audio espacial",
                                         style = MaterialTheme.typography.labelSmall,
                                         color = Color(0xFF4CAF50),
                                         fontSize = 12.sp,

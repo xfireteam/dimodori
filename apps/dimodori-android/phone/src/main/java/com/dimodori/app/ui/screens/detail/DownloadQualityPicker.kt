@@ -115,14 +115,14 @@ internal fun DownloadQualityPicker(
                 ) { currentStep ->
                     when (currentStep) {
                         0 -> StepContent(
-                            title = "Download Quality",
-                            subtitle = "Select resolution",
+                            title = "Calidad de descarga",
+                                subtitle = "Seleccionar resolución",
                             onDismiss = onDismiss
                         ) {
                             item(key = "original") {
                                 QualityRow(
                                     title = "Original",
-                                    subtitle = "Full quality" + (sizeEstimator.originalSizeLabel()?.let { " · $it" } ?: ""),
+                                    subtitle = "Calidad completa" + (sizeEstimator.originalSizeLabel()?.let { " · $it" } ?: ""),
                                     onClick = { onSelected(DownloadQualitySelection(TranscodeProfiles.PRESETS.first())) }
                                 )
                             }
@@ -130,7 +130,7 @@ internal fun DownloadQualityPicker(
                                 val midBitrate = group.profiles[group.profiles.size / 2].maxBitrate
                                 QualityRow(
                                     title = group.label,
-                                    subtitle = "${group.profiles.size} bitrate options",
+                                    subtitle = "${group.profiles.size} opciones de tasa de bits",
                                     trailingText = midBitrate?.let { sizeEstimator.estimate(it) }?.let { "~$it" },
                                     showArrow = group.profiles.size > 1,
                                     onClick = {
@@ -144,7 +144,7 @@ internal fun DownloadQualityPicker(
                             val resolution = selectedResolution ?: return@AnimatedContent
                             StepContent(
                                 title = resolution.label,
-                                subtitle = "Select bitrate",
+                                subtitle = "Seleccionar tasa de bits",
                                 onBack = { selectedResolution = null },
                                 onDismiss = onDismiss
                             ) {
@@ -161,8 +161,8 @@ internal fun DownloadQualityPicker(
                         2 -> {
                             val profile = selectedProfile ?: return@AnimatedContent
                             StepContent(
-                                title = "Audio Track",
-                                subtitle = "Select audio to include",
+                                title = "Pista de audio",
+                                subtitle = "Seleccionar audio que incluir",
                                 onBack = { selectedProfile = null },
                                 onDismiss = onDismiss
                             ) {
@@ -200,7 +200,7 @@ private fun StepContent(
                 IconButton(onClick = onBack, modifier = Modifier.size(36.dp)) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                        contentDescription = "Back",
+                        contentDescription = "Atrás",
                         tint = Color.White,
                         modifier = Modifier.size(20.dp)
                     )
@@ -219,7 +219,7 @@ private fun StepContent(
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
             TextButton(onClick = onDismiss) {
-                Text("Cancel", color = Color.White.copy(alpha = 0.8f))
+                Text("Cancelar", color = Color.White.copy(alpha = 0.8f))
             }
         }
     }
@@ -318,12 +318,12 @@ private fun buildResolutionGroups(sourceHeight: Int?, sourceBitrate: Int?): List
 }
 
 private fun buildAudioLabel(stream: MediaStream): String {
-    val lang = stream.language?.let { Locale(it).displayLanguage } ?: "Unknown"
-    return if (stream.isDefault == true) "$lang (Default)" else lang
+    val lang = stream.language?.let { Locale(it).displayLanguage } ?: "Desconocido"
+    return if (stream.isDefault == true) "$lang (Predeterminada)" else lang
 }
 
 private fun formatBitrate(bitrate: Int?): String {
-    if (bitrate == null) return "Auto"
+    if (bitrate == null) return "Automático"
     val mbps = bitrate / 1_000_000.0
     return if (mbps >= 1.0) {
         if (mbps == mbps.toLong().toDouble()) "${mbps.toLong()} Mbps"

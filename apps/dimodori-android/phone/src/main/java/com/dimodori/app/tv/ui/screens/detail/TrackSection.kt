@@ -43,6 +43,11 @@ import com.jellycine.data.model.MediaStream
 import com.jellycine.player.core.defaultSubtitleDisplayTitle
 import com.jellycine.player.core.mediaStreamDisplayTitles
 
+private const val SUBTITLE_OFF_SENTINEL = "Off"
+
+private fun displayTrackOption(option: String): String =
+    if (option == SUBTITLE_OFF_SENTINEL) "Desactivado" else option
+
 @Composable
 internal fun TrackSection(
     displayedSelectedVideo: String,
@@ -69,7 +74,7 @@ internal fun TrackSection(
         if (hasVideoSection) {
             TrackField(
                 modifier = Modifier.weight(1.2f),
-                label = "Video",
+                label = "Vídeo",
                 selectedOption = displayedSelectedVideo,
                 options = videoOptions,
                 inlineMetaText = videoInlineMetaText,
@@ -90,7 +95,7 @@ internal fun TrackSection(
         if (hasSubtitleSection) {
             TrackField(
                 modifier = Modifier.weight(0.8f),
-                label = "Subtitles",
+                label = "Subtítulos",
                 selectedOption = selectedSubtitle,
                 options = subtitleOptions,
                 onOptionSelected = onSubtitleOptionSelected
@@ -121,9 +126,9 @@ internal fun TrackField(
         )
     } else {
         val value = if (!inlineMetaText.isNullOrBlank()) {
-            "${options.first()} / $inlineMetaText"
+            "${displayTrackOption(options.first())} / $inlineMetaText"
         } else {
-            options.first()
+            displayTrackOption(options.first())
         }
         Row(
             modifier = modifier,
@@ -206,7 +211,7 @@ internal fun OptionSelectorRow(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     val displayText = buildString {
-                        append(selectedOption.ifBlank { options.firstOrNull().orEmpty() })
+                        append(displayTrackOption(selectedOption.ifBlank { options.firstOrNull().orEmpty() }))
                         if (!inlineMetaText.isNullOrBlank()) {
                             append(" / ")
                             append(inlineMetaText)
@@ -221,7 +226,7 @@ internal fun OptionSelectorRow(
                     Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         imageVector = Icons.Rounded.KeyboardArrowDown,
-                        contentDescription = "Select $label",
+                        contentDescription = "Seleccionar $label",
                         tint = Color.White.copy(alpha = 0.7f),
                         modifier = Modifier.size(16.dp)
                     )
@@ -237,7 +242,7 @@ internal fun OptionSelectorRow(
                     DropdownMenuItem(
                         text = {
                             Text(
-                                text = option,
+                                text = displayTrackOption(option),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
                             )
@@ -262,7 +267,7 @@ internal fun buildAudioOptions(streams: List<MediaStream>): List<String> {
 }
 
 internal fun buildSubtitleOptions(streams: List<MediaStream>): List<String> {
-    val options = mutableListOf("Off")
+    val options = mutableListOf(SUBTITLE_OFF_SENTINEL)
     options += mediaStreamDisplayTitles(streams, "Subtitle")
     return OptionLabels(options)
 }
@@ -299,7 +304,7 @@ internal fun SubtitleStreamIndex(
     streams: List<MediaStream>,
     selectedOption: String
 ): Int? {
-    if (selectedOption == "Off") return -1
+    if (selectedOption == SUBTITLE_OFF_SENTINEL) return -1
 
     val subtitleStreams = streams
         .filter { it.type == "Subtitle" }
@@ -331,7 +336,7 @@ internal fun SubtitleStreamIndex(
     streamIndex: Int?
 ): String? {
     if (streamIndex == null) return null
-    if (streamIndex == -1) return "Off"
+    if (streamIndex == -1) return SUBTITLE_OFF_SENTINEL
 
     val subtitleStreams = streams
         .filter { it.type == "Subtitle" }

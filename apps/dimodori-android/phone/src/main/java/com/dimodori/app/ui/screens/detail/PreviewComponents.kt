@@ -113,7 +113,7 @@ fun EpisodePreviewCard(
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.PlayArrow,
-                                contentDescription = "Episode",
+                                contentDescription = "Episodio",
                                 tint = Color.White.copy(alpha = 0.5f),
                                 modifier = Modifier.size(48.dp)
                             )
@@ -152,7 +152,7 @@ fun EpisodePreviewCard(
                             ) {
                                 Icon(
                                     imageVector = Icons.Rounded.PlayArrow,
-                                    contentDescription = "Play",
+                                    contentDescription = "Reproducir",
                                     tint = Color.White,
                                     modifier = Modifier.size(24.dp)
                                 )
@@ -179,7 +179,7 @@ fun EpisodePreviewCard(
                                     ) {
                                         Icon(
                                             imageVector = Icons.Rounded.Check,
-                                            contentDescription = "Watched",
+                                            contentDescription = "Visto",
                                             tint = Color.White,
                                             modifier = Modifier.size(14.dp)
                                         )
@@ -216,7 +216,7 @@ fun EpisodePreviewCard(
                 ) {
                     // Episode title
                     Text(
-                        text = episode.name ?: "Unknown Episode",
+                        text = episode.name ?: "Episodio desconocido",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = Color.White,
@@ -298,12 +298,12 @@ fun EpisodePreviewCard(
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.Visibility,
-                                contentDescription = "Preview",
+                                contentDescription = "Vista previa",
                                 modifier = Modifier.size(16.dp)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                "Quick Preview",
+                                "Vista previa rápida",
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Medium
                             )
@@ -326,12 +326,12 @@ fun EpisodePreviewCard(
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.PlayArrow,
-                                contentDescription = "Play Full Episode",
+                                contentDescription = "Reproducir episodio completo",
                                 modifier = Modifier.size(16.dp)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                "Play Full Episode",
+                                "Reproducir episodio completo",
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Medium
                             )

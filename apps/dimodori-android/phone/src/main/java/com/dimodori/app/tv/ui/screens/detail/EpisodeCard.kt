@@ -99,7 +99,7 @@ fun EpisodeCard(
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.PlayArrow,
-                            contentDescription = "Episode",
+                            contentDescription = "Episodio",
                             tint = Color.White.copy(alpha = 0.5f),
                             modifier = Modifier.size(24.dp)
                         )
@@ -122,7 +122,7 @@ fun EpisodeCard(
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.PlayArrow,
-                                contentDescription = "Play",
+                                contentDescription = "Reproducir",
                                 tint = Color.White,
                                 modifier = Modifier.size(16.dp)
                             )
@@ -151,7 +151,7 @@ fun EpisodeCard(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Rounded.Check,
-                                        contentDescription = "Watched",
+                                        contentDescription = "Visto",
                                         tint = Color.White,
                                         modifier = Modifier.size(12.dp)
                                     )
@@ -182,7 +182,7 @@ fun EpisodeCard(
                     }
 
                     Text(
-                        text = episode.name ?: "Unknown Episode",
+                        text = episode.name ?: "Episodio desconocido",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = Color.White,

@@ -104,7 +104,7 @@ fun SplashScreen(
                 
                 Image(
                     painter = painterResource(id = R.drawable.dimodori_logo),
-                    contentDescription = "DIMODORI Logo",
+                    contentDescription = "Logotipo de DIMODORI",
                     modifier = Modifier
                         .size(200.dp)
                         .alpha(logoAlpha)

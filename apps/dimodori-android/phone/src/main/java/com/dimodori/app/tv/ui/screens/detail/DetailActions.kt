@@ -72,7 +72,7 @@ internal fun DetailHeroActions(
         )
 
         HeroPillButton(
-            text = if (isFavorite) "Favorited" else "Favorite",
+            text = if (isFavorite) "En favoritos" else "Favorito",
             icon = if (isFavorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
             isPrimary = false,
             focusRequester = favoriteFocusRequester,
@@ -102,7 +102,7 @@ internal fun SeriesHeroActions(
         verticalAlignment = Alignment.CenterVertically
     ) {
         HeroPillButton(
-            text = if (isWatched) "Watched" else "Mark Watched",
+            text = if (isWatched) "Visto" else "Marcar como visto",
             icon = Icons.Rounded.Check,
             isPrimary = true,
             focusRequester = watchedFocusRequester,
@@ -114,7 +114,7 @@ internal fun SeriesHeroActions(
         )
 
         HeroPillButton(
-            text = if (isFavorite) "Favorited" else "Favorite",
+            text = if (isFavorite) "En favoritos" else "Favorito",
             icon = if (isFavorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
             isPrimary = false,
             focusRequester = favoriteFocusRequester,

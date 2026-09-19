@@ -145,7 +145,7 @@ private fun BoxSetMovieCard(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             Text(
-                text = item.name ?: "Unknown",
+                text = item.name ?: "Desconocido",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.White,
@@ -239,7 +239,7 @@ private fun BoxSetMovieCard(
                         modifier = Modifier.size(14.dp)
                     )
                     Text(
-                        text = "Watched",
+                        text = "Visto",
                         fontSize = 11.sp,
                         color = Color(0xFF4CAF50),
                         fontWeight = FontWeight.Medium

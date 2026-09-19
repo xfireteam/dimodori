@@ -42,7 +42,7 @@ data class MediaMetadataInfo(
     val hardwareAcceleration: HardwareAccelerationInfo? = null,
     val streamContainer: String? = null,
     val streamBitrateKbps: Int? = null,
-    val playMethod: String = "Direct Play"
+    val playMethod: String = "Reproducción directa"
 )
 
 data class HdrFormatInfo(
@@ -125,20 +125,20 @@ fun MediaInfoDialog(
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
             ) {
-                SectionTitle("Stream")
+                SectionTitle("Transmisión")
                 PrimaryLine(buildStreamLine(mediaInfo))
                 SecondaryLine("→ ${mediaInfo.playMethod}")
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                SectionTitle("Video")
+                SectionTitle("Vídeo")
                 PrimaryLine(buildVideoTitle(mediaInfo.videoFormat, mediaInfo.hdrFormat))
                 buildVideoDetails(mediaInfo.videoFormat)?.let { PrimaryLine(it) }
                 SecondaryLine("→ ${mediaInfo.playMethod}")
                 mediaInfo.hardwareAcceleration?.let {
-                    MixedLine("Renderer", if (it.isHardwareDecoding) "MediaCodec" else "Software")
+                        MixedLine("Renderizador", if (it.isHardwareDecoding) "MediaCodec" else "Software")
                     buildDisplayMode(mediaInfo.videoFormat)?.let { mode ->
-                        MixedLine("Display Mode", mode)
+                        MixedLine("Modo de pantalla", mode)
                     }
                 }
 
@@ -213,31 +213,34 @@ private fun buildStreamLine(mediaInfo: MediaMetadataInfo): String {
     val container = mediaInfo.streamContainer?.uppercase(Locale.US)
         ?: mediaInfo.videoFormat?.mimeType?.substringAfter("/", "")?.uppercase(Locale.US)
         ?: "STREAM"
+    val displayContainer = container.takeUnless { it == "UNKNOWN" } ?: "Desconocido"
 
     val bitrateKbps = mediaInfo.streamBitrateKbps ?: mediaInfo.videoFormat?.bitrateKbps
     return if (bitrateKbps != null && bitrateKbps > 0) {
-        "$container (${formatMbps(bitrateKbps)} mbps)"
+        "$displayContainer (${formatMbps(bitrateKbps)} mbps)"
     } else {
-        container
+        displayContainer
     }
 }
 
 private fun buildVideoTitle(videoInfo: VideoFormatInfo?, hdrInfo: HdrFormatInfo?): String {
-    if (videoInfo == null) return "Unknown"
+    if (videoInfo == null) return "Desconocido"
 
     val resolutionTag = when {
         videoInfo.resolution.startsWith("3840x", true) || videoInfo.resolution.startsWith("4096x", true) -> "4K"
         videoInfo.resolution.startsWith("2560x", true) -> "1440p"
         videoInfo.resolution.startsWith("1920x", true) -> "1080p"
-        else -> videoInfo.resolution
+        else -> videoInfo.resolution.takeUnless { it.equals("Unknown", ignoreCase = true) }
     }
 
     val hdrTag = hdrInfo?.currentFormat?.takeIf { it.isNotBlank() }
         ?: if (hdrInfo?.isSupported == true) "HDR" else null
 
-    val codecTag = mapCodecForDisplay(videoInfo.codec)
+    val codecTag = videoInfo.codec
+        .takeUnless { it.equals("Unknown", ignoreCase = true) }
+        ?.let(::mapCodecForDisplay)
 
-    return listOfNotNull(resolutionTag, hdrTag, codecTag)
+    return listOfNotNull(resolutionTag, hdrTag, codecTag).ifEmpty { listOf("Desconocido") }
         .joinToString(" ")
         .trim()
 }
@@ -268,14 +271,17 @@ private fun buildDisplayMode(videoInfo: VideoFormatInfo?): String? {
 }
 
 private fun buildAudioTitle(audioInfo: AudioFormatInfo?): String {
-    if (audioInfo == null) return "Unknown"
+    if (audioInfo == null) return "Desconocido"
 
     val lang = audioInfo.language?.takeIf { it.isNotBlank() }?.replaceFirstChar {
         if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString()
     }
-    val defaultTag = if (audioInfo.isDefault) " (Default)" else ""
+    val defaultTag = if (audioInfo.isDefault) " (Predeterminada)" else ""
 
-    return listOfNotNull(lang, audioInfo.codec, audioInfo.channels)
+    val codec = audioInfo.codec
+        .takeUnless { it.equals("Unknown", ignoreCase = true) }
+        ?: "Desconocido"
+    return listOfNotNull(lang, codec, audioInfo.channels)
         .joinToString(" ")
         .trim() + defaultTag
 }

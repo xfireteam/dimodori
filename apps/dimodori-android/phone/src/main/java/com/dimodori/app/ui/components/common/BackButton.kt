@@ -32,7 +32,7 @@ fun BackButton(
         Box(contentAlignment = Alignment.Center) {
             Icon(
                 imageVector = Icons.Rounded.ArrowBack,
-                contentDescription = "Back",
+                contentDescription = "Atrás",
                 tint = Color.White,
                 modifier = Modifier.size(24.dp)
             )

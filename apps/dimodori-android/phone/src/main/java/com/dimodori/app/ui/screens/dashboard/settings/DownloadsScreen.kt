@@ -614,12 +614,12 @@ private fun DownloadQualitySetting(
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(
-                text = "Default Download Quality",
+                text = "Calidad de descarga predeterminada",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = "Quality picker will still appear for each download. This sets the pre-selected default.",
+                text = "El selector de calidad seguirá apareciendo para cada descarga. Esto establece la opción predeterminada.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

@@ -168,11 +168,11 @@ private fun BrowseScreen(
             state == null -> Column(modifier = Modifier.fillMaxSize().padding(top = 6.dp)) {
                 repeat(3) { AwardRailSkeleton() }
             }
-            state.rows.isEmpty() -> AwardsNotice("No award data available right now.")
+            state.rows.isEmpty() -> AwardsNotice("No hay datos de premios disponibles ahora.")
             else -> AwardRailColumn(state.rows, awardsRepository, onViewAllCategory, onItemClick) {
                 if (state.decades.isNotEmpty()) {
                     item(key = "decades") {
-                        NavPillSection("Browse by Decade", state.decades.map { "${it}s" to it }, onOpenDecade)
+                        NavPillSection("Explorar por década", state.decades.map { "${it}s" to it }, onOpenDecade)
                     }
                 }
             }
@@ -205,7 +205,7 @@ private fun DecadeScreen(
     AwardRailColumn(decadeRows, awardsRepository, onViewAllCategory, onItemClick) {
         if (years.isNotEmpty()) {
             item(key = "years") {
-                NavPillSection("Browse by Year", years.map { it.toString() to it }, onOpenYear)
+                NavPillSection("Explorar por año", years.map { it.toString() to it }, onOpenYear)
             }
         }
     }

@@ -715,12 +715,12 @@ internal fun BaseItemDto.logoItemId(): String? {
 
 internal fun episodeHeaderText(item: BaseItemDto): String? {
     if (item.type != "Episode") return null
-    val title = item.name?.takeIf { it.isNotBlank() } ?: "Unknown"
+    val title = item.name?.takeIf { it.isNotBlank() } ?: "Desconocido"
     val season = item.parentIndexNumber
     val episode = item.indexNumber
     return when {
         season != null && episode != null -> "S${season}:E${episode} - $title"
-        episode != null -> "Episode $episode - $title"
+        episode != null -> "Episodio $episode - $title"
         else -> title
     }
 }

@@ -204,9 +204,9 @@ fun DetailContent(
         runtimeTicks != null && playbackPositionTicks > 0L && playbackPositionTicks < runtimeTicks
     val playButtonText = if (isPartiallyWatched) {
         val remainingTicks = (runtimeTicks - playbackPositionTicks).coerceAtLeast(0L)
-        "${CodecUtils.formatRuntime(remainingTicks)} left"
+        "${CodecUtils.formatRuntime(remainingTicks)} restantes"
     } else {
-        "Play"
+        "Reproducir"
     }
     val resumeProgress = if (runtimeTicks != null && runtimeTicks > 0) {
         (playbackPositionTicks.toFloat() / runtimeTicks.toFloat()).coerceIn(0f, 1f)
@@ -216,9 +216,9 @@ fun DetailContent(
     val logoFallbackTitle = if (isEpisode) {
         item.seriesName?.takeIf { it.isNotBlank() }
             ?: item.name?.takeIf { it.isNotBlank() }
-            ?: "Unknown"
+            ?: "Desconocido"
     } else {
-        item.name?.takeIf { it.isNotBlank() } ?: "Unknown"
+        item.name?.takeIf { it.isNotBlank() } ?: "Desconocido"
     }
     val reserveLogoSpace = isLoading || (!logoImageUrl.isNullOrBlank() && !logoLoadError) || logoLookup
     val showTitleFallback = !isLoading && !logoLookup && (logoImageUrl.isNullOrBlank() || logoLoadError)
@@ -590,10 +590,10 @@ fun DetailContent(
     }
 
     val moreFromSeasonTitle = remember(item.seasonName, item.parentIndexNumber) {
-        val seasonLabel = item.parentIndexNumber?.let { "Season $it" }
+        val seasonLabel = item.parentIndexNumber?.let { "Temporada $it" }
             ?: item.seasonName?.takeIf { it.isNotBlank() }
-            ?: "Season"
-        "More from $seasonLabel"
+            ?: "Temporada"
+        "Más de $seasonLabel"
     }
 
     val baseVideoOptions = remember(effectiveMediaStreams) { buildVideoOptions(effectiveMediaStreams) }
@@ -847,7 +847,7 @@ fun DetailContent(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Rounded.Star,
-                                        contentDescription = "Rating",
+                                        contentDescription = "Calificación",
                                         tint = Color(0xFFFF4D4F),
                                         modifier = Modifier.size(17.dp)
                                     )
@@ -955,9 +955,9 @@ fun DetailContent(
                                     )
                                     Text(
                                         text = if (castPlaybackState.isCastingMedia) {
-                                            "Casting to ${castPlaybackState.deviceName?.takeIf { it.isNotBlank() } ?: "device"}"
+                                            "Transmitiendo a ${castPlaybackState.deviceName?.takeIf { it.isNotBlank() } ?: "dispositivo"}"
                                         } else {
-                                            "Connected to ${castPlaybackState.deviceName?.takeIf { it.isNotBlank() } ?: "device"}"
+                                            "Conectado a ${castPlaybackState.deviceName?.takeIf { it.isNotBlank() } ?: "dispositivo"}"
                                         },
                                         fontSize = 12.sp,
                                         color = Color(0xFFE6FFF3),
@@ -1009,7 +1009,7 @@ fun DetailContent(
                                 if (codecBadges.hasSpatialAudio) {
                                     item {
                                         CapabilityBadge(
-                                            text = "Spatial Audio",
+                                            text = "Audio espacial",
                                             customIcon = R.drawable.ic_spatial_audio,
                                             customIconTint = Color(0xFF8DFFB3)
                                         )
@@ -1387,7 +1387,7 @@ fun DetailContent(
         seriesStorageSelectionDialogState = seriesStorageSelectionDialogState,
         downloadErrorDialogMessage = downloadErrorDialogMessage,
         seerrRequestState = seerrRequestState,
-        itemName = item.name?.takeIf { it.isNotBlank() } ?: "Unknown",
+        itemName = item.name?.takeIf { it.isNotBlank() } ?: "Desconocido",
         backdropImageUrl = backdropImageUrl ?: item.backdropImageUrl ?: item.imageUrl,
         onDismissSeriesSelection = {
             seriesStorageSelectionDialogState = null
@@ -1614,12 +1614,12 @@ private fun Dialogs(
 ) {
     seriesStorageSelectionDialogState?.let { dialogState ->
         DownloadDialog(
-            title = "Choose Seasons",
-            subtitle = "Pick seasons to download. Selected total must fit available storage.",
+            title = "Elegir temporadas",
+            subtitle = "Elige las temporadas que quieres descargar. El total seleccionado debe caber en el almacenamiento disponible.",
             availableBytes = dialogState.availableBytes,
             options = dialogState.options,
             initialSelection = dialogState.options.map { it.id }.toSet(),
-            confirmLabel = "Download Seasons",
+            confirmLabel = "Descargar temporadas",
             onDismiss = onDismissSeriesSelection,
             onConfirm = onConfirmSeriesSelection
         )

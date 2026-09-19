@@ -237,7 +237,7 @@ class PlayerViewModel @Inject constructor(
                 } else {
                     null
                 }
-                val mediaTitle = itemDetails?.name ?: "Unknown Title"
+                val mediaTitle = itemDetails?.name ?: "Título desconocido"
                 val logoSourceId = when {
                     itemDetails?.imageTags?.containsKey("Logo") == true && !itemDetails.id.isNullOrBlank() -> itemDetails.id
                     !itemDetails?.parentLogoItemId.isNullOrBlank() && !itemDetails?.parentLogoImageTag.isNullOrBlank() -> itemDetails?.parentLogoItemId
@@ -310,14 +310,14 @@ class PlayerViewModel @Inject constructor(
                         audioTranscodeMode = audioTranscodeMode
                     )
                     if (playbackInfoResult.isFailure) {
-                        val error = playbackInfoResult.exceptionOrNull()?.message ?: "Failed to get playback info"
+                        val error = playbackInfoResult.exceptionOrNull()?.message ?: "No se pudo obtener la información de reproducción"
                         _playerState.value = _playerState.value.copy(isLoading = false, error = error)
                         return@launch
                     }
 
                     val playbackInfo = playbackInfoResult.getOrNull()
                     if (playbackInfo == null) {
-                        _playerState.value = _playerState.value.copy(isLoading = false, error = "Playback info is null")
+                        _playerState.value = _playerState.value.copy(isLoading = false, error = "La información de reproducción es nula")
                         return@launch
                     }
 
@@ -350,7 +350,7 @@ class PlayerViewModel @Inject constructor(
                         includeAccessToken = isMpvPlayback()
                     )
                     if (playbackRequestResult.isFailure) {
-                        val error = playbackRequestResult.exceptionOrNull()?.message ?: "Failed to get playback request"
+                        val error = playbackRequestResult.exceptionOrNull()?.message ?: "No se pudo obtener la solicitud de reproducción"
                         _playerState.value = _playerState.value.copy(isLoading = false, error = error)
                         return@launch
                     }
@@ -358,7 +358,7 @@ class PlayerViewModel @Inject constructor(
                     playbackRequest = playbackRequestResult.getOrNull()
                     val streamingUrl = playbackRequest?.url
                     if (streamingUrl.isNullOrEmpty()) {
-                        _playerState.value = _playerState.value.copy(isLoading = false, error = "Failed to get playback URL")
+                        _playerState.value = _playerState.value.copy(isLoading = false, error = "No se pudo obtener la URL de reproducción")
                         return@launch
                     }
                     val streamUri = Uri.parse(streamingUrl)
@@ -516,7 +516,7 @@ class PlayerViewModel @Inject constructor(
                 Log.e(TAG, "Player initialization failed", e)
                 _playerState.value = _playerState.value.copy(
                     isLoading = false,
-                    error = e.message ?: "Unknown error occurred"
+                    error = e.message ?: "Ocurrió un error desconocido"
                 )
             }
         }
@@ -599,7 +599,7 @@ class PlayerViewModel @Inject constructor(
                 Log.e(TAG, "Remote trailer initialization failed", e)
                 _playerState.value = _playerState.value.copy(
                     isLoading = false,
-                    error = e.message ?: "Unable to play remote trailer",
+                    error = e.message ?: "No se pudo reproducir el tráiler remoto",
                     playWhenReady = false,
                     isPlaying = false
                 )
@@ -1522,7 +1522,7 @@ class PlayerViewModel @Inject constructor(
                 return
             }
             _playerState.value = _playerState.value.copy(
-                error = error.message ?: "Playback error occurred",
+                error = error.message ?: "Ocurrió un error de reproducción",
                 isLoading = false,
                 playWhenReady = false,
                 isPlaying = false

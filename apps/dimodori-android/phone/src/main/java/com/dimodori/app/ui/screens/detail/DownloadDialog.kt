@@ -65,7 +65,7 @@ internal fun FailureDialog(
         shape = RoundedCornerShape(16.dp),
         title = {
             Text(
-                text = "Download Failed",
+                text = "Error al descargar",
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp
             )
@@ -93,7 +93,7 @@ internal fun DownloadDialog(
     availableBytes: Long,
     options: List<StorageSelectionOption>,
     initialSelection: Set<String>,
-    confirmLabel: String = "Download Selected",
+    confirmLabel: String = "Descargar seleccionados",
     onDismiss: () -> Unit,
     onConfirm: (Set<String>) -> Unit
 ) {
@@ -167,17 +167,17 @@ internal fun DownloadDialog(
                 }
 
                 StorageMetricBar(
-                    label = "Available",
+                    label = "Disponible",
                     value = formatStorageBytesUi(availableBytes),
                     accent = Color(0xFF38BDF8)
                 )
                 StorageMetricBar(
-                    label = "Selected",
+                    label = "Seleccionado",
                     value = formatStorageBytesUi(selectedBytes),
                     accent = Color(0xFF67E8F9)
                 )
                 StorageMetricBar(
-                    label = if (exceedsAvailable) "Over By" else "Will Remain",
+                    label = if (exceedsAvailable) "Excede en" else "Quedará",
                     value = formatStorageBytesUi(if (exceedsAvailable) overflowBytes else remainingBytes),
                     accent = if (exceedsAvailable) Color(0xFFF97316) else Color(0xFF34D399)
                 )
@@ -262,7 +262,7 @@ internal fun DownloadDialog(
                             contentColor = Color.White.copy(alpha = 0.8f)
                         )
                     ) {
-                        Text("Cancel")
+                        Text("Cancelar")
                     }
                     Spacer(modifier = Modifier.size(6.dp))
                     Button(

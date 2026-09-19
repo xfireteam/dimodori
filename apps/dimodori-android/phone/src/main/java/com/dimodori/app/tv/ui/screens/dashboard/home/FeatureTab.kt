@@ -235,7 +235,7 @@ fun FeatureTab(
 
     LaunchedEffect(currentUsername, currentServerUrl) {
         val activeUsername = currentUsername ?: persistedHomeSnapshot?.username
-        displayUsername = activeUsername?.takeIf { it.isNotBlank() } ?: "User"
+        displayUsername = activeUsername?.takeIf { it.isNotBlank() } ?: "Usuario"
 
         val persistedProfileUrl = persistedHomeSnapshot?.profileImageUrl
         if (!persistedProfileUrl.isNullOrBlank()) {
@@ -455,7 +455,7 @@ fun FeatureTab(
 
                 !error.isNullOrBlank() -> FeatureHeroError(error = error, heroHeight = heroHeight)
 
-                else -> FeatureHeroError(error = "No featured content available", heroHeight = heroHeight)
+                else -> FeatureHeroError(error = "No hay contenido destacado disponible", heroHeight = heroHeight)
             }
 
             Row(
@@ -897,7 +897,7 @@ private fun FeatureHeroCard(
                         val seasonCount = item.childCount
                         if (seasonCount != null && seasonCount > 0) {
                             Text(
-                                text = if (seasonCount == 1) "1 Season" else "$seasonCount Seasons",
+                                text = if (seasonCount == 1) "1 temporada" else "$seasonCount temporadas",
                                 color = Color.White.copy(alpha = 0.90f),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium
@@ -912,9 +912,9 @@ private fun FeatureHeroCard(
                                     val hours = totalMinutes / 60
                                     val minutes = totalMinutes % 60
                                     val runtimeText = if (hours > 0) {
-                                        "${hours}h ${minutes}m"
+                                        "${hours} h ${minutes} min"
                                     } else {
-                                        "${minutes}m"
+                                        "${minutes} min"
                                     }
                                     Text(
                                         text = runtimeText,
@@ -1011,7 +1011,7 @@ private fun FeatureHeroCard(
 
                     FeatureHeroCircleButton(
                         icon = Icons.Rounded.FavoriteBorder,
-                        contentDescription = "Favorite",
+                        contentDescription = "Favorito",
                         onFocusChanged = { isFocused ->
                             if (isFocused) onHeroZoneFocused?.invoke()
                         },

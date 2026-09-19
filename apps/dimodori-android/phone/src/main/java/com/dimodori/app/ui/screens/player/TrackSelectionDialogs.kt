@@ -408,7 +408,7 @@ private fun DialogHeader(
         IconButton(onClick = onClose) {
             Icon(
                 imageVector = Icons.Default.Close,
-                contentDescription = "Close",
+                contentDescription = "Cerrar",
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -536,7 +536,7 @@ private fun SelectionIndicator(
         if (isSelected) {
             Icon(
                 imageVector = Icons.Default.Check,
-                contentDescription = "Selected",
+                contentDescription = "Seleccionado",
                 tint = Color.White,
                 modifier = Modifier.size(13.dp)
             )
@@ -635,7 +635,7 @@ private fun buildAudioTrackDescription(track: AudioTrackInfo): String {
         }
 
         if (track.channelCount >= 6) {
-            add("Surround Sound")
+            add("Sonido envolvente")
         }
     }.joinToString(" | ")
 }
@@ -649,13 +649,13 @@ private fun buildSubtitleTrackSubtitle(track: SubtitleTrackInfo): String {
             add(it.uppercase())
         }
         if (track.isForced) add("FORCED")
-        if (track.isDefault) add("DEFAULT")
+        if (track.isDefault) add("PREDETERMINADA")
     }.joinToString(" | ")
 }
 
 private fun buildSubtitleTrackDescription(track: SubtitleTrackInfo): String {
     return buildList {
-        if (track.isForced) add("Forced subtitles")
-        if (track.isDefault) add("Default track")
+        if (track.isForced) add("Subtítulos forzados")
+        if (track.isDefault) add("Pista predeterminada")
     }.joinToString(" | ")
 }

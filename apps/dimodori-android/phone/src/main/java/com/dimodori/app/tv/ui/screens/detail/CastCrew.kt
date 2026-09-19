@@ -40,7 +40,7 @@ internal fun DirectorCreditRow(
             directors.forEachIndexed { index, person ->
                 val personId = person.id
                 val canOpenPerson = !personId.isNullOrBlank()
-                val name = person.name ?: "Unknown"
+                val name = person.name ?: "Desconocido"
                 Text(
                     text = name + if (index < directors.lastIndex) ", " else "",
                     fontSize = 12.sp,

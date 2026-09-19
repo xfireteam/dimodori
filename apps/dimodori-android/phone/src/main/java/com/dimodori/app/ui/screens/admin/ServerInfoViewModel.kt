@@ -155,22 +155,22 @@ class AdminPanelViewModel(context: Context) : ViewModel() {
         val msg = e.message?.lowercase() ?: ""
         return when {
             e is HttpStatusException -> when (e.statusCode) {
-                401, 403 -> "Access denied. Admin privileges required."
-                404 -> "Server endpoint not found. Check server version."
-                500, 502, 503 -> "Server error. Try again later."
-                else -> "Server returned error ${e.statusCode}"
+                401, 403 -> "Acceso denegado. Se requieren privilegios de administrador."
+                404 -> "No se encontró el endpoint del servidor. Comprueba la versión del servidor."
+                500, 502, 503 -> "Error del servidor. Inténtalo de nuevo más tarde."
+                else -> "El servidor devolvió el error ${e.statusCode}"
             }
             msg.contains("unable to resolve host") || msg.contains("no address associated") ->
-                "No internet connection"
+                "No hay conexión a Internet"
             msg.contains("timeout") || msg.contains("timed out") ->
-                "Connection timed out. Server may be unreachable."
+                "Se agotó el tiempo de conexión. Puede que no se pueda acceder al servidor."
             msg.contains("failed to connect") || msg.contains("connection refused") ->
-                "Cannot reach server. Check if it's running."
+                "No se puede acceder al servidor. Comprueba si está en ejecución."
             msg.contains("network") || msg.contains("socket") ->
-                "Network error. Check your connection."
+                "Error de red. Comprueba tu conexión."
             msg.contains("ssl") || msg.contains("certificate") ->
-                "Secure connection failed. Check server certificate."
-            else -> "Something went wrong. Please try again."
+                "Falló la conexión segura. Comprueba el certificado del servidor."
+            else -> "Algo salió mal. Inténtalo de nuevo."
         }
     }
 }

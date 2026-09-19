@@ -230,7 +230,7 @@ fun SeasonDetailScreen(
     val fallbackHeaderTitle = seriesTitle
         ?: episodes.firstOrNull()?.seriesName?.takeIf { it.isNotBlank() }
         ?: seasonName
-        ?: "Season"
+        ?: "Temporada"
     val seriesOverviewModifier = Modifier.clickable(
         interactionSource = remember { MutableInteractionSource() },
         indication = null
@@ -343,7 +343,7 @@ fun SeasonDetailScreen(
                             }
 
                             Text(
-                                text = seasonName ?: "Season",
+                                text = seasonName ?: "Temporada",
                                 fontSize = 15.sp,
                                 lineHeight = 18.sp,
                                 fontWeight = FontWeight.SemiBold,
@@ -353,7 +353,7 @@ fun SeasonDetailScreen(
                             )
 
                             Text(
-                                text = "${episodes.size} episodes",
+                                text = "${episodes.size} episodios",
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color.White.copy(alpha = 0.86f)
@@ -382,12 +382,12 @@ fun SeasonDetailScreen(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Rounded.PlayArrow,
-                                        contentDescription = "Play season",
+                                        contentDescription = "Reproducir temporada",
                                         modifier = Modifier.size(22.dp)
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
-                                        text = "Play",
+                                        text = "Reproducir",
                                         fontSize = 17.sp,
                                         fontWeight = FontWeight.SemiBold
                                     )
@@ -413,7 +413,7 @@ fun SeasonDetailScreen(
                                                                 },
                                                                 onFailure = { throwable ->
                                                                     downloadErrorDialogMessage = throwable.message
-                                                                        ?: "Failed to prepare season download."
+                                                                        ?: "No se pudo preparar la descarga de la temporada."
                                                                 }
                                                             )
                                                         } finally {
@@ -470,7 +470,7 @@ fun SeasonDetailScreen(
 
                 item {
                     Text(
-                        text = "Episodes",
+                        text = "Episodios",
                         fontSize = 19.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
@@ -527,12 +527,12 @@ fun SeasonDetailScreen(
 
     storageSelectionDialogState?.let { dialogState ->
         DownloadDialog(
-            title = "Choose Episodes",
-            subtitle = "Pick episodes to download. Selected total must fit available storage.",
+            title = "Elegir episodios",
+            subtitle = "Elige los episodios que quieres descargar. El total seleccionado debe caber en el almacenamiento disponible.",
             availableBytes = dialogState.availableBytes,
             options = dialogState.options,
             initialSelection = dialogState.options.map { it.id }.toSet(),
-            confirmLabel = "Download Episodes",
+            confirmLabel = "Descargar episodios",
             onDismiss = { storageSelectionDialogState = null },
             onConfirm = { selectedIds ->
                 val selectedEpisodes = dialogState.options
@@ -544,7 +544,7 @@ fun SeasonDetailScreen(
                     try {
                         downloadRepository.enqueueEpisodeDownloads(selectedEpisodes).onFailure { throwable ->
                             downloadErrorDialogMessage = throwable.message
-                                ?: "Failed to queue selected episodes."
+                                ?: "No se pudieron poner en cola los episodios seleccionados."
                         }
                     } finally {
                         seasonQueueInProgress = false
@@ -563,7 +563,7 @@ fun SeasonDetailScreen(
             shape = RoundedCornerShape(16.dp),
             title = {
                 Text(
-                    text = "Download Failed",
+                    text = "Error al descargar",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 20.sp
                 )
@@ -642,7 +642,7 @@ private data class SeasonEpisodeSelectionDialogState(
 
                 StorageSelectionOption(
                     id = episodeId,
-                    title = episode.name?.takeIf { it.isNotBlank() } ?: "Episode",
+                    title = episode.name?.takeIf { it.isNotBlank() } ?: "Episodio",
                     subtitle = episodeSubtitle,
                     requiredBytes = candidate.remainingBytes ?: 0L
                 )
@@ -720,7 +720,7 @@ private fun EpisodeListItem(
                     Text(
                         text = buildString {
                             episode.indexNumber?.let { append("$it. ") }
-                            append(episode.name ?: "Unknown Episode")
+                            append(episode.name ?: "Episodio desconocido")
                         },
                         fontSize = 16.sp,
                         lineHeight = 20.sp,

@@ -193,7 +193,7 @@ class ViewAllViewModel @Inject constructor(
                             withContext(Dispatchers.Main) {
                                 _uiState.value = _uiState.value.copy(
                                     isLoading = false,
-                                    error = exception.message ?: "Unknown error occurred"
+                                    error = exception.message ?: "Ocurrió un error desconocido"
                                 )
                             }
                         }
@@ -202,7 +202,7 @@ class ViewAllViewModel @Inject constructor(
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    error = e.message ?: "Unknown error occurred"
+                    error = e.message ?: "Ocurrió un error desconocido"
                 )
             }
         }

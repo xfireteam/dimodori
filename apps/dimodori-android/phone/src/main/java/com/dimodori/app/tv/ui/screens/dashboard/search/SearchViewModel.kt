@@ -158,7 +158,7 @@ class SearchViewModel @Inject constructor(
             } else {
                 _uiState.value = _uiState.value.copy(
                     isSearching = false,
-                    error = "Search failed"
+                    error = "La búsqueda falló"
                 )
             }
             return

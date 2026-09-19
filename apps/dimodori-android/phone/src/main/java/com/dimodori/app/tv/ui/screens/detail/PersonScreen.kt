@@ -551,7 +551,7 @@ private fun PersonTitleCard(
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             Text(
-                text = item.name ?: "Unknown",
+                text = item.name ?: "Desconocido",
                 color = Color.White,
                 fontSize = 13.sp,
                 lineHeight = 15.sp,

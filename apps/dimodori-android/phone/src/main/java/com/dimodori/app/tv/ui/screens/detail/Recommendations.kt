@@ -68,7 +68,7 @@ internal fun Recommendations(
             similarItems = directorTitles,
             mediaRepository = mediaRepository,
             onItemClick = onItemClick,
-            title = "Directed by ${primaryDirector.name}"
+            title = "Dirigida por ${primaryDirector.name}"
         )
     }
 

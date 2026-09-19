@@ -80,7 +80,7 @@ internal object PlayerMetadata {
             } else {
                 "$hdrInfo\n$analysisResult"
             }
-        } ?: "HDR info not available - player not initialized"
+        } ?: "Información HDR no disponible: el reproductor no está inicializado"
     }
 
     fun buildMediaMetadataInfo(
@@ -156,11 +156,11 @@ internal object PlayerMetadata {
                                 }
 
                                 analysisResult = if (videoFormatAnalysis.hdrSupport != bestFormat.hdrSupport) {
-                                    "Content: ${originalContentFormat} -> Playing: ${bestFormat.hdrSupport.displayName}"
+                                    "Contenido: $originalContentFormat -> Reproduciendo: ${bestFormat.hdrSupport.displayName}"
                                 } else if (isContentHdr) {
-                                    "Playing in native ${currentFormat} format"
+                                    "Reproduciendo en formato nativo $currentFormat"
                                 } else {
-                                    "Standard Dynamic Range (SDR)"
+                                    "Rango dinámico estándar (SDR)"
                                 }
 
                                 break
@@ -173,7 +173,7 @@ internal object PlayerMetadata {
             HdrFormatInfo(
                 isSupported = isContentHdr,
                 currentFormat = currentFormat,
-                deviceCapabilities = if (deviceSupportsHdr) "Yes" else "No",
+                deviceCapabilities = if (deviceSupportsHdr) "Sí" else "No",
                 analysisResult = analysisResult
             )
         }
@@ -270,8 +270,8 @@ internal object PlayerMetadata {
             val decoderType = when {
                 !isHwAccelEnabled -> "Software"
                 isUsingHardwareDecoder -> "Hardware"
-                decoderPriority == PlayerPreferences.DECODER_PRIORITY_SOFTWARE -> "Software Decoder"
-                else -> "Hardware Decoder"
+                decoderPriority == PlayerPreferences.DECODER_PRIORITY_SOFTWARE -> "Decodificador por software"
+                else -> "Decodificador por hardware"
             }
 
             HardwareAccelerationInfo(
@@ -280,7 +280,7 @@ internal object PlayerMetadata {
                 activeAudioCodec = activeAudioCodec,
                 decoderType = decoderType,
                 asyncModeEnabled = isHwAccelEnabled && isAsyncEnabled,
-                performanceMetrics = if (isHwAccelEnabled) "GPU-accelerated" else "CPU-only"
+                performanceMetrics = if (isHwAccelEnabled) "Acelerado por GPU" else "Solo CPU"
             )
         }
 

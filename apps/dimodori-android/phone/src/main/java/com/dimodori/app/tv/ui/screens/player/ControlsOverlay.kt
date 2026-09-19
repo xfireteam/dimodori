@@ -129,7 +129,7 @@ fun ControlsOverlay(
             if (logoRequest != null) {
                 AsyncImage(
                     model = logoRequest,
-                    contentDescription = "$title logo",
+                    contentDescription = "Logotipo de $title",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .height(28.dp)
@@ -176,7 +176,7 @@ fun ControlsOverlay(
             TvIconButton(
                 onClick = onSeekBackward,
                 icon = replayIcon(seekBackwardSeconds),
-                contentDescription = "Rewind $seekBackwardSeconds seconds",
+                contentDescription = "Retroceder $seekBackwardSeconds segundos",
                 size = 48.dp,
                 iconSize = 34.dp
             )
@@ -190,7 +190,7 @@ fun ControlsOverlay(
             TvIconButton(
                 onClick = onSeekForward,
                 icon = replayforwardIcon(seekForwardSeconds),
-                contentDescription = "Forward $seekForwardSeconds seconds",
+                contentDescription = "Avanzar $seekForwardSeconds segundos",
                 size = 48.dp,
                 iconSize = 34.dp,
                 iconModifier = Modifier.graphicsLayer {
@@ -258,7 +258,7 @@ fun ControlsOverlay(
                             )
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(
-                                text = "Spatial",
+                                text = "Espacial",
                                 color = Color(0xFF4CAF50),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium
@@ -271,34 +271,34 @@ fun ControlsOverlay(
                 TvSmallActionButton(
                     onClick = onShowMediaInfo,
                     icon = Icons.Outlined.Info,
-                    contentDescription = "Media Info",
+                    contentDescription = "Información multimedia",
                     tint = Color(0xFF4CAF50)
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 TvSmallActionButton(
                     onClick = onCycleAspectRatio,
                     icon = Icons.Outlined.AspectRatio,
-                    contentDescription = "Aspect Ratio"
+                    contentDescription = "Relación de aspecto"
                 )
                 if (showPlaybackSettingsButton) {
                     Spacer(modifier = Modifier.width(6.dp))
                     TvSmallActionButton(
                         onClick = onShowPlaybackSettings,
                         icon = Icons.Outlined.Settings,
-                        contentDescription = "Playback Settings"
+                        contentDescription = "Configuración de reproducción"
                     )
                 }
                 Spacer(modifier = Modifier.width(6.dp))
                 TvSmallActionButton(
                     onClick = onShowAudioTrackSelection,
                     icon = Icons.Outlined.Audiotrack,
-                    contentDescription = "Audio Tracks"
+                    contentDescription = "Pistas de audio"
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 TvSmallActionButton(
                     onClick = onShowSubtitleTrackSelection,
                     icon = Icons.Outlined.Subtitles,
-                    contentDescription = "Subtitles"
+                    contentDescription = "Subtítulos"
                 )
             }
 
@@ -382,7 +382,7 @@ private fun TvPlayPauseButton(
         } else {
             Icon(
                 imageVector = Icons.Rounded.PlayArrow,
-                contentDescription = "Play",
+                contentDescription = "Reproducir",
                 tint = Color.White,
                 modifier = Modifier.size(42.dp)
             )

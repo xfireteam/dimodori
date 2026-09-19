@@ -277,7 +277,7 @@ private fun PersonScreen(
         if (seerrRelatedTitles.isNotEmpty()) {
             item {
                 SeerTitlesRow(
-                    title = "Directed",
+                    title = "Dirigido por",
                     items = seerrRelatedTitles,
                     onItemClick = onItemClick,
                     topPadding = 24.dp,
@@ -500,7 +500,7 @@ private fun FilmographyCard(
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             Text(
-                text = item.name ?: "Unknown",
+                text = item.name ?: "Desconocido",
                 color = Color.White,
                 fontSize = 13.sp,
                 lineHeight = 15.sp,

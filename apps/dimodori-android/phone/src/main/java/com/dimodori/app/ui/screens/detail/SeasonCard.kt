@@ -186,7 +186,7 @@ fun SeasonCard(
                             color = Color.Black.copy(alpha = 0.7f)
                         ) {
                             Text(
-                                text = "$episodeCount episodes",
+                                text = "$episodeCount episodios",
                                 fontSize = 10.sp,
                                 color = Color.White,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -214,7 +214,7 @@ fun SeasonCard(
                     verticalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
                     Text(
-                        text = season.name ?: "Unknown Season",
+                        text = season.name ?: "Temporada desconocida",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = Color.White,
@@ -311,7 +311,7 @@ internal fun SeasonsSection(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "Seasons",
+            text = "Temporadas",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White

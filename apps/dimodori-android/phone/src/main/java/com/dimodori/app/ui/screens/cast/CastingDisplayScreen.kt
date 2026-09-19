@@ -82,8 +82,8 @@ fun CastingDisplayScreen(
         0f
     }
 
-    val targetDevice = castState.deviceName?.takeIf { it.isNotBlank() } ?: "your device"
-    val mediaTitle = castState.mediaTitle?.takeIf { it.isNotBlank() } ?: "Now Playing"
+    val targetDevice = castState.deviceName?.takeIf { it.isNotBlank() } ?: "tu dispositivo"
+    val mediaTitle = castState.mediaTitle?.takeIf { it.isNotBlank() } ?: "Reproduciendo ahora"
     val mediaSubtitle = castState.mediaSubtitle?.takeIf { it.isNotBlank() }
     val artworkUrl = castState.artworkUrl ?: fallbackArtworkUrl
 
@@ -106,7 +106,7 @@ fun CastingDisplayScreen(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Close,
-                    contentDescription = "Close casting screen",
+                    contentDescription = "Cerrar pantalla de transmisión",
                     tint = Color.White,
                     modifier = Modifier.size(16.dp)
                 )
@@ -161,7 +161,7 @@ fun CastingDisplayScreen(
                                     modifier = Modifier.size(14.dp)
                                 )
                                 Text(
-                                    text = "Casting",
+                                    text = "Transmitiendo",
                                     color = Color(0xFFE7FFF6),
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.SemiBold
@@ -274,7 +274,7 @@ fun CastingDisplayScreen(
                             }
                             if (subtitleTrackOptions.size > 1) {
                                 TrackOptionRow(
-                                    label = "Subtitles",
+                                    label = "Subtítulos",
                                     options = subtitleTrackOptions,
                                     selectedTrackIndex = selectedSubtitleTrackIndex,
                                     onTrackSelected = onSubtitleTrackSelected,
@@ -283,7 +283,7 @@ fun CastingDisplayScreen(
                             }
                             if (isTrackSelectionUpdating) {
                                 Text(
-                                    text = "Updating stream selection...",
+                                    text = "Actualizando selección de transmisión...",
                                     fontSize = 12.sp,
                                     color = Color(0xFF9FEBD4)
                                 )
@@ -339,7 +339,7 @@ fun CastingDisplayScreen(
                                 contentDescription = null
                             )
                             Text(
-                                text = if (castState.isPlaying) "Pause" else "Play",
+                                text = if (castState.isPlaying) "Pausar" else "Reproducir",
                                 modifier = Modifier.padding(start = 6.dp),
                                 fontWeight = FontWeight.Bold
                             )
@@ -374,7 +374,7 @@ fun CastingDisplayScreen(
                             contentColor = Color(0xFFE2EAF5)
                         )
                     ) {
-                        Text(text = "Disconnect Device", fontWeight = FontWeight.Medium)
+                        Text(text = "Desconectar dispositivo", fontWeight = FontWeight.Medium)
                     }
                 }
             }

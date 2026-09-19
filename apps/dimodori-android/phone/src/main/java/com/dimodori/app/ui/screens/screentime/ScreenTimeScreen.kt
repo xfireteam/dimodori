@@ -271,8 +271,8 @@ fun ScreenTimeScreen(
                 if (state.items.isNotEmpty()) {
                     item {
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            if (movieCount > 0) ScreenTimeChip("Movies ($movieCount)", selectedItemType == "Movie") { selectedItemType = "Movie" }
-                            if (episodeCount > 0) ScreenTimeChip("Episodes ($episodeCount)", selectedItemType == "Episode") { selectedItemType = "Episode" }
+                            if (movieCount > 0) ScreenTimeChip("Películas ($movieCount)", selectedItemType == "Movie") { selectedItemType = "Movie" }
+                            if (episodeCount > 0) ScreenTimeChip("Episodios ($episodeCount)", selectedItemType == "Episode") { selectedItemType = "Episode" }
                         }
                     }
 
@@ -352,15 +352,15 @@ private fun DateRangeSubtitle(
             val currentWeekStart = today.with(TemporalAdjusters.previousOrSame(firstDayOfWeek))
             val start = currentWeekStart.plusWeeks(weekOffset.toLong())
             val end = start.plusDays(6)
-            "${start.format(formatter)}  –  ${if (weekOffset == 0) "Today" else end.format(formatter)}"
+            "${start.format(formatter)}  –  ${if (weekOffset == 0) "Hoy" else end.format(formatter)}"
         }
         ScreenTimePeriod.MONTH -> {
             val target = today.plusMonths(monthOffset.toLong())
             val start = target.withDayOfMonth(1)
             val end = if (monthOffset == 0) today else target.withDayOfMonth(target.lengthOfMonth())
-            "${start.format(formatter)}  –  ${if (monthOffset == 0) "Today" else end.format(formatter)}"
+            "${start.format(formatter)}  –  ${if (monthOffset == 0) "Hoy" else end.format(formatter)}"
         }
-        ScreenTimePeriod.YEAR -> if (year == today.year) "$year – Today" else year.toString()
+        ScreenTimePeriod.YEAR -> if (year == today.year) "$year – Hoy" else year.toString()
     }
     val canGoNext = when (period) {
         ScreenTimePeriod.WEEK -> weekOffset < 0
@@ -502,7 +502,7 @@ private fun getDaysForBucket(
     return grouped.getOrNull(bucketIndex)?.map { it.dateEpochDay }?.toSet() ?: emptySet()
 }
 
-private val peakLabels = arrayOf("Morning", "Afternoon", "Evening", "Night")
+private val peakLabels = arrayOf("Mañana", "Tarde", "Atardecer", "Noche")
 
 private fun computePeakHoursFromItems(items: List<BaseItemDto>): List<com.jellycine.data.model.PeakHourBucket> {
     val hours = items.mapNotNull { parseItemHour(it.userData?.lastPlayedDate ?: it.dateCreated) }

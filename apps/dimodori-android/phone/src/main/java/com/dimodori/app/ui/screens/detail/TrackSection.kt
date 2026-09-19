@@ -91,7 +91,7 @@ internal fun TrackSection(
                         } else {
                             Modifier.fillMaxWidth()
                         },
-                        label = "Video",
+                        label = "Vídeo",
                         selectedOption = displayedSelectedVideo,
                         options = videoOptions,
                         inlineMetaText = videoInlineMetaText,
@@ -124,7 +124,7 @@ internal fun TrackSection(
                         } else {
                             Modifier.fillMaxWidth()
                         },
-                        label = "Subtitles",
+                        label = "Subtítulos",
                         selectedOption = selectedSubtitle,
                         options = subtitleOptions,
                         singleValueFillWidth = !sharesRow,
@@ -138,7 +138,7 @@ internal fun TrackSection(
     } else {
         if (hasVideoSection) {
             TrackField(
-                label = "Video",
+                label = "Vídeo",
                 selectedOption = displayedSelectedVideo,
                 options = videoOptions,
                 inlineMetaText = videoInlineMetaText,
@@ -162,7 +162,7 @@ internal fun TrackSection(
         if (hasSubtitleSection) {
             Spacer(modifier = Modifier.height(4.dp))
             TrackField(
-                label = "Subtitles",
+                label = "Subtítulos",
                 selectedOption = selectedSubtitle,
                 options = subtitleOptions,
                 onOptionSelected = onSubtitleOptionSelected

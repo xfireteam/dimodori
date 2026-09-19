@@ -21,7 +21,7 @@ fun DownloadOnlyButton(
     isDownloading: Boolean = false,
     progress: Float = 0f,
     modifier: Modifier = Modifier,
-    text: String = "Download"
+    text: String = "Descargar"
 ) {
     OutlinedButton(
         onClick = if (!isDownloading) onClick else { {} },
@@ -59,13 +59,13 @@ fun DownloadOnlyButton(
                 isDownloading && progress >= 1f -> {
                     Icon(
                         imageVector = Icons.Rounded.CheckCircle,
-                        contentDescription = "Downloaded",
+                        contentDescription = "Descargado",
                         modifier = Modifier.size(20.dp),
                         tint = Color(0xFF4CAF50)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        "Downloaded",
+                        "Descargado",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color(0xFF4CAF50)

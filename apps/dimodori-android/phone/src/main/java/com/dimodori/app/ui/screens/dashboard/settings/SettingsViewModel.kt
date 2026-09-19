@@ -326,7 +326,7 @@ class SettingsViewModel(
             val scopeId = _uiState.value.activeServerId
             if (scopeId.isNullOrBlank()) {
                 val result = Result.failure<SeerrConnectionInfo>(
-                    Exception("No active DIMODORI session is available.")
+                    Exception("No hay ninguna sesión activa de DIMODORI.")
                 )
                 setSeerrState(
                     SeerrUiState(

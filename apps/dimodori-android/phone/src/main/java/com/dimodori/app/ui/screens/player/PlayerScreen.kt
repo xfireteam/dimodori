@@ -534,14 +534,14 @@ fun SpatialAudioInfoDialog(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Spatial Audio Status",
+                    text = "Estado del audio espacial",
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 IconButton(onClick = onDismiss) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Close",
+                        contentDescription = "Cerrar",
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
@@ -566,7 +566,7 @@ fun SpatialAudioInfoDialog(
             TextButton(
                 onClick = onDismiss
             ) {
-                Text("OK")
+                Text("Aceptar")
             }
         },
         containerColor = MaterialTheme.colorScheme.surface,
@@ -588,14 +588,14 @@ fun HdrFormatInfoDialog(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "HDR Format & Fallback Status",
+                    text = "Formato HDR y estado alternativo",
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 IconButton(onClick = onDismiss) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Close",
+                        contentDescription = "Cerrar",
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
@@ -620,7 +620,7 @@ fun HdrFormatInfoDialog(
             TextButton(
                 onClick = onDismiss
             ) {
-                Text("OK")
+                Text("Aceptar")
             }
         },
         containerColor = MaterialTheme.colorScheme.surface,

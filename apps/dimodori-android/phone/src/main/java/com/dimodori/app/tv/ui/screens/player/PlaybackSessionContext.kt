@@ -4,10 +4,10 @@ internal enum class PlayMethod(
     val displayName: String,
     val reportValue: String
 ) {
-    DIRECT_PLAY(displayName = "Direct Play", reportValue = "DirectPlay"),
-    DIRECT_STREAM(displayName = "Direct Stream", reportValue = "DirectStream"),
-    TRANSCODE(displayName = "Transcode", reportValue = "Transcode"),
-    OFFLINE(displayName = "Offline", reportValue = "DirectPlay")
+    DIRECT_PLAY(displayName = "Reproducción directa", reportValue = "DirectPlay"),
+    DIRECT_STREAM(displayName = "Transmisión directa", reportValue = "DirectStream"),
+    TRANSCODE(displayName = "Transcodificación", reportValue = "Transcode"),
+    OFFLINE(displayName = "Sin conexión", reportValue = "DirectPlay")
 }
 
 internal data class PlaybackSessionContext(

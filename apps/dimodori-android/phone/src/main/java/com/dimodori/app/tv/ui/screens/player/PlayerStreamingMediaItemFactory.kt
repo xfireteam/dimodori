@@ -94,7 +94,7 @@ private fun subtitleConfiguration(
             subtitleStream.displayTitle
                 ?: subtitleStream.title
                 ?: subtitleStream.language
-                ?: "Subtitle"
+                ?: "Subtítulos"
         )
         .build()
 }

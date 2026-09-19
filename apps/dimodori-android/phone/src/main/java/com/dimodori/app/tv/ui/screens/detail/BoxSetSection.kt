@@ -69,7 +69,7 @@ internal fun BoxSetItemsSection(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = "${items.size} Movies",
+            text = "${items.size} películas",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White
@@ -172,7 +172,7 @@ private fun BoxSetMovieCard(
                             ) {
                                 Icon(
                                     imageVector = Icons.Rounded.Check,
-                                    contentDescription = "Watched",
+                                    contentDescription = "Visto",
                                     tint = Color.White,
                                     modifier = Modifier.size(13.dp)
                                 )
@@ -199,7 +199,7 @@ private fun BoxSetMovieCard(
                 verticalArrangement = Arrangement.spacedBy(3.dp)
             ) {
                 Text(
-                    text = item.name ?: "Unknown",
+                    text = item.name ?: "Desconocido",
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White,

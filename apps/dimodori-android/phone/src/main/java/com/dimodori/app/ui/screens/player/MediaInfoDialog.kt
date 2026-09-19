@@ -39,7 +39,7 @@ data class MediaMetadataInfo(
     val hardwareAcceleration: HardwareAccelerationInfo? = null,
     val streamContainer: String? = null,
     val streamBitrateKbps: Int? = null,
-    val playMethod: String = "Direct Play"
+    val playMethod: String = "Reproducción directa"
 )
 
 data class HdrFormatInfo(
@@ -118,20 +118,20 @@ fun MediaInfoDialog(
                         .verticalScroll(rememberScrollState())
                         .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 8.dp)
                 ) {
-                    SectionTitle("Stream")
+                    SectionTitle("Transmisión")
                     PrimaryLine(buildStreamLine(mediaInfo))
                     SecondaryLine("-> ${mediaInfo.playMethod}")
 
                     Spacer(modifier = Modifier.height(6.dp))
 
-                    SectionTitle("Video")
+                    SectionTitle("Vídeo")
                     PrimaryLine(buildVideoTitle(mediaInfo.videoFormat, mediaInfo.hdrFormat))
                     buildVideoDetails(mediaInfo.videoFormat)?.let { PrimaryLine(it) }
                     SecondaryLine("-> ${mediaInfo.playMethod}")
                     mediaInfo.hardwareAcceleration?.let {
-                        MixedLine("Renderer", if (it.isHardwareDecoding) "MediaCodec" else "Software")
+                        MixedLine("Renderizador", if (it.isHardwareDecoding) "MediaCodec" else "Software")
                         buildDisplayMode(mediaInfo.videoFormat)?.let { mode ->
-                            MixedLine("Display Mode", mode)
+                            MixedLine("Modo de pantalla", mode)
                         }
                     }
 
@@ -220,9 +220,12 @@ private fun MixedLine(label: String, value: String) {
 }
 
 private fun buildStreamLine(mediaInfo: MediaMetadataInfo): String {
-    val container = mediaInfo.streamContainer?.uppercase(Locale.US)
-        ?: mediaInfo.videoFormat?.mimeType?.substringAfter("/", "")?.uppercase(Locale.US)
-        ?: "STREAM"
+    val container = listOfNotNull(
+        mediaInfo.streamContainer,
+        mediaInfo.videoFormat?.mimeType?.substringAfter("/", "")
+    ).firstOrNull { it.isNotBlank() && !it.equals("Unknown", ignoreCase = true) }
+        ?.uppercase(Locale.US)
+        ?: "Desconocido"
 
     val bitrateKbps = mediaInfo.streamBitrateKbps ?: mediaInfo.videoFormat?.bitrateKbps
     return if (bitrateKbps != null && bitrateKbps > 0) {
@@ -233,23 +236,28 @@ private fun buildStreamLine(mediaInfo: MediaMetadataInfo): String {
 }
 
 private fun buildVideoTitle(videoInfo: VideoFormatInfo?, hdrInfo: HdrFormatInfo?): String {
-    if (videoInfo == null) return "Unknown"
+    if (videoInfo == null) return "Desconocido"
 
     val resolutionTag = when {
         videoInfo.resolution.startsWith("3840x", true) || videoInfo.resolution.startsWith("4096x", true) -> "4K"
         videoInfo.resolution.startsWith("2560x", true) -> "1440p"
         videoInfo.resolution.startsWith("1920x", true) -> "1080p"
-        else -> videoInfo.resolution
+        videoInfo.resolution.isNotBlank() && !videoInfo.resolution.equals("Unknown", ignoreCase = true) ->
+            videoInfo.resolution
+        else -> null
     }
 
     val hdrTag = hdrInfo?.currentFormat?.takeIf { !it.isNullOrBlank() }
         ?: if (hdrInfo?.isSupported == true) "HDR" else null
 
-    val codecTag = mapCodecForDisplay(videoInfo.codec)
+    val codecTag = videoInfo.codec
+        .takeIf { it.isNotBlank() && !it.equals("Unknown", ignoreCase = true) }
+        ?.let(::mapCodecForDisplay)
 
     return listOfNotNull(resolutionTag, hdrTag, codecTag)
         .joinToString(" ")
         .trim()
+        .ifBlank { "Desconocido" }
 }
 
 private fun buildVideoDetails(videoInfo: VideoFormatInfo?): String? {
@@ -272,25 +280,30 @@ private fun buildDisplayMode(videoInfo: VideoFormatInfo?): String? {
 
     return when {
         width != null && fps != null -> "$width/$fps"
-        videoInfo.resolution.isNotBlank() && fps != null -> "${videoInfo.resolution}/$fps"
+        videoInfo.resolution.isNotBlank() &&
+            !videoInfo.resolution.equals("Unknown", ignoreCase = true) &&
+            fps != null -> "${videoInfo.resolution}/$fps"
         else -> null
     }
 }
 
 private fun buildAudioTitle(audioInfo: AudioFormatInfo?): String {
-    if (audioInfo == null) return "Unknown"
+    if (audioInfo == null) return "Desconocido"
 
     val lang = audioInfo.language?.takeIf { it.isNotBlank() }?.replaceFirstChar {
         if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString()
     }
-    val defaultTag = if (audioInfo.isDefault) " (Default)" else ""
+    val defaultTag = if (audioInfo.isDefault) " (Predeterminada)" else ""
 
     return listOfNotNull(lang, audioInfo.codec, audioInfo.channels)
+        .filterNot { it.equals("Unknown", ignoreCase = true) }
         .joinToString(" ")
-        .trim() + defaultTag
+        .trim()
+        .ifBlank { "Desconocido" } + defaultTag
 }
 
 private fun mapCodecForDisplay(codec: String): String {
+    if (codec.isBlank() || codec.equals("Unknown", ignoreCase = true)) return ""
     return when (codec.uppercase(Locale.US)) {
         "H.265", "H265", "HEVC" -> "HEVC"
         "H.264", "H264", "AVC" -> "AVC"

@@ -954,21 +954,21 @@ internal fun downloadFailure(
     rawMessage: String? = null
 ): String {
     state?.storageShortageInfo?.let { storage ->
-        val fileSize = storage.fileSizeBytes?.let(::formatStorageBytesForDialog) ?: "Unknown"
+            val fileSize = storage.fileSizeBytes?.let(::formatStorageBytesForDialog) ?: "Desconocido"
         val available = formatStorageBytesForDialog(storage.availableBytes)
         val needed = formatStorageBytesForDialog(storage.neededBytes)
         return buildString {
-            appendLine("Not enough storage space on this device.")
+            appendLine("No hay suficiente espacio de almacenamiento en este dispositivo.")
             appendLine()
-            appendLine("File size: $fileSize")
-            appendLine("Available: $available")
-            append("Needed: $needed")
+            appendLine("Tamaño del archivo: $fileSize")
+            appendLine("Disponible: $available")
+            append("Necesario: $needed")
         }
     }
 
     val resolvedMessage = rawMessage?.trim().takeUnless { it.isNullOrBlank() }
         ?: state?.message?.trim().takeUnless { it.isNullOrBlank() }
-    return resolvedMessage ?: "Download failed. Please try again."
+    return resolvedMessage ?: "La descarga falló. Inténtalo de nuevo."
 }
 
 internal fun formatStorageBytesForDialog(bytes: Long): String {
@@ -1147,12 +1147,12 @@ internal fun BaseItemPerson.isCreditType(expectedType: String): Boolean {
 
 internal fun episodeHeaderText(item: BaseItemDto): String? {
     if (item.type != "Episode") return null
-    val title = item.name?.takeIf { it.isNotBlank() } ?: "Unknown"
+    val title = item.name?.takeIf { it.isNotBlank() } ?: "Desconocido"
     val season = item.parentIndexNumber
     val episode = item.indexNumber
     return when {
         season != null && episode != null -> "S${season}:E${episode} - $title"
-        episode != null -> "Episode $episode - $title"
+        episode != null -> "Episodio $episode - $title"
         else -> title
     }
 }
@@ -1190,8 +1190,8 @@ internal data class SeriesSeasonSelectionDialogState(
                 val seasonNumber = firstItem.parentIndexNumber
                 val title = when {
                     !firstItem.seasonName.isNullOrBlank() -> firstItem.seasonName.orEmpty()
-                    seasonNumber != null -> "Season $seasonNumber"
-                    else -> "Season"
+                    seasonNumber != null -> "Temporada $seasonNumber"
+                    else -> "Temporada"
                 }
 
                 val episodeCount = orderedCandidates.size
@@ -1233,7 +1233,7 @@ internal fun seasonGroupKey(item: BaseItemDto): String {
 }
 
 internal fun episodeCountLabel(count: Int): String {
-    return "$count episode" + if (count == 1) "" else "s"
+    return "$count episodio" + if (count == 1) "" else "s"
 }
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)

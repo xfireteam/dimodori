@@ -344,7 +344,7 @@ private suspend fun loadRecommendationFeed(mediaRepository: MediaRepository): Re
                 RecommendationFeedState(
                     sections = listOf(
                         RecommendationSectionUi(
-                            title = "Suggestions",
+                             title = "Sugerencias",
                             items = fallbackItems
                         )
                     ),
@@ -366,7 +366,7 @@ private suspend fun loadRecommendationFeed(mediaRepository: MediaRepository): Re
             }
         }
     } catch (e: Exception) {
-        RecommendationFeedState(emptyList(), e.message ?: "Unknown error")
+        RecommendationFeedState(emptyList(), e.message ?: "Error desconocido")
     }
 }
 
