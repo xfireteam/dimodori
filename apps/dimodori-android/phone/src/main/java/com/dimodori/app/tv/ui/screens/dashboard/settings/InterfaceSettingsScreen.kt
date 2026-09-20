@@ -141,7 +141,8 @@ fun InterfaceSettingsScreen(
                         onModeSelected = preferences::setThemeMusicMode,
                         accentColor = Color(0xFF8B5CF6),
                         volume = themeMusicVolume,
-                        onVolumeChanged = preferences::setThemeMusicVolume
+                        onVolumeChanged = preferences::setThemeMusicVolume,
+                        enableVerticalDpadNavigation = true
                     )
                     HorizontalDivider(
                         thickness = 1.dp,

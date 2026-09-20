@@ -40,7 +40,8 @@ fun ThemeMusicSettingsItem(
     onModeSelected: (String) -> Unit,
     accentColor: Color,
     volume: Float = 1f,
-    onVolumeChanged: (Float) -> Unit = {}
+    onVolumeChanged: (Float) -> Unit = {},
+    enableVerticalDpadNavigation: Boolean = false
 ) {
     val options = listOf(
         Preferences.THEME_MUSIC_NO to stringResource(R.string.interface_theme_music_no),
@@ -124,6 +125,7 @@ fun ThemeMusicSettingsItem(
                         onValueChange = onVolumeChanged,
                         accentColor = accentColor,
                         inactiveTrackColor = Color.White.copy(alpha = 0.20f),
+                        enableVerticalDpadNavigation = enableVerticalDpadNavigation,
                         modifier = Modifier
                             .weight(1f)
                             .padding(horizontal = 8.dp)
