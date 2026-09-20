@@ -27,6 +27,7 @@ import com.jellycine.player.core.PlayerTrack
 import com.jellycine.player.core.PlayerUtils
 import com.jellycine.player.preferences.PlayerPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -79,6 +80,7 @@ class PlayerViewModel @Inject constructor(
     private var currentItemDetails: BaseItemDto? = null
     private var nextEpisodePrefetchJob: Job? = null
     private var nextEpisodePrefetchSignature: String? = null
+    private var initializationJob: Job? = null
     private var hasRenderedFirstFrame = false
 
     fun initializePlayer(
@@ -90,7 +92,8 @@ class PlayerViewModel @Inject constructor(
         initialSeekPositionMs: Long? = null,
         startPlayback: Boolean = true
     ) {
-        viewModelScope.launch {
+        initializationJob?.cancel()
+        initializationJob = viewModelScope.launch {
             try {
                 _playerState.value = _playerState.value.copy(
                     isLoading = true,
@@ -154,11 +157,13 @@ class PlayerViewModel @Inject constructor(
                 spatializerHelper = SpatializerHelper(context)
 
                 // Get item details to check for resume position
-                val itemDetails = if (initialItemDetails?.id == mediaId) {
-                    initialItemDetails
-                } else {
-                    mediaRepository.getItemById(mediaId).getOrNull()
-                }
+                val matchingInitialDetails = initialItemDetails?.takeIf { it.id == mediaId }
+                val itemDetails = if (
+                    matchingInitialDetails == null ||
+                    matchingInitialDetails.needsPlaybackMetadataRefresh()
+                ) {
+                    mediaRepository.getItemById(mediaId).getOrNull() ?: matchingInitialDetails
+                } else matchingInitialDetails
                 currentItemDetails = itemDetails
                 val resumePositionTicks = itemDetails?.userData?.playbackPositionTicks
                 val storedResumePositionMs = if (resumePositionTicks != null && resumePositionTicks > 0) {
@@ -166,7 +171,13 @@ class PlayerViewModel @Inject constructor(
                 } else {
                     null
                 }
-                val mediaTitle = itemDetails?.name ?: "Título desconocido"
+                val mediaTitle = itemDetails?.let { item ->
+                    if (item.type.equals("Episode", ignoreCase = true)) {
+                        item.seriesName?.takeIf { it.isNotBlank() }
+                    } else {
+                        item.name?.takeIf { it.isNotBlank() }
+                    }
+                }.orEmpty()
                 val logoSourceId = when {
                     itemDetails?.imageTags?.containsKey("Logo") == true && !itemDetails.id.isNullOrBlank() -> itemDetails.id
                     !itemDetails?.parentLogoItemId.isNullOrBlank() && !itemDetails?.parentLogoImageTag.isNullOrBlank() -> itemDetails?.parentLogoItemId
@@ -181,28 +192,12 @@ class PlayerViewModel @Inject constructor(
                         enableImageEnhancers = false
                     )
                 }
-                val seasonEpisodeLabel = itemDetails?.let { item ->
-                    val isEpisodeItem = item.type.equals("Episode", ignoreCase = true)
-                    val season = item.parentIndexNumber
-                    val episode = item.indexNumber
-                    if (isEpisodeItem && season != null && episode != null) {
-                        val episodeName = item.episodeTitle
-                            ?.takeIf { it.isNotBlank() }
-                            ?: item.name?.takeIf { it.isNotBlank() }
-                        buildString {
-                            append("S")
-                            append(season)
-                            append(":E")
-                            append(episode)
-                            episodeName?.let {
-                                append(" - ")
-                                append(it)
-                            }
-                        }
-                    } else {
-                        null
-                    }
-                }
+                val seasonEpisodeLabel = itemDetails?.let(::buildPlaybackMetadataLine)
+                _playerState.value = _playerState.value.copy(
+                    mediaTitle = mediaTitle,
+                    mediaLogoUrl = mediaLogoUrl,
+                    seasonEpisodeLabel = seasonEpisodeLabel
+                )
                 val chapterMarkers = PlaybackMarkerUtils.buildChapterMarkers(itemDetails?.chapters)
                 val resolvedStartPositionMs = initialSeekPositionMs ?: storedResumePositionMs
                 val introSegment = PlaybackMarkerUtils.extractIntroWindow(itemDetails?.chapters)
@@ -392,6 +387,8 @@ class PlayerViewModel @Inject constructor(
                     applyCommunityPlaybackSegments(mediaId = mediaId, itemDetails = itemDetails)
                 }
 
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 Log.e("PlayerViewModel", "Player initialization failed", e)
                 _playerState.value = _playerState.value.copy(
@@ -689,6 +686,8 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun releasePlayer() {
+        initializationJob?.cancel()
+        initializationJob = null
         persistPosition()
         playbackReporter.reportPlaybackStopped()
         cancelNextEpisodePrefetch()
@@ -1106,5 +1105,47 @@ class PlayerViewModel @Inject constructor(
 
     fun getSourceVideoHeight(): Int? {
         return PlayerMetadata.getSourceVideoHeight(apiMediaStreams)
+    }
+}
+
+private fun buildPlaybackMetadataLine(item: BaseItemDto): String? {
+    return when {
+        item.type.equals("Episode", ignoreCase = true) -> {
+            val episodeNumber = buildList {
+                item.parentIndexNumber?.let { add("S$it") }
+                item.indexNumber?.let { add("E$it") }
+            }.joinToString(":")
+            val episodeName = item.name
+                ?.takeIf { it.isNotBlank() && it != item.seriesName }
+                ?: item.episodeTitle?.takeIf { it.isNotBlank() && it != item.seriesName }
+
+            listOfNotNull(
+                episodeNumber.takeIf { it.isNotBlank() },
+                episodeName
+            ).joinToString(" - ")
+                .takeIf { it.isNotBlank() && it != item.seriesName }
+        }
+        item.type.equals("Movie", ignoreCase = true) -> {
+            item.productionYear?.toString()
+                ?: item.premiereDate
+                    ?.take(4)
+                    ?.takeIf { year -> year.length == 4 && year.all(Char::isDigit) }
+        }
+        else -> null
+    }
+}
+
+private fun BaseItemDto.needsPlaybackMetadataRefresh(): Boolean {
+    val cleanName = name?.takeIf { it.isNotBlank() }
+    return when {
+        type.equals("Episode", ignoreCase = true) ->
+            cleanName == null ||
+                seriesName.isNullOrBlank() ||
+                parentIndexNumber == null ||
+                indexNumber == null
+        type.equals("Movie", ignoreCase = true) ->
+            cleanName == null || (productionYear == null && premiereDate.isNullOrBlank())
+        type.isNullOrBlank() -> true
+        else -> cleanName == null
     }
 }

@@ -135,23 +135,25 @@ fun ControlsOverlay(
                         .height(28.dp)
                         .widthIn(min = 28.dp, max = 220.dp)
                 )
-            } else if (title.isNotBlank()) {
-                Text(
-                    text = title,
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Spacer(modifier = Modifier.height(8.dp))
             }
             if (!seasonEpisodeLabel.isNullOrBlank()) {
-                Spacer(modifier = Modifier.height(3.dp))
                 Text(
                     text = seasonEpisodeLabel,
                     color = Color.White.copy(alpha = 0.75f),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Medium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            if (title.isNotBlank()) {
+                Spacer(modifier = Modifier.height(3.dp))
+                Text(
+                    text = title,
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
