@@ -115,6 +115,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.snapshotFlow
+import kotlinx.coroutines.flow.collectLatest
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
 import coil3.imageLoader
@@ -803,6 +805,7 @@ fun ImageLoader(
     hasImageEnhancers: Boolean = true,
     imageTag: String? = null
 ) {
+    val imageSessionKey = LocalHomeImageSessionKey.current
     val imageTypes = remember(imageType, fallbackImageType, extraFallbackImageTypes) {
         buildList {
             add(imageType)
@@ -996,6 +999,8 @@ fun ImageLoader(
             AsyncImage(
                 model = ImageRequest.Builder(context)
                     .data(imageUrl)
+                    .memoryCacheKey("$imageSessionKey|$imageUrl")
+                    .diskCacheKey("$imageSessionKey|$imageUrl")
                     .memoryCachePolicy(CachePolicy.ENABLED)
                     .diskCachePolicy(CachePolicy.ENABLED)
                     .networkCachePolicy(CachePolicy.ENABLED)
@@ -1060,6 +1065,7 @@ fun ImageLoader(
 val LocalQueryManager = compositionLocalOf<QueryManager> {
     error("QueryManager not provided")
 }
+val LocalHomeImageSessionKey = compositionLocalOf { "" }
 
 private object DashboardHomeQueryStore {
     private var ownerSessionKey: String? = null
@@ -1377,7 +1383,10 @@ fun Dashboard(
         }
     }
 
-    CompositionLocalProvider(LocalQueryManager provides queryManager) {
+    CompositionLocalProvider(
+        LocalQueryManager provides queryManager,
+        LocalHomeImageSessionKey provides dashboardSessionKey
+    ) {
         CompositionLocalProvider(LocalBringIntoViewSpec provides dashboardBringIntoViewSpec) {
 
         val featuredQuery = useQuery(
@@ -1530,9 +1539,35 @@ fun Dashboard(
                 requestTimeoutMs = networkRequestTimeoutMs
             )
         ) {
+            val partialSections = mutableListOf<HomeLibrarySectionUi>()
             val result = mediaRepository.getHomeLibrarySections(
                 maxLibraries = null,
-                itemsPerLibrary = 14
+                itemsPerLibrary = 14,
+                onSection = { section ->
+                    withContext(Dispatchers.Main.immediate) {
+                        val active = authRepository.getActiveSessionSnapshot()
+                        val activeKey = "${active.serverUrl?.let(::trimTrailingSlash).orEmpty()}|${active.username.orEmpty()}"
+                        if (activeKey != dashboardSessionKey) return@withContext
+                        section.library.id?.let { libraryId ->
+                            val uiSection = HomeLibrarySectionUi(
+                                libraryId = libraryId,
+                                libraryName = section.library.name ?: "Biblioteca",
+                                collectionType = section.library.collectionType,
+                                items = section.items
+                            )
+                            partialSections.removeAll { it.libraryId == libraryId }
+                            partialSections += uiSection
+                            queryManager.setQuery(
+                                "home_library_burst",
+                                QueryState(
+                                    data = partialSections.toList(),
+                                    isLoading = true,
+                                    lastFetched = queryManager.getQuery<List<HomeLibrarySectionUi>>("home_library_burst").lastFetched
+                                )
+                            )
+                        }
+                    }
+                }
             )
             result.fold(
                 onSuccess = { sections ->
@@ -1612,7 +1647,16 @@ fun Dashboard(
         } else {
             emptyList()
         }
-        val LibrarySections = homeLibraryBurstQuery.data ?: persistedLibrarySections
+        val LibrarySections = (homeLibraryBurstQuery.data ?: emptyList())
+            .let { fresh ->
+                if (fresh.isEmpty()) persistedLibrarySections
+                else persistedLibrarySections
+                    .associateBy { it.libraryId }
+                    .toMutableMap()
+                    .apply { fresh.forEach { this[it.libraryId] = it } }
+                    .values
+                    .toList()
+            }
 
         val persistedMyMediaLibraries = if (selectedCategory == HomeCategory.HOME && isNetworkAvailable) {
             persistedHomeSnapshot?.myMediaLibraries.orEmpty()
@@ -1681,12 +1725,26 @@ fun Dashboard(
             mediaRepository.persistHomeSnapshot(featuredHomeItems = items)
         }
 
-        LaunchedEffect(homeLibraryBurstQuery.data?.hashCode(), isNetworkAvailable) {
+        LaunchedEffect(
+            homeLibraryBurstQuery.data?.hashCode(),
+            homeLibraryBurstQuery.isLoading,
+            homeLibraryBurstQuery.isError,
+            isNetworkAvailable
+        ) {
             if (!isNetworkAvailable) return@LaunchedEffect
+            if (homeLibraryBurstQuery.isLoading || homeLibraryBurstQuery.isError) return@LaunchedEffect
             val sections = homeLibraryBurstQuery.data ?: return@LaunchedEffect
             if (sections.isEmpty()) return@LaunchedEffect
+            val active = authRepository.getActiveSessionSnapshot()
+            val activeKey = "${active.serverUrl?.let(::trimTrailingSlash).orEmpty()}|${active.username.orEmpty()}"
+            if (activeKey != dashboardSessionKey) return@LaunchedEffect
+            val persisted = mediaRepository.getPersistedHomeSnapshot()
+            val merged = persisted?.homeLibrarySections.orEmpty().associateBy { it.library.id }.toMutableMap()
+            sections.forEach { section ->
+                merged[section.libraryId] = section.toPersistedSection()
+            }
             mediaRepository.persistHomeSnapshot(
-                homeLibrarySections = sections.map { it.toPersistedSection() }
+                homeLibrarySections = merged.values.toList()
             )
 
         }
@@ -1883,6 +1941,7 @@ fun Dashboard(
                             BurstLibrarySection(
                                 section = section,
                                 mediaRepository = mediaRepository,
+                                dashboardSessionKey = dashboardSessionKey,
                                 disablePosterEnhancers = disablePosterEnhancers,
                                 initialFocusRequester = if (
                                     index == 0 &&
@@ -2723,6 +2782,7 @@ private fun entryCardModifier(
 private fun BurstLibrarySection(
     section: HomeLibrarySectionUi,
     mediaRepository: MediaRepository,
+    dashboardSessionKey: String,
     disablePosterEnhancers: Boolean,
     initialFocusRequester: FocusRequester? = null,
     returnFocusRequester: FocusRequester? = null,
@@ -2740,6 +2800,45 @@ private fun BurstLibrarySection(
             libraryRowState.firstVisibleItemScrollOffset > 0
         if (hasScrolled) {
             libraryRowState.scrollToItem(0)
+        }
+    }
+    val context = LocalContext.current
+    val prefetchedIndices = remember(dashboardSessionKey, section.libraryId, section.items) { mutableSetOf<Int>() }
+    LaunchedEffect(libraryRowState, section.items, dashboardSessionKey) {
+        snapshotFlow {
+            libraryRowState.isScrollInProgress to libraryRowState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+        }.collectLatest { (scrolling, lastVisibleIndex) ->
+            if (scrolling || lastVisibleIndex == null) return@collectLatest
+            delay(280)
+            val nextIndex = lastVisibleIndex + 1
+            if (prefetchedIndices.contains(nextIndex)) return@collectLatest
+            val nextItem = section.items.getOrNull(nextIndex) ?: return@collectLatest
+            val nextId = nextItem.id ?: return@collectLatest
+            val actualItemId = if (nextItem.type == "Episode") nextItem.seriesId ?: nextId else nextId
+            val imageTag = nextItem.imageTagFor("Primary", targetItemId = actualItemId)
+            val imageUrl = withContext(Dispatchers.IO) {
+                mediaRepository.getImageUrlString(
+                    itemId = actualItemId,
+                    imageType = "Primary",
+                    width = 240,
+                    height = 360,
+                    quality = 80,
+                    enableImageEnhancers = !disablePosterEnhancers,
+                    imageTag = imageTag
+                )
+            } ?: return@collectLatest
+            context.imageLoader.execute(
+                ImageRequest.Builder(context)
+                    .data(imageUrl)
+                    .diskCacheKey("$dashboardSessionKey|$imageUrl")
+                    .memoryCachePolicy(CachePolicy.DISABLED)
+                    .diskCachePolicy(CachePolicy.ENABLED)
+                    .networkCachePolicy(CachePolicy.ENABLED)
+                    .precision(Precision.INEXACT)
+                    .crossfade(false)
+                    .build()
+            )
+            prefetchedIndices += nextIndex
         }
     }
 

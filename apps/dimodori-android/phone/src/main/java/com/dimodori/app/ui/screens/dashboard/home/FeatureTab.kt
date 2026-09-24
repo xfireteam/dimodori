@@ -67,7 +67,6 @@ import androidx.compose.ui.platform.LocalDensity
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
-import coil3.imageLoader
 import coil3.request.*
 import com.jellycine.shared.R
 import com.dimodori.app.ui.components.common.ScreenCastButton
@@ -180,9 +179,7 @@ fun FeatureTab(
         configuration.screenHeightDp
     ) { LazyListState() }
     val featuredFlingBehavior = rememberSnapFlingBehavior(lazyListState = featuredRowState)
-    val imageCacheByItemId = remember { mutableStateMapOf<String, FeatureCardImages>() }
-    val preloadedItemIds = remember { mutableStateListOf<String>() }
-    var stableFeaturedItems by remember(selectedCategory) { mutableStateOf<List<BaseItemDto>>(emptyList()) }
+    val imageCacheByItemId = remember(currentServerUrl, currentUsername) { mutableStateMapOf<String, FeatureCardImages>() }
     val metadataQualifiedFeaturedItems = remember(featuredItems) {
         derivedStateOf {
             featuredItems.filter(::hasFeatureHeroAssets)
@@ -190,40 +187,13 @@ fun FeatureTab(
     }
     val visibleRealIndex by remember(featuredRowState) {
         derivedStateOf {
-            val size = stableFeaturedItems.size
+            val size = metadataQualifiedFeaturedItems.value.size
             if (size == 0) -1 else featuredRowState.firstVisibleItemIndex % size
         }
     }
-    val resolvedFeaturedItems = remember(
-        metadataQualifiedFeaturedItems.value,
-        stableFeaturedItems,
-        preloadedItemIds.size,
-        visibleRealIndex
-    ) {
-        derivedStateOf {
-            val targetItems = metadataQualifiedFeaturedItems.value
-            if (targetItems.isEmpty()) return@derivedStateOf stableFeaturedItems
-            if (stableFeaturedItems.isEmpty()) return@derivedStateOf targetItems
-
-            val stableSize = stableFeaturedItems.size
-            buildList(stableSize) {
-                for (i in 0 until stableSize) {
-                    val target = targetItems.getOrNull(i)
-                    if (target != null && target.id.orEmpty() in preloadedItemIds && i != visibleRealIndex) {
-                        add(target)
-                    } else {
-                        add(stableFeaturedItems[i])
-                    }
-                }
-            }
-        }
-    }
-
-    LaunchedEffect(metadataQualifiedFeaturedItems.value, preloadedItemIds.size) {
-        val targetItems = metadataQualifiedFeaturedItems.value
-        if (targetItems.isNotEmpty() && targetItems.all { it.id.orEmpty() in preloadedItemIds }) {
-            stableFeaturedItems = targetItems
-        }
+    val resolvedFeaturedItems = metadataQualifiedFeaturedItems
+    val imageSessionKey = remember(currentServerUrl, currentUsername) {
+        "${currentServerUrl.orEmpty()}|${currentUsername.orEmpty()}"
     }
 
     val featuredKeys = remember(resolvedFeaturedItems.value) {
@@ -356,12 +326,17 @@ fun FeatureTab(
         hasSeededCarousel = true
     }
 
-    LaunchedEffect(metadataQualifiedFeaturedItems.value) {
+    LaunchedEffect(imageSessionKey, metadataQualifiedFeaturedItems.value, visibleRealIndex) {
         if (metadataQualifiedFeaturedItems.value.isEmpty()) return@LaunchedEffect
 
-        val imageLoader = context.imageLoader
+        val targetItems = metadataQualifiedFeaturedItems.value
+        val activeIndex = visibleRealIndex.coerceIn(0, targetItems.lastIndex)
+        val itemsToResolve = listOf(
+            targetItems[activeIndex],
+            targetItems[(activeIndex + 1) % targetItems.size]
+        ).distinctBy { it.id }
         coroutineScope {
-            metadataQualifiedFeaturedItems.value.forEach { item ->
+            itemsToResolve.forEach { item ->
                 val itemId = item.id ?: return@forEach
                 val versionKey = listOfNotNull(
                     item.imageTagFor(imageType = "Backdrop", targetItemId = itemId),
@@ -413,44 +388,6 @@ fun FeatureTab(
                         )
                     }
 
-                    var backdropLoaded = lowBackdropUrl.isNullOrBlank()
-                    var logoLoaded = logoUrl.isNullOrBlank()
-
-                    if (!lowBackdropUrl.isNullOrBlank()) {
-                        val result = imageLoader.execute(
-                            ImageRequest.Builder(context)
-                                .data(lowBackdropUrl)
-                                .memoryCachePolicy(CachePolicy.ENABLED)
-                                .diskCachePolicy(CachePolicy.ENABLED)
-                                .networkCachePolicy(CachePolicy.ENABLED)
-                                .crossfade(false)
-                                .allowHardware(true)
-                                .allowRgb565(true)
-                                .build()
-                        )
-                        backdropLoaded = result is SuccessResult
-                    }
-
-                    if (!logoUrl.isNullOrBlank()) {
-                        val result = imageLoader.execute(
-                            ImageRequest.Builder(context)
-                                .data(logoUrl)
-                                .memoryCachePolicy(CachePolicy.ENABLED)
-                                .diskCachePolicy(CachePolicy.ENABLED)
-                                .networkCachePolicy(CachePolicy.ENABLED)
-                                .crossfade(false)
-                                .allowHardware(true)
-                                .allowRgb565(true)
-                                .build()
-                        )
-                        logoLoaded = result is SuccessResult
-                    }
-
-                    if (backdropLoaded && logoLoaded) {
-                        withContext(Dispatchers.Main) {
-                            preloadedItemIds.add(itemId)
-                        }
-                    }
                 }
             }
         }
@@ -574,6 +511,7 @@ fun FeatureTab(
                                 listState = featuredRowState,
                                 verticalParallaxOffsetPx = verticalParallaxOffsetPx,
                                 images = cachedImages,
+                                sessionKey = imageSessionKey,
                                 onClick = { onItemClick(item) },
                                 heroSizing = heroSizing,
                                 modifier = heroCardWidth?.let { Modifier.width(it) }
@@ -768,6 +706,7 @@ private fun FeatureHeroCard(
     listState: LazyListState,
     verticalParallaxOffsetPx: Float,
     images: FeatureCardImages?,
+    sessionKey: String,
     onClick: () -> Unit,
     heroSizing: FeatureHeroSizing,
     modifier: Modifier = Modifier,
@@ -828,6 +767,8 @@ private fun FeatureHeroCard(
                 val lowPainter = rememberAsyncImagePainter(
                     model = ImageRequest.Builder(context)
                         .data(lowBackdropUrl)
+                        .memoryCacheKey("$sessionKey|$lowBackdropUrl")
+                        .diskCacheKey("$sessionKey|$lowBackdropUrl")
                         .memoryCachePolicy(CachePolicy.ENABLED)
                         .diskCachePolicy(CachePolicy.ENABLED)
                         .networkCachePolicy(CachePolicy.ENABLED)
@@ -869,6 +810,8 @@ private fun FeatureHeroCard(
                 val highPainter = rememberAsyncImagePainter(
                     model = ImageRequest.Builder(context)
                         .data(backdropUrl)
+                        .memoryCacheKey("$sessionKey|$backdropUrl")
+                        .diskCacheKey("$sessionKey|$backdropUrl")
                         .memoryCachePolicy(CachePolicy.ENABLED)
                         .diskCachePolicy(CachePolicy.ENABLED)
                         .networkCachePolicy(CachePolicy.ENABLED)
@@ -994,6 +937,8 @@ private fun FeatureHeroCard(
                     AsyncImage(
                         model = ImageRequest.Builder(context)
                             .data(logoUrl)
+                            .memoryCacheKey("$sessionKey|$logoUrl")
+                            .diskCacheKey("$sessionKey|$logoUrl")
                             .memoryCachePolicy(CachePolicy.ENABLED)
                             .diskCachePolicy(CachePolicy.ENABLED)
                             .networkCachePolicy(CachePolicy.ENABLED)

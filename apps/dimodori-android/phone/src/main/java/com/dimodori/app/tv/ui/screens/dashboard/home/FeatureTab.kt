@@ -73,7 +73,6 @@ import androidx.compose.ui.res.stringResource
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
-import coil3.imageLoader
 import coil3.request.*
 import com.jellycine.shared.R
 import com.dimodori.app.tv.ui.screens.auth.ProfileImageLoader
@@ -173,40 +172,15 @@ fun FeatureTab(
         mutableStateOf<String?>(persistedHomeSnapshot?.profileImageUrl)
     }
 
-    val imageCacheByItemId = remember { mutableStateMapOf<String, FeatureCardImages>() }
-    val preloadedItemIds = remember { mutableStateListOf<String>() }
-    var stableFeaturedItems by remember(selectedCategory) { mutableStateOf<List<BaseItemDto>>(emptyList()) }
+    val imageCacheByItemId = remember(currentServerUrl, currentUsername) { mutableStateMapOf<String, FeatureCardImages>() }
     val metadataQualifiedFeaturedItems = remember(featuredItems) {
         derivedStateOf {
             featuredItems.filter(::hasFeatureHeroAssets)
         }
     }
-    val currentAssetsReady by remember(metadataQualifiedFeaturedItems.value) {
-        derivedStateOf {
-            metadataQualifiedFeaturedItems.value.isNotEmpty() &&
-                metadataQualifiedFeaturedItems.value.all { candidate ->
-                    candidate.id.orEmpty() in preloadedItemIds
-                }
-        }
-    }
-    val resolvedFeaturedItems = remember(
-        metadataQualifiedFeaturedItems.value,
-        stableFeaturedItems,
-        currentAssetsReady
-    ) {
-        derivedStateOf {
-            val targetItems = metadataQualifiedFeaturedItems.value
-            if (targetItems.isEmpty()) return@derivedStateOf stableFeaturedItems
-            if (currentAssetsReady) return@derivedStateOf targetItems
-            if (stableFeaturedItems.isEmpty()) return@derivedStateOf targetItems
-            stableFeaturedItems
-        }
-    }
-
-    LaunchedEffect(currentAssetsReady, metadataQualifiedFeaturedItems.value) {
-        if (currentAssetsReady && metadataQualifiedFeaturedItems.value.isNotEmpty()) {
-            stableFeaturedItems = metadataQualifiedFeaturedItems.value
-        }
+    val resolvedFeaturedItems = metadataQualifiedFeaturedItems
+    val imageSessionKey = remember(currentServerUrl, currentUsername) {
+        "${currentServerUrl.orEmpty()}|${currentUsername.orEmpty()}"
     }
 
     val featuredKeys = remember(resolvedFeaturedItems.value) {
@@ -275,12 +249,17 @@ fun FeatureTab(
         }
     }
 
-    LaunchedEffect(metadataQualifiedFeaturedItems.value) {
+    LaunchedEffect(imageSessionKey, metadataQualifiedFeaturedItems.value, currentHeroIndex) {
         if (metadataQualifiedFeaturedItems.value.isEmpty()) return@LaunchedEffect
 
-        val imageLoader = context.imageLoader
+        val targetItems = metadataQualifiedFeaturedItems.value
+        val activeIndex = currentHeroIndex.coerceIn(0, targetItems.lastIndex)
+        val itemsToResolve = listOf(
+            targetItems[activeIndex],
+            targetItems[(activeIndex + 1) % targetItems.size]
+        ).distinctBy { it.id }
         coroutineScope {
-            metadataQualifiedFeaturedItems.value.forEach { item ->
+            itemsToResolve.forEach { item ->
                 val itemId = item.id ?: return@forEach
                 val versionKey = listOfNotNull(
                     item.imageTagFor(imageType = "Backdrop", targetItemId = itemId),
@@ -332,58 +311,6 @@ fun FeatureTab(
                         )
                     }
 
-                    var backdropLoaded = lowBackdropUrl.isNullOrBlank()
-                    var logoLoaded = logoUrl.isNullOrBlank()
-
-                    if (!lowBackdropUrl.isNullOrBlank()) {
-                        val result = imageLoader.execute(
-                            ImageRequest.Builder(context)
-                                .data(lowBackdropUrl)
-                                .memoryCachePolicy(CachePolicy.ENABLED)
-                                .diskCachePolicy(CachePolicy.ENABLED)
-                                .networkCachePolicy(CachePolicy.ENABLED)
-                                .crossfade(false)
-                                .allowHardware(true)
-                                .allowRgb565(true)
-                                .build()
-                        )
-                        backdropLoaded = result is SuccessResult
-                    }
-
-                    if (!backdropUrl.isNullOrBlank()) {
-                        imageLoader.enqueue(
-                            ImageRequest.Builder(context)
-                                .data(backdropUrl)
-                                .memoryCachePolicy(CachePolicy.ENABLED)
-                                .diskCachePolicy(CachePolicy.ENABLED)
-                                .networkCachePolicy(CachePolicy.ENABLED)
-                                .crossfade(false)
-                                .allowHardware(true)
-                                .allowRgb565(true)
-                                .build()
-                        )
-                    }
-
-                    if (!logoUrl.isNullOrBlank()) {
-                        val result = imageLoader.execute(
-                            ImageRequest.Builder(context)
-                                .data(logoUrl)
-                                .memoryCachePolicy(CachePolicy.ENABLED)
-                                .diskCachePolicy(CachePolicy.ENABLED)
-                                .networkCachePolicy(CachePolicy.ENABLED)
-                                .crossfade(false)
-                                .allowHardware(true)
-                                .allowRgb565(true)
-                                .build()
-                        )
-                        logoLoaded = result is SuccessResult
-                    }
-
-                    if (backdropLoaded && logoLoaded) {
-                        withContext(Dispatchers.Main) {
-                            preloadedItemIds.add(itemId)
-                        }
-                    }
                 }
             }
         }
@@ -433,6 +360,7 @@ fun FeatureTab(
                             item = activeItem,
                             verticalParallaxOffsetPx = verticalParallaxOffsetPx,
                             images = activeItem.id?.let { imageCacheByItemId[it] },
+                            sessionKey = imageSessionKey,
                             headerFocusRequester = initialChipFocusRequester,
                             entryActionFocusRequester = resolvedHeroActionFocusRequester,
                             belowContentFocusRequester = contentFocusRequester,
@@ -656,6 +584,7 @@ private fun FeatureHeroCard(
     item: BaseItemDto,
     verticalParallaxOffsetPx: Float,
     images: FeatureCardImages?,
+    sessionKey: String,
     headerFocusRequester: FocusRequester?,
     entryActionFocusRequester: FocusRequester?,
     belowContentFocusRequester: FocusRequester?,
@@ -703,6 +632,8 @@ private fun FeatureHeroCard(
                 val lowPainter = rememberAsyncImagePainter(
                     model = ImageRequest.Builder(context)
                         .data(lowBackdropUrl)
+                        .memoryCacheKey("$sessionKey|$lowBackdropUrl")
+                        .diskCacheKey("$sessionKey|$lowBackdropUrl")
                         .memoryCachePolicy(CachePolicy.ENABLED)
                         .diskCachePolicy(CachePolicy.ENABLED)
                         .networkCachePolicy(CachePolicy.ENABLED)
@@ -745,6 +676,8 @@ private fun FeatureHeroCard(
                 val highPainter = rememberAsyncImagePainter(
                     model = ImageRequest.Builder(context)
                         .data(backdropUrl)
+                        .memoryCacheKey("$sessionKey|$backdropUrl")
+                        .diskCacheKey("$sessionKey|$backdropUrl")
                         .memoryCachePolicy(CachePolicy.ENABLED)
                         .diskCachePolicy(CachePolicy.ENABLED)
                         .networkCachePolicy(CachePolicy.ENABLED)
@@ -837,6 +770,8 @@ private fun FeatureHeroCard(
                     AsyncImage(
                         model = ImageRequest.Builder(context)
                             .data(logoUrl)
+                            .memoryCacheKey("$sessionKey|$logoUrl")
+                            .diskCacheKey("$sessionKey|$logoUrl")
                             .memoryCachePolicy(CachePolicy.ENABLED)
                             .diskCachePolicy(CachePolicy.ENABLED)
                             .networkCachePolicy(CachePolicy.ENABLED)

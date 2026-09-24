@@ -49,6 +49,7 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -933,7 +934,8 @@ class MediaRepository(private val context: Context) {
 
     suspend fun getHomeLibrarySections(
         maxLibraries: Int? = null,
-        itemsPerLibrary: Int = 20
+        itemsPerLibrary: Int = 20,
+        onSection: suspend (HomeLibrarySectionData) -> Unit = {}
     ): Result<List<HomeLibrarySectionData>> = coroutineScope {
         val viewsResult = getUserViews()
         viewsResult.fold(
@@ -971,7 +973,7 @@ class MediaRepository(private val context: Context) {
 
                 val sections = libraries.map { library ->
                     async(Dispatchers.IO) {
-                        sectionFetchSemaphore.withPermit {
+                        val section = sectionFetchSemaphore.withPermit {
                             val libraryId = library.id ?: return@withPermit null
                             val includeItemTypes = when (library.collectionType) {
                                 "movies" -> "Movie"
@@ -980,7 +982,7 @@ class MediaRepository(private val context: Context) {
                                 else -> "Movie,Series,Episode"
                             }
 
-                            val latestItemsResponse = runCatching {
+                            val latestItemsResponse = try {
                                 session.api.getLatestItems(
                                     userId = session.userId,
                                     parentId = libraryId,
@@ -988,7 +990,11 @@ class MediaRepository(private val context: Context) {
                                     limit = itemsPerLibrary,
                                     fields = fields
                                 )
-                            }.getOrNull()
+                            } catch (error: CancellationException) {
+                                throw error
+                            } catch (_: Exception) {
+                                null
+                            }
 
                             val latestItems: List<BaseItemDto> =
                                 if (latestItemsResponse?.isSuccessful == true) {
@@ -1008,6 +1014,16 @@ class MediaRepository(private val context: Context) {
                                 items = items
                             )
                         }
+                        if (section != null && section.items.isNotEmpty()) {
+                            try {
+                                onSection(section)
+                            } catch (error: CancellationException) {
+                                throw error
+                            } catch (_: Exception) {
+                                // Publishing is best-effort; a section fetch must not fail because UI persistence did.
+                            }
+                        }
+                        section
                     }
                 }.awaitAll()
                     .filterNotNull()
