@@ -1,0 +1,881 @@
+Welcome to Gradle 9.4.1!
+
+Here are the highlights of this release:
+ - Java 26 support
+ - Non-class-based JVM tests
+ - Enhanced console progress bar
+
+For more details see https://docs.gradle.org/9.4.1/release-notes.html
+
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.4.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :shared
+w: ⚠️ Unused Kotlin Source Sets
+The Kotlin source set commonTest was configured but not added to any Kotlin compilation.
+Solution: You can add a source set to a target's compilation by connecting it with the compilation's default source set using 'dependsOn'.
+See https://kotl.in/connecting-source-sets
+
+Observed package id 'cmdline-tools;latest' in inconsistent location '/usr/local/share/android-sdk/cmdline-tools/latest-2' (Expected '/usr/local/share/android-sdk/cmdline-tools/latest')
+Observed package id 'cmdline-tools;latest' in inconsistent location '/usr/local/share/android-sdk/cmdline-tools/latest-2' (Expected '/usr/local/share/android-sdk/cmdline-tools/latest')
+Checking the license for package Android SDK Platform 37.0 in /usr/local/share/android-sdk/licenses
+License for package Android SDK Platform 37.0 accepted.
+Preparing "Install Android SDK Platform 37.0 (revision 2)".
+"Install Android SDK Platform 37.0 (revision 2)" ready.
+Installing Android SDK Platform 37.0 in /usr/local/share/android-sdk/platforms/android-37.0
+"Install Android SDK Platform 37.0 (revision 2)" complete.
+"Install Android SDK Platform 37.0 (revision 2)" finished.
+Observed package id 'cmdline-tools;latest' in inconsistent location '/usr/local/share/android-sdk/cmdline-tools/latest-2' (Expected '/usr/local/share/android-sdk/cmdline-tools/latest')
+[=========                              ] 25%                                   
+> Task :core:preBuild UP-TO-DATE
+> Task :core:preReleaseBuild UP-TO-DATE
+> Task :core:mergeReleaseJniLibFolders
+> Task :core:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:androidPreBuild UP-TO-DATE
+> Task :data:preAndroidMainBuild UP-TO-DATE
+> Task :core:copyReleaseJniLibsProjectOnly
+> Task :data:mergeAndroidMainJniLibFolders
+> Task :data:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :phone:preBuild UP-TO-DATE
+> Task :data:copyAndroidMainJniLibsProjectOnly
+> Task :phone:preReleaseBuild UP-TO-DATE
+> Task :phone:mergeReleaseJniLibFolders
+> Task :shared:androidPreBuild UP-TO-DATE
+> Task :shared:preAndroidMainBuild UP-TO-DATE
+> Task :shared:mergeAndroidMainJniLibFolders
+> Task :shared:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :shared:copyAndroidMainJniLibsProjectOnly
+> Task :data:kmpPartiallyResolvedDependenciesChecker
+> Task :data:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :data:generateAndroidMainEmptyResourceFiles
+> Task :data:packageAndroidMainResources
+> Task :phone:mergeReleaseNativeLibs
+> Task :shared:kmpPartiallyResolvedDependenciesChecker
+> Task :shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :shared:generateAndroidMainEmptyResourceFiles
+> Task :data:parseAndroidMainLocalResources
+
+> Task :phone:stripReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libavcodec.so, libavdevice.so, libavfilter.so, libavformat.so, libavutil.so, libc++_shared.so, libdatastore_shared_counter.so, libffmpegJNI.so, libmpv.so, libplayer.so, libswresample.so, libswscale.so. Run with --info option to learn more.
+
+> Task :shared:packageAndroidMainResources
+> Task :phone:extractReleaseNativeSymbolTables
+> Task :phone:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :core:generateReleaseResources
+> Task :data:generateAndroidMainRFile
+> Task :core:packageReleaseResources
+> Task :shared:parseAndroidMainLocalResources
+> Task :core:processReleaseNavigationResources
+> Task :shared:generateAndroidMainRFile
+> Task :core:parseReleaseLocalResources
+> Task :core:javaPreCompileRelease
+> Task :core:prepareReleaseArtProfile
+> Task :data:prepareAndroidMainArtProfile
+> Task :core:generateReleaseRFile
+> Task :shared:prepareAndroidMainArtProfile
+> Task :phone:checkReleaseDuplicateClasses
+> Task :phone:mergeReleaseArtProfile
+> Task :phone:generateReleaseBuildConfig
+> Task :phone:generateReleaseResources
+> Task :phone:packageReleaseResources
+> Task :phone:processReleaseNavigationResources
+> Task :phone:parseReleaseLocalResources
+> Task :phone:javaPreCompileRelease
+> Task :phone:generateReleaseRFile
+> Task :core:mapReleaseSourceSetPaths
+> Task :data:mapAndroidMainSourceSetPaths
+> Task :core:compileReleaseLibraryResources
+> Task :data:compileAndroidMainLibraryResources
+> Task :data:writeAndroidMainAarMetadata
+> Task :core:writeReleaseAarMetadata
+> Task :shared:writeAndroidMainAarMetadata
+> Task :phone:mapReleaseSourceSetPaths
+> Task :phone:checkReleaseAarMetadata
+> Task :phone:compileReleaseNavigationResources
+> Task :phone:createReleaseCompatibleScreenManifests
+> Task :core:extractDeepLinksRelease
+> Task :phone:extractDeepLinksRelease
+> Task :shared:mapAndroidMainSourceSetPaths
+> Task :phone:extractProguardFiles
+> Task :phone:mergeReleaseStartupProfile
+> Task :core:generateReleaseAssets UP-TO-DATE
+> Task :shared:processAndroidMainManifest
+> Task :data:processAndroidMainManifest
+> Task :core:mergeReleaseAssets
+> Task :data:generateAndroidMainAssets UP-TO-DATE
+> Task :core:processReleaseManifest
+> Task :data:mergeAndroidMainAssets
+> Task :shared:compileAndroidMainLibraryResources
+> Task :phone:mergeReleaseResources
+
+> Task :phone:processReleaseMainManifest
+/home/builder/clone/apps/dimodori-android/phone/src/main/AndroidManifest.xml:12:5-112 Warning:
+	uses-permission#android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK was tagged at AndroidManifest.xml:12 to remove other declarations but no other declaration present
+/home/builder/clone/apps/dimodori-android/phone/src/main/AndroidManifest.xml:13:5-108 Warning:
+	uses-permission#android.permission.FOREGROUND_SERVICE_MICROPHONE was tagged at AndroidManifest.xml:13 to remove other declarations but no other declaration present
+
+> Task :phone:processReleaseManifest
+> Task :phone:generateReleaseAssets UP-TO-DATE
+> Task :shared:generateAndroidMainAssets UP-TO-DATE
+> Task :shared:mergeAndroidMainAssets
+> Task :phone:mergeReleaseAssets
+> Task :phone:compressReleaseAssets
+> Task :phone:extractReleaseVersionControlInfo
+> Task :core:extractProguardFiles
+> Task :data:prepareLintJarForPublish
+> Task :data:checkAndroidMainAarMetadata
+> Task :data:extractAndroidMainAnnotations
+> Task :core:prepareLintJarForPublish
+> Task :shared:prepareLintJarForPublish
+> Task :shared:checkAndroidMainAarMetadata
+> Task :core:stripReleaseDebugSymbols NO-SOURCE
+> Task :core:checkReleaseAarMetadata
+> Task :core:copyReleaseJniLibsProjectAndLocalJars
+> Task :core:extractDeepLinksForAarRelease
+> Task :core:writeReleaseLintModelMetadata
+> Task :phone:validateSigningRelease
+> Task :phone:writeReleaseAppMetadata
+> Task :phone:writeReleaseSigningConfigVersions
+> Task :phone:processReleaseManifestForPackage
+> Task :phone:parseReleaseIntegrityConfig
+> Task :phone:processReleaseResources
+> Task :data:compileAndroidMain
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/download/DownloadStorage.kt:216:16 Unnecessary safe call on a non-null receiver of type 'Uri'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/AuthRepository.kt:159:17 Unnecessary safe call on a non-null receiver of type 'List<AuthRepository.StoredSavedServer>'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/IntroDbClient.kt:128:45 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/IntroDbClient.kt:131:38 Unnecessary safe call on a non-null receiver of type 'IntroDbClient.IntroDbSegmentWindow'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/MediaRepository.kt:442:47 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/MediaRepository.kt:515:38 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/MediaRepository.kt:1086:38 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/MediaRepository.kt:1107:38 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/MediaRepository.kt:1719:57 Unnecessary safe call on a non-null receiver of type 'BaseItemDto'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:5:8 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:6:8 'class MasterKeys : Any' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:44:30 'class MasterKeys : Any' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:44:53 'class MasterKeys : Any' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:44:64 'static field AES256_GCM_SPEC: KeyGenParameterSpec' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:46:9 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:46:36 'static fun create(p0: String, p1: String, p2: Context, p3: EncryptedSharedPreferences.PrefKeyEncryptionScheme, p4: EncryptedSharedPreferences.PrefValueEncryptionScheme): SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:50:13 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:50:40 'enum class PrefKeyEncryptionScheme : Enum<EncryptedSharedPreferences.PrefKeyEncryptionScheme!>' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:51:13 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:51:40 'enum class PrefValueEncryptionScheme : Enum<EncryptedSharedPreferences.PrefValueEncryptionScheme!>' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/TheIntroDbClient.kt:131:45 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:4:8 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:5:8 'class MasterKeys : Any' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:18:30 'class MasterKeys : Any' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:18:53 'class MasterKeys : Any' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:18:64 'static field AES256_GCM_SPEC: KeyGenParameterSpec' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:20:9 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:20:36 'static fun create(p0: String, p1: String, p2: Context, p3: EncryptedSharedPreferences.PrefKeyEncryptionScheme, p4: EncryptedSharedPreferences.PrefValueEncryptionScheme): SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:24:13 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:24:40 'enum class PrefKeyEncryptionScheme : Enum<EncryptedSharedPreferences.PrefKeyEncryptionScheme!>' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:25:13 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:25:40 'enum class PrefValueEncryptionScheme : Enum<EncryptedSharedPreferences.PrefValueEncryptionScheme!>' is deprecated. Deprecated in Java.
+
+> Task :data:mergeAndroidMainGeneratedProguardFiles
+> Task :data:exportAndroidMainConsumerProguardFiles
+> Task :data:bundleAndroidMainClassesToCompileJar
+> Task :data:processAndroidMainJavaRes
+> Task :data:bundleAndroidMainClassesToRuntimeJar
+> Task :data:createFullJarAndroidMain
+> Task :data:mergeAndroidMainJavaResource
+> Task :shared:extractAndroidMainAnnotations
+> Task :data:syncAndroidMainLibJars
+> Task :data:bundleAndroidMainLocalLintAar
+> Task :core:extractReleaseAnnotations
+
+> Task :core:compileReleaseKotlin
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/logging/LogcatReader.kt:39:33 Unnecessary non-null assertion (!!) on a non-null receiver of type 'LogEntry'.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/PlayerTrack.kt:172:93 Unnecessary safe call on a non-null receiver of type 'MediaSource'.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:89:59 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:92:15 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:176:43 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:184:59 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:189:38 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:190:34 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:203:68 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:208:51 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:276:34 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/video/HdrCapabilityManager.kt:66:50 'val supportedHdrTypes: IntArray!' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/video/HdrCapabilityManager.kt:257:63 'val supportedHdrTypes: IntArray!' is deprecated. Deprecated in Java.
+
+> Task :core:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:mergeReleaseGeneratedProguardFiles
+> Task :core:exportReleaseConsumerProguardFiles
+> Task :core:bundleLibCompileToJarRelease
+> Task :core:bundleLibRuntimeToJarRelease
+> Task :core:processReleaseJavaRes
+> Task :core:generateReleaseLintVitalModel
+> Task :core:createFullJarRelease
+> Task :core:generateReleaseLintModel
+> Task :core:mergeReleaseConsumerProguardFiles
+> Task :core:mergeReleaseJavaResource
+> Task :core:syncReleaseLibJars
+> Task :core:bundleReleaseLocalLintAar
+
+> Task :shared:compileAndroidMain
+w: file:///home/builder/clone/apps/dimodori-android/shared/src/androidMain/com/jellycine/shared/ui/components/common/ThemeMusicSettingsItem.kt:118:39 'val Icons.Rounded.VolumeDown: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Rounded.VolumeDown.
+w: file:///home/builder/clone/apps/dimodori-android/shared/src/androidMain/com/jellycine/shared/ui/components/common/ThemeMusicSettingsItem.kt:134:39 'val Icons.Rounded.VolumeUp: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Rounded.VolumeUp.
+
+> Task :shared:bundleAndroidMainClassesToRuntimeJar
+> Task :shared:processAndroidMainJavaRes
+> Task :shared:createFullJarAndroidMain
+> Task :shared:bundleAndroidMainClassesToCompileJar
+> Task :shared:mergeAndroidMainJavaResource
+> Task :shared:syncAndroidMainLibJars
+> Task :shared:bundleAndroidMainLocalLintAar
+> Task :phone:kspReleaseKotlin
+> Task :core:lintVitalAnalyzeRelease
+
+Welcome to Gradle 9.4.1!
+
+Here are the highlights of this release:
+ - Java 26 support
+ - Non-class-based JVM tests
+ - Enhanced console progress bar
+
+For more details see https://docs.gradle.org/9.4.1/release-notes.html
+
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.4.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :shared
+w: ⚠️ Unused Kotlin Source Sets
+The Kotlin source set commonTest was configured but not added to any Kotlin compilation.
+Solution: You can add a source set to a target's compilation by connecting it with the compilation's default source set using 'dependsOn'.
+See https://kotl.in/connecting-source-sets
+
+Observed package id 'cmdline-tools;latest' in inconsistent location '/usr/local/share/android-sdk/cmdline-tools/latest-2' (Expected '/usr/local/share/android-sdk/cmdline-tools/latest')
+Observed package id 'cmdline-tools;latest' in inconsistent location '/usr/local/share/android-sdk/cmdline-tools/latest-2' (Expected '/usr/local/share/android-sdk/cmdline-tools/latest')
+Checking the license for package Android SDK Platform 37.0 in /usr/local/share/android-sdk/licenses
+License for package Android SDK Platform 37.0 accepted.
+Preparing "Install Android SDK Platform 37.0 (revision 2)".
+"Install Android SDK Platform 37.0 (revision 2)" ready.
+Installing Android SDK Platform 37.0 in /usr/local/share/android-sdk/platforms/android-37.0
+"Install Android SDK Platform 37.0 (revision 2)" complete.
+"Install Android SDK Platform 37.0 (revision 2)" finished.
+Observed package id 'cmdline-tools;latest' in inconsistent location '/usr/local/share/android-sdk/cmdline-tools/latest-2' (Expected '/usr/local/share/android-sdk/cmdline-tools/latest')
+[=========                              ] 25%                                   
+> Task :core:preBuild UP-TO-DATE
+> Task :core:preReleaseBuild UP-TO-DATE
+> Task :core:mergeReleaseJniLibFolders
+> Task :core:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:androidPreBuild UP-TO-DATE
+> Task :data:preAndroidMainBuild UP-TO-DATE
+> Task :core:copyReleaseJniLibsProjectOnly
+> Task :data:mergeAndroidMainJniLibFolders
+> Task :data:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :phone:preBuild UP-TO-DATE
+> Task :data:copyAndroidMainJniLibsProjectOnly
+> Task :phone:preReleaseBuild UP-TO-DATE
+> Task :phone:mergeReleaseJniLibFolders
+> Task :shared:androidPreBuild UP-TO-DATE
+> Task :shared:preAndroidMainBuild UP-TO-DATE
+> Task :shared:mergeAndroidMainJniLibFolders
+> Task :shared:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :shared:copyAndroidMainJniLibsProjectOnly
+> Task :data:kmpPartiallyResolvedDependenciesChecker
+> Task :data:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :data:generateAndroidMainEmptyResourceFiles
+> Task :data:packageAndroidMainResources
+> Task :phone:mergeReleaseNativeLibs
+> Task :shared:kmpPartiallyResolvedDependenciesChecker
+> Task :shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :shared:generateAndroidMainEmptyResourceFiles
+> Task :data:parseAndroidMainLocalResources
+
+> Task :phone:stripReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libavcodec.so, libavdevice.so, libavfilter.so, libavformat.so, libavutil.so, libc++_shared.so, libdatastore_shared_counter.so, libffmpegJNI.so, libmpv.so, libplayer.so, libswresample.so, libswscale.so. Run with --info option to learn more.
+
+> Task :shared:packageAndroidMainResources
+> Task :phone:extractReleaseNativeSymbolTables
+> Task :phone:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :core:generateReleaseResources
+> Task :data:generateAndroidMainRFile
+> Task :core:packageReleaseResources
+> Task :shared:parseAndroidMainLocalResources
+> Task :core:processReleaseNavigationResources
+> Task :shared:generateAndroidMainRFile
+> Task :core:parseReleaseLocalResources
+> Task :core:javaPreCompileRelease
+> Task :core:prepareReleaseArtProfile
+> Task :data:prepareAndroidMainArtProfile
+> Task :core:generateReleaseRFile
+> Task :shared:prepareAndroidMainArtProfile
+> Task :phone:checkReleaseDuplicateClasses
+> Task :phone:mergeReleaseArtProfile
+> Task :phone:generateReleaseBuildConfig
+> Task :phone:generateReleaseResources
+> Task :phone:packageReleaseResources
+> Task :phone:processReleaseNavigationResources
+> Task :phone:parseReleaseLocalResources
+> Task :phone:javaPreCompileRelease
+> Task :phone:generateReleaseRFile
+> Task :core:mapReleaseSourceSetPaths
+> Task :data:mapAndroidMainSourceSetPaths
+> Task :core:compileReleaseLibraryResources
+> Task :data:compileAndroidMainLibraryResources
+> Task :data:writeAndroidMainAarMetadata
+> Task :core:writeReleaseAarMetadata
+> Task :shared:writeAndroidMainAarMetadata
+> Task :phone:mapReleaseSourceSetPaths
+> Task :phone:checkReleaseAarMetadata
+> Task :phone:compileReleaseNavigationResources
+> Task :phone:createReleaseCompatibleScreenManifests
+> Task :core:extractDeepLinksRelease
+> Task :phone:extractDeepLinksRelease
+> Task :shared:mapAndroidMainSourceSetPaths
+> Task :phone:extractProguardFiles
+> Task :phone:mergeReleaseStartupProfile
+> Task :core:generateReleaseAssets UP-TO-DATE
+> Task :shared:processAndroidMainManifest
+> Task :data:processAndroidMainManifest
+> Task :core:mergeReleaseAssets
+> Task :data:generateAndroidMainAssets UP-TO-DATE
+> Task :core:processReleaseManifest
+> Task :data:mergeAndroidMainAssets
+> Task :shared:compileAndroidMainLibraryResources
+> Task :phone:mergeReleaseResources
+
+> Task :phone:processReleaseMainManifest
+/home/builder/clone/apps/dimodori-android/phone/src/main/AndroidManifest.xml:12:5-112 Warning:
+	uses-permission#android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK was tagged at AndroidManifest.xml:12 to remove other declarations but no other declaration present
+/home/builder/clone/apps/dimodori-android/phone/src/main/AndroidManifest.xml:13:5-108 Warning:
+	uses-permission#android.permission.FOREGROUND_SERVICE_MICROPHONE was tagged at AndroidManifest.xml:13 to remove other declarations but no other declaration present
+
+> Task :phone:processReleaseManifest
+> Task :phone:generateReleaseAssets UP-TO-DATE
+> Task :shared:generateAndroidMainAssets UP-TO-DATE
+> Task :shared:mergeAndroidMainAssets
+> Task :phone:mergeReleaseAssets
+> Task :phone:compressReleaseAssets
+> Task :phone:extractReleaseVersionControlInfo
+> Task :core:extractProguardFiles
+> Task :data:prepareLintJarForPublish
+> Task :data:checkAndroidMainAarMetadata
+> Task :data:extractAndroidMainAnnotations
+> Task :core:prepareLintJarForPublish
+> Task :shared:prepareLintJarForPublish
+> Task :shared:checkAndroidMainAarMetadata
+> Task :core:stripReleaseDebugSymbols NO-SOURCE
+> Task :core:checkReleaseAarMetadata
+> Task :core:copyReleaseJniLibsProjectAndLocalJars
+> Task :core:extractDeepLinksForAarRelease
+> Task :core:writeReleaseLintModelMetadata
+> Task :phone:validateSigningRelease
+> Task :phone:writeReleaseAppMetadata
+> Task :phone:writeReleaseSigningConfigVersions
+> Task :phone:processReleaseManifestForPackage
+> Task :phone:parseReleaseIntegrityConfig
+> Task :phone:processReleaseResources
+> Task :data:compileAndroidMain
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/download/DownloadStorage.kt:216:16 Unnecessary safe call on a non-null receiver of type 'Uri'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/AuthRepository.kt:159:17 Unnecessary safe call on a non-null receiver of type 'List<AuthRepository.StoredSavedServer>'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/IntroDbClient.kt:128:45 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/IntroDbClient.kt:131:38 Unnecessary safe call on a non-null receiver of type 'IntroDbClient.IntroDbSegmentWindow'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/MediaRepository.kt:442:47 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/MediaRepository.kt:515:38 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/MediaRepository.kt:1086:38 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/MediaRepository.kt:1107:38 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/MediaRepository.kt:1719:57 Unnecessary safe call on a non-null receiver of type 'BaseItemDto'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:5:8 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:6:8 'class MasterKeys : Any' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:44:30 'class MasterKeys : Any' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:44:53 'class MasterKeys : Any' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:44:64 'static field AES256_GCM_SPEC: KeyGenParameterSpec' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:46:9 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:46:36 'static fun create(p0: String, p1: String, p2: Context, p3: EncryptedSharedPreferences.PrefKeyEncryptionScheme, p4: EncryptedSharedPreferences.PrefValueEncryptionScheme): SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:50:13 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:50:40 'enum class PrefKeyEncryptionScheme : Enum<EncryptedSharedPreferences.PrefKeyEncryptionScheme!>' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:51:13 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/SeerrRepository.kt:51:40 'enum class PrefValueEncryptionScheme : Enum<EncryptedSharedPreferences.PrefValueEncryptionScheme!>' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/repository/TheIntroDbClient.kt:131:45 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:4:8 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:5:8 'class MasterKeys : Any' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:18:30 'class MasterKeys : Any' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:18:53 'class MasterKeys : Any' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:18:64 'static field AES256_GCM_SPEC: KeyGenParameterSpec' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:20:9 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:20:36 'static fun create(p0: String, p1: String, p2: Context, p3: EncryptedSharedPreferences.PrefKeyEncryptionScheme, p4: EncryptedSharedPreferences.PrefValueEncryptionScheme): SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:24:13 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:24:40 'enum class PrefKeyEncryptionScheme : Enum<EncryptedSharedPreferences.PrefKeyEncryptionScheme!>' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:25:13 'class EncryptedSharedPreferences : Any, SharedPreferences' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/data/src/androidMain/com/jellycine/data/security/SecureSessionStore.kt:25:40 'enum class PrefValueEncryptionScheme : Enum<EncryptedSharedPreferences.PrefValueEncryptionScheme!>' is deprecated. Deprecated in Java.
+
+> Task :data:mergeAndroidMainGeneratedProguardFiles
+> Task :data:exportAndroidMainConsumerProguardFiles
+> Task :data:bundleAndroidMainClassesToCompileJar
+> Task :data:processAndroidMainJavaRes
+> Task :data:bundleAndroidMainClassesToRuntimeJar
+> Task :data:createFullJarAndroidMain
+> Task :data:mergeAndroidMainJavaResource
+> Task :shared:extractAndroidMainAnnotations
+> Task :data:syncAndroidMainLibJars
+> Task :data:bundleAndroidMainLocalLintAar
+> Task :core:extractReleaseAnnotations
+
+> Task :core:compileReleaseKotlin
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/logging/LogcatReader.kt:39:33 Unnecessary non-null assertion (!!) on a non-null receiver of type 'LogEntry'.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/PlayerTrack.kt:172:93 Unnecessary safe call on a non-null receiver of type 'MediaSource'.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:89:59 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:92:15 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:176:43 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:184:59 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:189:38 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:190:34 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:203:68 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:208:51 'fun getUrl(): String?' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/core/RemoteTrailerUrl.kt:276:34 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/video/HdrCapabilityManager.kt:66:50 'val supportedHdrTypes: IntArray!' is deprecated. Deprecated in Java.
+w: file:///home/builder/clone/apps/dimodori-android/core/src/main/java/com/jellycine/player/video/HdrCapabilityManager.kt:257:63 'val supportedHdrTypes: IntArray!' is deprecated. Deprecated in Java.
+
+> Task :core:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:mergeReleaseGeneratedProguardFiles
+> Task :core:exportReleaseConsumerProguardFiles
+> Task :core:bundleLibCompileToJarRelease
+> Task :core:bundleLibRuntimeToJarRelease
+> Task :core:processReleaseJavaRes
+> Task :core:generateReleaseLintVitalModel
+> Task :core:createFullJarRelease
+> Task :core:generateReleaseLintModel
+> Task :core:mergeReleaseConsumerProguardFiles
+> Task :core:mergeReleaseJavaResource
+> Task :core:syncReleaseLibJars
+> Task :core:bundleReleaseLocalLintAar
+
+> Task :shared:compileAndroidMain
+w: file:///home/builder/clone/apps/dimodori-android/shared/src/androidMain/com/jellycine/shared/ui/components/common/ThemeMusicSettingsItem.kt:118:39 'val Icons.Rounded.VolumeDown: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Rounded.VolumeDown.
+w: file:///home/builder/clone/apps/dimodori-android/shared/src/androidMain/com/jellycine/shared/ui/components/common/ThemeMusicSettingsItem.kt:134:39 'val Icons.Rounded.VolumeUp: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Rounded.VolumeUp.
+
+> Task :shared:bundleAndroidMainClassesToRuntimeJar
+> Task :shared:processAndroidMainJavaRes
+> Task :shared:createFullJarAndroidMain
+> Task :shared:bundleAndroidMainClassesToCompileJar
+> Task :shared:mergeAndroidMainJavaResource
+> Task :shared:syncAndroidMainLibJars
+> Task :shared:bundleAndroidMainLocalLintAar
+> Task :phone:kspReleaseKotlin
+> Task :core:lintVitalAnalyzeRelease
+
+> Task :phone:compileReleaseKotlin FAILED
+e: file:///home/builder/clone/apps/dimodori-android/phone/src/main/java/com/dimodori/app/tv/ui/screens/dashboard/home/Dashboard.kt:118:32 Unresolved reference 'snapshotFlow'.
+e: file:///home/builder/clone/apps/dimodori-android/phone/src/main/java/com/dimodori/app/ui/screens/dashboard/home/Dashboard.kt:110:32 Unresolved reference 'snapshotFlow'.
+
+[Incubating] Problems report is available at: file:///home/builder/clone/apps/dimodori-android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':phone:compileReleaseKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':phone:compileReleaseKotlin'.
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:135)
+	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:288)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:133)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:121)
+	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:41)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.DefaultNodeExecutor.executeLocalTaskNode(DefaultNodeExecutor.java:55)
+	at org.gradle.execution.plan.DefaultNodeExecutor.execute(DefaultNodeExecutor.java:34)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:355)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:343)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:339)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:84)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:339)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:328)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:47)
+Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+	at org.gradle.workers.internal.DefaultWorkerExecutor$WorkItemExecution.waitForCompletion(DefaultWorkerExecutor.java:289)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.lambda$waitForItemsAndGatherFailures$2(DefaultAsyncWorkTracker.java:130)
+	at org.gradle.internal.Factories$1.create(Factories.java:30)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.lambda$withoutLocks$2(DefaultWorkerLeaseService.java:350)
+	at org.gradle.internal.work.ResourceLockStatistics$1.measure(ResourceLockStatistics.java:43)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:348)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:332)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLock(DefaultWorkerLeaseService.java:337)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:126)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:92)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForAll(DefaultAsyncWorkTracker.java:78)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForCompletion(DefaultAsyncWorkTracker.java:66)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:267)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:48)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeAction(TaskExecution.java:244)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeActions(TaskExecution.java:227)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeWithPreviousOutputFiles(TaskExecution.java:210)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.execute(TaskExecution.java:176)
+	at org.gradle.internal.execution.steps.ExecuteStep.executeInternal(ExecuteStep.java:167)
+	at org.gradle.internal.execution.steps.ExecuteStep.access$000(ExecuteStep.java:47)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:137)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:134)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:134)
+	at org.gradle.internal.execution.steps.ExecuteStep$Mutable.execute(ExecuteStep.java:80)
+	at org.gradle.internal.execution.steps.CancelExecutionStep.execute(CancelExecutionStep.java:42)
+	at org.gradle.internal.execution.steps.TimeoutStep.executeWithoutTimeout(TimeoutStep.java:75)
+	at org.gradle.internal.execution.steps.TimeoutStep.execute(TimeoutStep.java:55)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:51)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:29)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.executeMutable(RemovePreviousOutputsStep.java:67)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.executeMutable(RemovePreviousOutputsStep.java:39)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:42)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:24)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:69)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:46)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.executeMutable(ResolveInputChangesStep.java:39)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.executeMutable(ResolveInputChangesStep.java:28)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheStep.java:189)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$1(BuildCacheStep.java:76)
+	at org.gradle.internal.Either$Right.fold(Either.java:176)
+	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:74)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:49)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.executeMutable(StoreExecutionStateStep.java:46)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.executeMutable(StoreExecutionStateStep.java:35)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.executeBecause(SkipUpToDateStep.java:75)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.lambda$execute$2(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:35)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:37)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:27)
+	at org.gradle.internal.execution.steps.ResolveMutableCachingStateStep.executeDelegate(ResolveMutableCachingStateStep.java:70)
+	at org.gradle.internal.execution.steps.ResolveMutableCachingStateStep.executeDelegate(ResolveMutableCachingStateStep.java:32)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:69)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:37)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.executeMutable(ResolveChangesStep.java:63)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.executeMutable(ResolveChangesStep.java:34)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.ValidateStep$Mutable.executeDelegate(ValidateStep.java:79)
+	at org.gradle.internal.execution.steps.ValidateStep$Mutable.executeDelegate(ValidateStep.java:65)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:99)
+	at org.gradle.internal.execution.steps.ValidateStep$Mutable.execute(ValidateStep.java:65)
+	at org.gradle.internal.execution.steps.CaptureMutableStateBeforeExecutionStep.executeMutable(CaptureMutableStateBeforeExecutionStep.java:86)
+	at org.gradle.internal.execution.steps.CaptureMutableStateBeforeExecutionStep.execute(CaptureMutableStateBeforeExecutionStep.java:65)
+	at org.gradle.internal.execution.steps.CaptureMutableStateBeforeExecutionStep.execute(CaptureMutableStateBeforeExecutionStep.java:45)
+	at org.gradle.internal.execution.steps.SkipEmptyMutableWorkStep.executeWithNonEmptySources(SkipEmptyMutableWorkStep.java:210)
+	at org.gradle.internal.execution.steps.SkipEmptyMutableWorkStep.executeMutable(SkipEmptyMutableWorkStep.java:90)
+	at org.gradle.internal.execution.steps.SkipEmptyMutableWorkStep.executeMutable(SkipEmptyMutableWorkStep.java:53)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.executeMutable(LoadPreviousExecutionStateStep.java:36)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.executeMutable(LoadPreviousExecutionStateStep.java:23)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.executeMutable(HandleStaleOutputsStep.java:77)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.executeMutable(HandleStaleOutputsStep.java:43)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$executeMutable$0(AssignMutableWorkspaceStep.java:34)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution.java:305)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.executeMutable(AssignMutableWorkspaceStep.java:30)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.executeMutable(AssignMutableWorkspaceStep.java:21)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:40)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:23)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$execute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:56)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:38)
+	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:68)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:132)
+	... 30 more
+Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilation error. See log for more details
+	at org.jetbrains.kotlin.gradle.tasks.TasksUtilsKt.throwExceptionIfCompilationFailed(tasksUtils.kt:21)
+	at org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork.execute(BuildToolsApiCompilationWork.kt:295)
+	at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:68)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:64)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:61)
+	at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:102)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:61)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:44)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:41)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.workers.internal.AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:58)
+	at org.gradle.workers.internal.DefaultWorkerExecutor.lambda$submitWork$0(DefaultWorkerExecutor.java:176)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:194)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:127)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:169)
+	at org.gradle.internal.Factories$1.create(Factories.java:30)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.lambda$withLocksAcquired$0(DefaultWorkerLeaseService.java:275)
+	at org.gradle.internal.work.ResourceLockStatistics$1.measure(ResourceLockStatistics.java:43)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocksAcquired(DefaultWorkerLeaseService.java:273)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:265)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:128)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:133)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:164)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:133)
+	... 2 more
+
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.4.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 2m 1s
+120 actionable tasks: 120 executed
+
+
+Build failed :|
+Step 5 script `Build unified release APK and AAB` exited with status code 1
+
+> Task :phone:compileReleaseKotlin FAILED
+e: file:///home/builder/clone/apps/dimodori-android/phone/src/main/java/com/dimodori/app/tv/ui/screens/dashboard/home/Dashboard.kt:118:32 Unresolved reference 'snapshotFlow'.
+e: file:///home/builder/clone/apps/dimodori-android/phone/src/main/java/com/dimodori/app/ui/screens/dashboard/home/Dashboard.kt:110:32 Unresolved reference 'snapshotFlow'.
+
+[Incubating] Problems report is available at: file:///home/builder/clone/apps/dimodori-android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':phone:compileReleaseKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':phone:compileReleaseKotlin'.
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:135)
+	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:288)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:133)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:121)
+	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:41)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.DefaultNodeExecutor.executeLocalTaskNode(DefaultNodeExecutor.java:55)
+	at org.gradle.execution.plan.DefaultNodeExecutor.execute(DefaultNodeExecutor.java:34)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:355)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:343)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:339)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:84)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:339)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:328)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:47)
+Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+	at org.gradle.workers.internal.DefaultWorkerExecutor$WorkItemExecution.waitForCompletion(DefaultWorkerExecutor.java:289)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.lambda$waitForItemsAndGatherFailures$2(DefaultAsyncWorkTracker.java:130)
+	at org.gradle.internal.Factories$1.create(Factories.java:30)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.lambda$withoutLocks$2(DefaultWorkerLeaseService.java:350)
+	at org.gradle.internal.work.ResourceLockStatistics$1.measure(ResourceLockStatistics.java:43)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:348)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:332)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLock(DefaultWorkerLeaseService.java:337)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:126)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:92)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForAll(DefaultAsyncWorkTracker.java:78)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForCompletion(DefaultAsyncWorkTracker.java:66)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:267)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:48)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeAction(TaskExecution.java:244)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeActions(TaskExecution.java:227)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeWithPreviousOutputFiles(TaskExecution.java:210)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.execute(TaskExecution.java:176)
+	at org.gradle.internal.execution.steps.ExecuteStep.executeInternal(ExecuteStep.java:167)
+	at org.gradle.internal.execution.steps.ExecuteStep.access$000(ExecuteStep.java:47)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:137)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:134)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:134)
+	at org.gradle.internal.execution.steps.ExecuteStep$Mutable.execute(ExecuteStep.java:80)
+	at org.gradle.internal.execution.steps.CancelExecutionStep.execute(CancelExecutionStep.java:42)
+	at org.gradle.internal.execution.steps.TimeoutStep.executeWithoutTimeout(TimeoutStep.java:75)
+	at org.gradle.internal.execution.steps.TimeoutStep.execute(TimeoutStep.java:55)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:51)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:29)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.executeMutable(RemovePreviousOutputsStep.java:67)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.executeMutable(RemovePreviousOutputsStep.java:39)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:42)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:24)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:69)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:46)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.executeMutable(ResolveInputChangesStep.java:39)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.executeMutable(ResolveInputChangesStep.java:28)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheStep.java:189)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$1(BuildCacheStep.java:76)
+	at org.gradle.internal.Either$Right.fold(Either.java:176)
+	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:74)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:49)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.executeMutable(StoreExecutionStateStep.java:46)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.executeMutable(StoreExecutionStateStep.java:35)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.executeBecause(SkipUpToDateStep.java:75)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.lambda$execute$2(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:35)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:37)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:27)
+	at org.gradle.internal.execution.steps.ResolveMutableCachingStateStep.executeDelegate(ResolveMutableCachingStateStep.java:70)
+	at org.gradle.internal.execution.steps.ResolveMutableCachingStateStep.executeDelegate(ResolveMutableCachingStateStep.java:32)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:69)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:37)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.executeMutable(ResolveChangesStep.java:63)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.executeMutable(ResolveChangesStep.java:34)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.ValidateStep$Mutable.executeDelegate(ValidateStep.java:79)
+	at org.gradle.internal.execution.steps.ValidateStep$Mutable.executeDelegate(ValidateStep.java:65)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:99)
+	at org.gradle.internal.execution.steps.ValidateStep$Mutable.execute(ValidateStep.java:65)
+	at org.gradle.internal.execution.steps.CaptureMutableStateBeforeExecutionStep.executeMutable(CaptureMutableStateBeforeExecutionStep.java:86)
+	at org.gradle.internal.execution.steps.CaptureMutableStateBeforeExecutionStep.execute(CaptureMutableStateBeforeExecutionStep.java:65)
+	at org.gradle.internal.execution.steps.CaptureMutableStateBeforeExecutionStep.execute(CaptureMutableStateBeforeExecutionStep.java:45)
+	at org.gradle.internal.execution.steps.SkipEmptyMutableWorkStep.executeWithNonEmptySources(SkipEmptyMutableWorkStep.java:210)
+	at org.gradle.internal.execution.steps.SkipEmptyMutableWorkStep.executeMutable(SkipEmptyMutableWorkStep.java:90)
+	at org.gradle.internal.execution.steps.SkipEmptyMutableWorkStep.executeMutable(SkipEmptyMutableWorkStep.java:53)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.executeMutable(LoadPreviousExecutionStateStep.java:36)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.executeMutable(LoadPreviousExecutionStateStep.java:23)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.executeMutable(HandleStaleOutputsStep.java:77)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.executeMutable(HandleStaleOutputsStep.java:43)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$executeMutable$0(AssignMutableWorkspaceStep.java:34)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution.java:305)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.executeMutable(AssignMutableWorkspaceStep.java:30)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.executeMutable(AssignMutableWorkspaceStep.java:21)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:40)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:23)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$execute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:56)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:38)
+	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:68)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:132)
+	... 30 more
+Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilation error. See log for more details
+	at org.jetbrains.kotlin.gradle.tasks.TasksUtilsKt.throwExceptionIfCompilationFailed(tasksUtils.kt:21)
+	at org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork.execute(BuildToolsApiCompilationWork.kt:295)
+	at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:68)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:64)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:61)
+	at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:102)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:61)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:44)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:41)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.workers.internal.AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:58)
+	at org.gradle.workers.internal.DefaultWorkerExecutor.lambda$submitWork$0(DefaultWorkerExecutor.java:176)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:194)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:127)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:169)
+	at org.gradle.internal.Factories$1.create(Factories.java:30)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.lambda$withLocksAcquired$0(DefaultWorkerLeaseService.java:275)
+	at org.gradle.internal.work.ResourceLockStatistics$1.measure(ResourceLockStatistics.java:43)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocksAcquired(DefaultWorkerLeaseService.java:273)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:265)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:128)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:133)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:164)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:133)
+	... 2 more
+
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.4.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 2m 1s
+120 actionable tasks: 120 executed
+
+
+Build failed :|
+Step 5 script `Build unified release APK and AAB` exited with status code 1
