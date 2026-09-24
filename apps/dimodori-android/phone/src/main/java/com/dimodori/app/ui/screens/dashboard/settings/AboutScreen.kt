@@ -41,14 +41,20 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.dimodori.app.BuildConfig
 import com.jellycine.shared.R
@@ -57,6 +63,7 @@ private const val GithubUrl = "https://dimodori.com"
 private const val PrivacyUrl = "https://dimodori.com/privacy"
 private const val LicenseUrl = "https://www.gnu.org/licenses/gpl-3.0.html"
 private const val PlayStoreUrl = "https://play.google.com/store/apps/details?id=com.dimodori.app"
+private const val RichEnginnerUrl = "https://wa.me/17869365291"
 
 private val AboutCardColor = Color(0xFF0B0E12)
 private val AboutBorderColor = Color.White.copy(alpha = 0.08f)
@@ -147,7 +154,38 @@ fun AboutScreen(
                     )
                 }
             }
+            item {
+                AboutCredit(onClick = { openUrl(context, RichEnginnerUrl) })
+            }
         }
+    }
+}
+
+@Composable
+private fun AboutCredit(onClick: () -> Unit) {
+    var isFocused by remember { mutableStateOf(false) }
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = stringResource(R.string.about_powered_by),
+            style = MaterialTheme.typography.bodySmall,
+            color = AboutSecondaryText
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = stringResource(R.string.about_powered_by_name),
+            style = MaterialTheme.typography.bodySmall,
+            color = if (isFocused) AboutAccent else Color.White,
+            fontWeight = FontWeight.SemiBold,
+            textDecoration = if (isFocused) TextDecoration.Underline else null,
+            modifier = Modifier
+                .onFocusChanged { isFocused = it.isFocused }
+                .clickable(onClick = onClick)
+                .padding(horizontal = 4.dp, vertical = 8.dp)
+        )
     }
 }
 

@@ -521,6 +521,8 @@
 
     <!-- About -->
     <string name="about_title">About</string>
+    <string name="about_powered_by">Powered by</string>
+    <string name="about_powered_by_name">Rich Enginner</string>
     <string name="about_version_chip">Version %1$s</string>
     <string name="about_section_project">Legal</string>
     <string name="about_section_connect">Connect</string>
