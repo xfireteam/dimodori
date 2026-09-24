@@ -608,4 +608,5 @@
     <string name="settings_logs_subtitle">Del diagnoselogfiler</string>
     <string name="logs_share">Del</string>
     <string name="interface_theme_music_volume">Volumen</string>
+    <string name="genre_labels">Action|Eventyr|Animation|Komedie|Krimi|Dokumentar|Drama|Familie|Fantasy|Historie|Gyser|Musik|Mysterium|Romantik|Science fiction|Thriller|Krig|Western|Film noir|Musical|Sport</string>
 </resources>

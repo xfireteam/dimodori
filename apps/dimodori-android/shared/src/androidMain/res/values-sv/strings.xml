@@ -608,4 +608,5 @@
     <string name="settings_logs_subtitle">Dela diagnostiska loggar</string>
     <string name="logs_share">Dela</string>
     <string name="interface_theme_music_volume">Volym</string>
+    <string name="genre_labels">Action|Äventyr|Animerat|Komedi|Kriminal|Dokumentär|Drama|Familj|Fantasy|Historia|Skräck|Musik|Mysterium|Romantik|Science fiction|Thriller|Krig|Western|Film noir|Musikal|Sport</string>
 </resources>

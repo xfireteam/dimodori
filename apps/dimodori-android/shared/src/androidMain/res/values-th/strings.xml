@@ -595,4 +595,5 @@
     <string name="settings_logs_subtitle">แชร์บันทึกวินิจฉัย</string>
     <string name="logs_share">แบ่งปัน</string>
     <string name="interface_theme_music_volume">ปริมาณ</string>
+    <string name="genre_labels">แอ็กชัน|ผจญภัย|แอนิเมชัน|ตลก|อาชญากรรม|สารคดี|ดราม่า|ครอบครัว|แฟนตาซี|ประวัติศาสตร์|สยองขวัญ|ดนตรี|ลึกลับ|โรแมนติก|นิยายวิทยาศาสตร์|ระทึกขวัญ|สงคราม|ตะวันตก|ฟิล์มนัวร์|เพลง|กีฬา</string>
 </resources>

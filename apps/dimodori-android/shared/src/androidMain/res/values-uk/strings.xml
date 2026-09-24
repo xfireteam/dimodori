@@ -634,4 +634,5 @@
     <string name="settings_logs_subtitle">Спільне використання діагностичних журналів</string>
     <string name="logs_share">Поділитися</string>
     <string name="interface_theme_music_volume">Обсяг</string>
+    <string name="genre_labels">Бойовик|Пригоди|Анімація|Комедія|Кримінал|Документальний|Драма|Сімейний|Фентезі|Історичний|Жахи|Музика|Детектив|Романтика|Фантастика|Трилер|Військовий|Вестерн|Фільм-нуар|Мюзикл|Спорт</string>
 </resources>

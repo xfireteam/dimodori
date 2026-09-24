@@ -595,4 +595,5 @@
     <string name="settings_logs_subtitle">Chia sẻ nhật ký chẩn đoán</string>
     <string name="logs_share">Chia sẻ</string>
     <string name="interface_theme_music_volume">Khối lượng</string>
+    <string name="genre_labels">Hành động|Phiêu lưu|Hoạt hình|Hài|Tội phạm|Tài liệu|Chính kịch|Gia đình|Giả tưởng|Lịch sử|Kinh dị|Âm nhạc|Bí ẩn|Lãng mạn|Khoa học viễn tưởng|Giật gân|Chiến tranh|Cao bồi|Phim noir|Nhạc kịch|Thể thao</string>
 </resources>

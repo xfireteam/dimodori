@@ -634,4 +634,5 @@
     <string name="settings_logs_subtitle">Sdílení diagnostických protokolů</string>
     <string name="logs_share">Sdílet</string>
     <string name="interface_theme_music_volume">Objem</string>
+    <string name="genre_labels">Akční|Dobrodružný|Animovaný|Komedie|Kriminální|Dokumentární|Drama|Rodinný|Fantasy|Historický|Horor|Hudební|Mysteriózní|Romantický|Sci-fi|Thriller|Válečný|Western|Film noir|Muzikál|Sportovní</string>
 </resources>

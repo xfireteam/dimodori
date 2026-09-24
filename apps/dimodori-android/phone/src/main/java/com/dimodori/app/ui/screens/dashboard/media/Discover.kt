@@ -69,6 +69,7 @@ import com.jellycine.data.repository.SeerrRepository
 import com.jellycine.shared.recommendations.loadWatchedFeed
 import com.jellycine.shared.ui.components.common.ShimmerPosterRail
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -87,7 +88,8 @@ internal const val WATCHED_VIEW_ALL_PARENT_ID = "__watched__"
 
 private data class RecommendationFeedState(
     val sections: List<RecommendationSectionUi>,
-    val error: String?
+    val error: String?,
+    val sectionErrors: List<String> = emptyList()
 )
 
 @Composable
@@ -107,6 +109,7 @@ fun Discover(
     var loadingWatched by remember { mutableStateOf(true) }
     val isLoading = (loadingFeed && sections.isEmpty()) && (loadingWatched && watchedSections.isEmpty())
     var error by remember { mutableStateOf<String?>(null) }
+    var refreshToken by remember { mutableStateOf(0) }
 
     val context = LocalContext.current
     val authRepository = remember { AuthRepositoryProvider.getInstance(context) }
@@ -149,77 +152,84 @@ fun Discover(
     val watchedMoviesTitle = stringResource(R.string.movies)
     val watchedShowsTitle = stringResource(R.string.search_results_shows)
     val watchedEpisodesTitle = stringResource(R.string.search_results_episodes)
+    val suggestionsTitle = stringResource(R.string.suggestions)
+    val unknownError = stringResource(R.string.my_media_unknown_error)
 
     fun refresh() {
-        scope.launch {
-            loadingFeed = true
-            val result = loadRecommendationFeed(mediaRepository)
-            sections = result.sections
-            error = result.error
-            loadingFeed = false
-
-            result.sections
-                .filter { it.seerRole != null }
-                .forEach { section ->
-                    launch {
-                        val seerItems = loadSectionSeerRecommendations(
-                            section = section,
-                            activeServerId = activeServerId,
-                            mediaRepository = mediaRepository,
-                            seerrRepository = seerrRepository
-                        )
-                        var updatedSection = section.copy(seerItems = seerItems)
-                        if (updatedSection != section) {
-                            sections = sections.replaceSection(updatedSection)
-                        }
-
-                        seerItems
-                            .mapNotNull { seerItem ->
-                                val seedItemId = updatedSection.items.firstOrNull()?.id
-                                val jellyfinMediaId = seerItem.jellyfinMediaId
-                                    ?.takeIf { it.isNotBlank() && it != seedItemId }
-                                    ?: return@mapNotNull null
-                                jellyfinMediaId to seerItem
-                            }
-                            .distinctBy { (jellyfinMediaId, _) -> jellyfinMediaId }
-                            .forEach { (jellyfinMediaId, seerItem) ->
-                                val localItem = mediaRepository.getItemById(jellyfinMediaId).getOrNull() ?: return@forEach
-                                val localItemId = localItem.id ?: return@forEach
-                                updatedSection = if (updatedSection.items.any { it.id == localItemId }) {
-                                    updatedSection.copy(
-                                        seerItems = updatedSection.seerItems.filterNot { it.tmdbId == seerItem.tmdbId }
-                                    )
-                                } else {
-                                    updatedSection.copy(
-                                        items = updatedSection.items + localItem,
-                                        seerItems = updatedSection.seerItems.filterNot { it.tmdbId == seerItem.tmdbId }
-                                    )
-                                }
-                                sections = sections.replaceSection(updatedSection)
-                            }
-                    }
-                }
-        }
-
-        scope.launch(Dispatchers.IO) {
-            val watched = loadWatchedFeed(
-                mediaRepository = mediaRepository,
-                moviesTitle = watchedMoviesTitle,
-                showsTitle = watchedShowsTitle,
-                episodesTitle = watchedEpisodesTitle
-            )
-            withContext(Dispatchers.Main) {
-                watchedSections = watched.sections.map { section ->
-                    RecommendationSectionUi(section.title, section.items)
-                }
-                if (error == null) error = watched.error
-                loadingWatched = false
-            }
-        }
+        refreshToken++
     }
 
-    LaunchedEffect(activeServerId) {
-        refresh()
+    LaunchedEffect(activeServerId, refreshToken) {
+        sections = emptyList()
+        watchedSections = emptyList()
+        error = null
+        loadingFeed = true
+        loadingWatched = true
+        coroutineScope {
+            launch {
+                val result = loadRecommendationFeed(
+                    mediaRepository = mediaRepository,
+                    fallbackTitle = suggestionsTitle,
+                    unknownError = unknownError,
+                    onSections = { published -> sections = published }
+                )
+                sections = result.sections
+                error = result.error
+                loadingFeed = false
+
+                result.sections
+                    .filter { it.seerRole != null }
+                    .forEach { section ->
+                        launch {
+                            val seerItems = loadSectionSeerRecommendations(
+                                section = section,
+                                activeServerId = activeServerId,
+                                mediaRepository = mediaRepository,
+                                seerrRepository = seerrRepository
+                            )
+                            var updatedSection = section.copy(seerItems = seerItems)
+                            if (updatedSection != section) sections = sections.replaceSection(updatedSection)
+                            seerItems
+                                .mapNotNull { seerItem ->
+                                    val seedItemId = updatedSection.items.firstOrNull()?.id
+                                    val jellyfinMediaId = seerItem.jellyfinMediaId
+                                        ?.takeIf { it.isNotBlank() && it != seedItemId }
+                                        ?: return@mapNotNull null
+                                    jellyfinMediaId to seerItem
+                                }
+                                .distinctBy { (jellyfinMediaId, _) -> jellyfinMediaId }
+                                .forEach { (jellyfinMediaId, seerItem) ->
+                                    val localItem = mediaRepository.getItemById(jellyfinMediaId).getOrNull() ?: return@forEach
+                                    val localItemId = localItem.id ?: return@forEach
+                                    updatedSection = if (updatedSection.items.any { it.id == localItemId }) {
+                                        updatedSection.copy(seerItems = updatedSection.seerItems.filterNot { it.tmdbId == seerItem.tmdbId })
+                                    } else {
+                                        updatedSection.copy(
+                                            items = updatedSection.items + localItem,
+                                            seerItems = updatedSection.seerItems.filterNot { it.tmdbId == seerItem.tmdbId }
+                                        )
+                                    }
+                                    sections = sections.replaceSection(updatedSection)
+                                }
+                        }
+                    }
+            }
+            launch(Dispatchers.IO) {
+                val watched = loadWatchedFeed(
+                    mediaRepository = mediaRepository,
+                    moviesTitle = watchedMoviesTitle,
+                    showsTitle = watchedShowsTitle,
+                    episodesTitle = watchedEpisodesTitle
+                )
+                withContext(Dispatchers.Main) {
+                    watchedSections = watched.sections.map { section ->
+                        RecommendationSectionUi(section.title, section.items)
+                    }
+                    if (error == null) error = watched.error
+                    loadingWatched = false
+                }
+            }
+        }
     }
 
     Box(
@@ -367,7 +377,12 @@ fun Discover(
     }
 }
 
-private suspend fun loadRecommendationFeed(mediaRepository: MediaRepository): RecommendationFeedState {
+private suspend fun loadRecommendationFeed(
+    mediaRepository: MediaRepository,
+    fallbackTitle: String,
+    unknownError: String,
+    onSections: (List<RecommendationSectionUi>) -> Unit
+): RecommendationFeedState {
     return try {
         val viewsResult = mediaRepository.getUserViews()
         val movieLibraries = viewsResult.getOrNull()?.items
@@ -383,51 +398,43 @@ private suspend fun loadRecommendationFeed(mediaRepository: MediaRepository): Re
             listOf(BaseItemDto(name = null, id = null, collectionType = "movies"))
         }
 
-        val results = coroutineScope {
+        val rawSections = mutableListOf<RecommendationSectionUi>()
+        val sectionErrors = mutableListOf<String>()
+        coroutineScope {
             requests.map { library ->
                 async {
-                    mediaRepository.getMovieRecommendations(
-                        parentId = library.id,
-                        categoryLimit = 8,
-                        itemLimit = 18
-                    )
-                }
-            }.awaitAll()
-        }
-
-        val rawSections = results.flatMap { result ->
-            result.getOrNull()
-                .orEmpty()
-                .mapNotNull { recommendation ->
-                    val title = recommendation.title()
-                    val items = recommendation.items.orEmpty()
-                    if (title == null || items.isEmpty()) {
-                        null
-                    } else {
-                        RecommendationSectionUi(
-                            title = title,
-                            items = items,
-                            seerRole = recommendation.seerRole(),
-                            personName = recommendation.baselineItemName?.takeIf { it.isNotBlank() }
+                    val result = try {
+                        mediaRepository.getMovieRecommendations(
+                            parentId = library.id,
+                            categoryLimit = 8,
+                            itemLimit = 18
                         )
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        Result.failure(e)
+                    }
+                    synchronized(rawSections) {
+                        result.exceptionOrNull()?.message?.let(sectionErrors::add)
+                        rawSections += result.getOrNull()
+                            .orEmpty()
+                            .mapNotNull { recommendation ->
+                                val title = recommendation.title()
+                                val items = recommendation.items.orEmpty()
+                                if (title == null || items.isEmpty()) null else RecommendationSectionUi(
+                                    title = title,
+                                    items = items,
+                                    seerRole = recommendation.seerRole(),
+                                    personName = recommendation.baselineItemName?.takeIf { it.isNotBlank() }
+                                )
+                            }
+                        onSections(mergeRecommendationSections(rawSections))
                     }
                 }
+            }.awaitAll() // Each child publishes its sections before the group completes.
         }
 
-        val sections = rawSections
-            .groupBy { it.title }
-            .map { (_, groupedSections) ->
-                val seed = groupedSections.first()
-                RecommendationSectionUi(
-                    title = seed.title,
-                    items = groupedSections
-                        .flatMap { it.items }
-                        .distinctBy { item -> item.id ?: item.name.orEmpty() },
-                    seerRole = seed.seerRole,
-                    personName = seed.personName
-                )
-            }
-            .filter { it.items.isNotEmpty() }
+        val sections = mergeRecommendationSections(rawSections)
 
         if (sections.isNotEmpty()) {
             RecommendationFeedState(sections = sections, error = null)
@@ -441,30 +448,47 @@ private suspend fun loadRecommendationFeed(mediaRepository: MediaRepository): Re
                 RecommendationFeedState(
                     sections = listOf(
                         RecommendationSectionUi(
-                            title = "Sugerencias",
+                            title = fallbackTitle,
                             items = fallbackItems
                         )
                     ),
                     error = null
                 )
             } else {
-                val recommendationError = results
-                    .asSequence()
-                    .mapNotNull { it.exceptionOrNull()?.message }
-                    .firstOrNull()
                 RecommendationFeedState(
                     sections = emptyList(),
                     error = listOfNotNull(
-                        recommendationError,
+                        sectionErrors.takeIf { it.isNotEmpty() }?.joinToString(),
                         fallback.exceptionOrNull()?.message,
                         viewsResult.exceptionOrNull()?.message
-                    ).firstOrNull()
+                    ).firstOrNull() ?: unknownError,
+                    sectionErrors = sectionErrors.toList()
                 )
             }
         }
+    } catch (e: CancellationException) {
+        throw e
     } catch (e: Exception) {
-        RecommendationFeedState(emptyList(), e.message ?: "Error desconocido")
+        RecommendationFeedState(emptyList(), e.message ?: unknownError)
     }
+}
+
+private fun mergeRecommendationSections(
+    rawSections: List<RecommendationSectionUi>
+): List<RecommendationSectionUi> {
+    return rawSections
+        .groupBy { it.title }
+        .map { (_, groupedSections) ->
+            val seed = groupedSections.first()
+            RecommendationSectionUi(
+                title = seed.title,
+                items = groupedSections.flatMap { it.items }
+                    .distinctBy { item -> item.id ?: item.name.orEmpty() },
+                seerRole = seed.seerRole,
+                personName = seed.personName
+            )
+        }
+        .filter { it.items.isNotEmpty() }
 }
 
 private suspend fun loadSectionSeerRecommendations(

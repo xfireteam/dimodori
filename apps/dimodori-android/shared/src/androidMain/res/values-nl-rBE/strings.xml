@@ -608,4 +608,5 @@
     <string name="settings_logs_subtitle">Diagnostische logboeken delen</string>
     <string name="logs_share">Delen</string>
     <string name="interface_theme_music_volume">Volume</string>
+    <string name="genre_labels">Actie|Avontuur|Animatie|Komedie|Misdaad|Documentaire|Drama|Familie|Fantasy|Historie|Horror|Muziek|Mysterie|Romantiek|Sciencefiction|Thriller|Oorlog|Western|Film noir|Musical|Sport</string>
 </resources>

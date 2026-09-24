@@ -56,17 +56,9 @@ object ImageLoaderConfig {
         }
 
         val calculatedSize = (availableBytes * percent).toLong()
-        val finalSize = max(50L * 1024 * 1024, min(500L * 1024 * 1024, calculatedSize))
+        val finalSize = min(512L * BYTES_PER_MB, max(8L * BYTES_PER_MB, calculatedSize))
 
         return finalSize
-    }
-
-    private fun configuredImageCacheBytes(context: Context): Long? {
-        val configuredMb = NetworkPreferences(context).getImageMemoryCacheMb()
-        if (configuredMb == NetworkPreferences.AUTO_IMAGE_MEMORY_CACHE_MB) {
-            return null
-        }
-        return configuredMb * BYTES_PER_MB
     }
 
     private fun getOptimalMemoryPercent(context: Context): Double {
@@ -148,7 +140,7 @@ object ImageLoaderConfig {
             var response = chain.proceed(newRequest)
             var retryCount = 0
 
-            while (!response.isSuccessful && response.code >= 500 && retryCount < 2) {
+            while (!response.isSuccessful && response.code >= 500 && retryCount < 1) {
                 response.close()
                 retryCount++
                 response = chain.proceed(newRequest)
@@ -158,8 +150,8 @@ object ImageLoaderConfig {
         }
 
         val dispatcher = Dispatcher().apply {
-            maxRequests = 128
-            maxRequestsPerHost = 32
+            maxRequests = 24
+            maxRequestsPerHost = 8
         }
 
         return OkHttpClient.Builder()
@@ -200,7 +192,7 @@ object ImageLoaderConfig {
         builder.diskCache {
             DiskCache.Builder()
                 .directory(persistentImageCacheDir(context).toOkioPath())
-                .maxSizeBytes(configuredImageCacheBytes(context) ?: DiskCacheSize(context))
+                .maxSizeBytes(DiskCacheSize(context))
                 .build()
         }
 

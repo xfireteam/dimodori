@@ -595,4 +595,5 @@
     <string name="settings_logs_subtitle">진단 로그 공유</string>
     <string name="logs_share">공유하기</string>
     <string name="interface_theme_music_volume">볼륨</string>
+    <string name="genre_labels">액션|모험|애니메이션|코미디|범죄|다큐멘터리|드라마|가족|판타지|역사|공포|음악|미스터리|로맨스|SF|스릴러|전쟁|서부극|필름 누아르|뮤지컬|스포츠</string>
 </resources>

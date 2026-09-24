@@ -621,4 +621,5 @@
     <string name="settings_logs_subtitle">Partager les journaux de diagnostic</string>
     <string name="logs_share">PARTAGEZ</string>
     <string name="interface_theme_music_volume">Volume</string>
+    <string name="genre_labels">Action|Aventure|Animation|Comédie|Crime|Documentaire|Drame|Famille|Fantastique|Historique|Horreur|Musique|Mystère|Romance|Science-fiction|Thriller|Guerre|Western|Film noir|Comédie musicale|Sport</string>
 </resources>

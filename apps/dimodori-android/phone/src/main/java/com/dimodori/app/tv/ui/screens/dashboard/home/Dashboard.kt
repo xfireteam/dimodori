@@ -14,6 +14,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -29,6 +31,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -38,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import com.jellycine.shared.preferences.Preferences
 import com.jellycine.shared.util.image.JellyfinPosterImage
 import com.jellycine.shared.util.image.rememberImageUrl
+import com.jellycine.shared.util.image.WarmImageUrl
 import com.jellycine.shared.ui.components.common.*
 import com.jellycine.data.model.BaseItemDto
 import com.jellycine.data.model.HomeLibrarySectionData
@@ -73,6 +77,7 @@ import androidx.compose.foundation.border
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.jellycine.shared.R
+import com.jellycine.shared.util.media.GenreDisplayNames
 import com.dimodori.app.tv.ui.screens.dashboard.PosterSkeleton
 import com.dimodori.app.tv.ui.screens.dashboard.GenreSectionSkeleton
 import com.jellycine.detail.CodecUtils
@@ -116,7 +121,6 @@ import coil3.imageLoader
 import coil3.request.*
 import coil3.size.Precision
 import com.jellycine.shared.util.image.imageTagFor
-import com.jellycine.shared.util.image.WarmImageUrl
 import com.jellycine.shared.playback.UserDataRefreshSignals
 import java.util.concurrent.ConcurrentHashMap
 
@@ -308,6 +312,12 @@ object ImagePreloader {
     private val imageUrlCache = ConcurrentHashMap<String, String>()
     private val preferredImageTypeCache = ConcurrentHashMap<String, String>()
     private val lastRenderedImageUrlCache = ConcurrentHashMap<String, String>()
+    fun clear() {
+        preloadedUrls.clear()
+        imageUrlCache.clear()
+        preferredImageTypeCache.clear()
+        lastRenderedImageUrlCache.clear()
+    }
     private val prefetchSemaphore = Semaphore(64)
     private const val posterWidth = 240
     private const val posterHeight = 360
@@ -898,8 +908,6 @@ fun ImageLoader(
         mutableStateOf(!initialUrl.isNullOrBlank())
     }
     val context = LocalContext.current
-    WarmImageUrl(imageUrl = imageUrl, allowRgb565 = allowRgb565)
-
     LaunchedEffect(actualItemId, currentImageType, hasImageEnhancers, selectedImageTag) {
         if (actualItemId != null) {
             hasError = false
@@ -983,7 +991,7 @@ fun ImageLoader(
         }
     }
 
-    Box(modifier = modifier) {
+    Box(modifier = modifier.clip(RoundedCornerShape(cornerRadius.dp)).background(Color(0xFF1C1C1C))) {
         if (!imageUrl.isNullOrEmpty() && !hasError) {
             AsyncImage(
                 model = ImageRequest.Builder(context)
@@ -1068,6 +1076,7 @@ private object DashboardHomeQueryStore {
                 return existing
             }
         }
+        if (ownerSessionKey != null && ownerSessionKey != sessionKey) ImagePreloader.clear()
         manager?.cleanup()
         ownerSessionKey = sessionKey
         manager = QueryManager(CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate))
@@ -1457,15 +1466,6 @@ fun Dashboard(
                             true
                         }
                     }
-                    if (validItems.isNotEmpty()) {
-                        ImagePreloader.continueWatchingImages(
-                            items = validItems,
-                            mediaRepository = mediaRepository,
-                            context = context,
-                            maxItems = minOf(validItems.size, 12),
-                            priorityCount = minOf(validItems.size, 6)
-                        )
-                    }
                     validItems
                 },
                 onFailure = { throw it }
@@ -1514,15 +1514,6 @@ fun Dashboard(
                                 true
                             }
                         }
-                    if (validItems.isNotEmpty()) {
-                        ImagePreloader.continueWatchingImages(
-                            items = validItems,
-                            mediaRepository = mediaRepository,
-                            context = context,
-                            maxItems = minOf(validItems.size, 12),
-                            priorityCount = minOf(validItems.size, 6)
-                        )
-                    }
                     validItems
                 },
                 onFailure = { throw it }
@@ -1676,28 +1667,12 @@ fun Dashboard(
             if (!isNetworkAvailable) return@LaunchedEffect
             val items = continueWatchingQuery.data ?: return@LaunchedEffect
             mediaRepository.persistHomeSnapshot(continueWatchingItems = items)
-            if (items.isEmpty()) return@LaunchedEffect
-            ImagePreloader.continueWatchingImages(
-                items = items,
-                mediaRepository = mediaRepository,
-                context = context,
-                maxItems = items.size.coerceAtMost(4),
-                priorityCount = 4
-            )
         }
 
         LaunchedEffect(nextUpQuery.data?.hashCode(), isNetworkAvailable) {
             if (!isNetworkAvailable) return@LaunchedEffect
             val items = nextUpQuery.data ?: return@LaunchedEffect
             mediaRepository.persistHomeSnapshot(nextUpItems = items)
-            if (items.isEmpty()) return@LaunchedEffect
-            ImagePreloader.continueWatchingImages(
-                items = items,
-                mediaRepository = mediaRepository,
-                context = context,
-                maxItems = items.size.coerceAtMost(4),
-                priorityCount = 4
-            )
         }
 
         LaunchedEffect(featuredQuery.data?.hashCode(), selectedCategory, isNetworkAvailable) {
@@ -1714,38 +1689,12 @@ fun Dashboard(
                 homeLibrarySections = sections.map { it.toPersistedSection() }
             )
 
-            val orderedItems = sections
-                .flatMap { section -> section.items }
-                .distinctBy { it.id }
-            if (orderedItems.isEmpty()) return@LaunchedEffect
-
-            ImagePreloader.preloadCriticalImages(
-                items = orderedItems,
-                mediaRepository = mediaRepository,
-                context = context,
-                maxItems = orderedItems.size
-            )
         }
 
         LaunchedEffect(homeMyMediaLibrariesQuery.data?.hashCode(), isNetworkAvailable) {
             if (!isNetworkAvailable) return@LaunchedEffect
             val libraries = homeMyMediaLibrariesQuery.data ?: return@LaunchedEffect
             mediaRepository.persistHomeSnapshot(myMediaLibraries = libraries)
-        }
-
-        LaunchedEffect(
-            selectedCategory,
-            MyMediaLibraries.hashCode(),
-            isNetworkAvailable
-        ) {
-            if (selectedCategory != HomeCategory.HOME || !isNetworkAvailable) return@LaunchedEffect
-            if (MyMediaLibraries.isEmpty()) return@LaunchedEffect
-            ImagePreloader.MyMedia(
-                libraries = MyMediaLibraries,
-                mediaRepository = mediaRepository,
-                context = context,
-                maxItems = MyMediaLibraries.size
-            )
         }
 
         val featureParallaxOffsetPx by remember {
@@ -3492,9 +3441,18 @@ private fun ProgressiveMovieGenreSection(
     val genreId = genre.id ?: return // Skip if no genre ID
     var genreMovies by remember(genreId) { mutableStateOf(GenreCache.getGenreItems(genreId)) }
     var isLoading by remember(genreId) { mutableStateOf(GenreCache.RefreshGenreItems(genreId)) }
-    val genreTitle = genre.name ?: stringResource(R.string.movies)
+    var isNearViewport by remember(genreId) { mutableStateOf(false) }
+    val density = androidx.compose.ui.platform.LocalDensity.current
+    val viewportHeightPx = with(density) {
+        LocalConfiguration.current.screenHeightDp.dp.toPx()
+    }
+    val genreTitle = GenreDisplayNames.displayName(LocalContext.current, genre.name)
+        ?: stringResource(R.string.movies)
 
-    LaunchedEffect(genreId) {
+    // Defer offscreen genre requests; this section is composed inside the
+    // dashboard's single vertical lazy list item.
+    LaunchedEffect(genreId, isNearViewport) {
+        if (!isNearViewport) return@LaunchedEffect
         if (GenreCache.RefreshGenreItems(genreId)) {
             isLoading = true
             try {
@@ -3532,6 +3490,11 @@ private fun ProgressiveMovieGenreSection(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.Black)
+            .onGloballyPositioned { coordinates ->
+                val bounds = coordinates.boundsInWindow()
+                isNearViewport = bounds.bottom > 0f &&
+                    bounds.top < viewportHeightPx * 1.5f
+            }
     ) {
         Row(
             modifier = Modifier
@@ -3632,9 +3595,19 @@ private fun ProgressiveTVShowGenreSection(
     val genreId = genre.id ?: return // Skip if no genre ID
     var genreShows by remember(genreId) { mutableStateOf(GenreCache.getGenreItems("tv_$genreId")) }
     var isLoading by remember(genreId) { mutableStateOf(GenreCache.RefreshGenreItems("tv_$genreId")) }
-    val genreTitle = genre.name ?: stringResource(R.string.tv_shows)
+    var isNearViewport by remember(genreId) { mutableStateOf(false) }
+    val density = androidx.compose.ui.platform.LocalDensity.current
+    val viewportHeightPx = with(density) {
+        LocalConfiguration.current.screenHeightDp.dp.toPx()
+    }
+    val genreTitle = GenreDisplayNames.displayName(LocalContext.current, genre.name)
+        ?: stringResource(R.string.tv_shows)
 
-    LaunchedEffect(genreId) {
+    // TV genres are hosted in the dashboard's single vertical lazy list. Defer
+    // each genre request until its section is near the viewport so composing
+    // the parent item does not fan out one request per genre.
+    LaunchedEffect(genreId, isNearViewport) {
+        if (!isNearViewport) return@LaunchedEffect
         val cacheKey = "tv_$genreId"
         if (GenreCache.RefreshGenreItems(cacheKey)) {
             isLoading = true
@@ -3673,6 +3646,11 @@ private fun ProgressiveTVShowGenreSection(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.Black)
+            .onGloballyPositioned { coordinates ->
+                val bounds = coordinates.boundsInWindow()
+                isNearViewport = bounds.bottom > 0f &&
+                    bounds.top < viewportHeightPx * 1.5f
+            }
     ) {
         Row(
             modifier = Modifier

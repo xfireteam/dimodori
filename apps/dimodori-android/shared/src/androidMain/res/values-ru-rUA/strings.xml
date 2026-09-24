@@ -634,4 +634,5 @@
     <string name="settings_logs_subtitle">Делитесь диагностическими журналами</string>
     <string name="logs_share">Поделись</string>
     <string name="interface_theme_music_volume">Объем</string>
+    <string name="genre_labels">Боевик|Приключения|Анимация|Комедия|Криминал|Документальный|Драма|Семейный|Фэнтези|История|Ужасы|Музыка|Детектив|Мелодрама|Фантастика|Триллер|Военный|Вестерн|Фильм-нуар|Мюзикл|Спорт</string>
 </resources>

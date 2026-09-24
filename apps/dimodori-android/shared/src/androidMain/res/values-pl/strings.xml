@@ -634,4 +634,5 @@
     <string name="settings_logs_subtitle">Udostępnianie dzienników diagnostycznych</string>
     <string name="logs_share">Udostępnij</string>
     <string name="interface_theme_music_volume">Wolumen</string>
+    <string name="genre_labels">Akcja|Przygodowy|Animacja|Komedia|Kryminał|Dokumentalny|Dramat|Familijny|Fantasy|Historyczny|Horror|Muzyka|Tajemnica|Romans|Science fiction|Thriller|Wojenny|Western|Film noir|Musical|Sportowy</string>
 </resources>

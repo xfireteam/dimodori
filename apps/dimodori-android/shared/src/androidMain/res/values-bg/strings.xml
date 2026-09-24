@@ -608,4 +608,5 @@
     <string name="settings_logs_subtitle">Споделяне на диагностични дневници</string>
     <string name="logs_share">Сподели</string>
     <string name="interface_theme_music_volume">Обем</string>
+    <string name="genre_labels">Екшън|Приключенски|Анимация|Комедия|Криминален|Документален|Драма|Семеен|Фентъзи|Исторически|Ужаси|Музика|Мистерия|Романтичен|Научна фантастика|Трилър|Военен|Уестърн|Филм ноар|Мюзикъл|Спорт</string>
 </resources>

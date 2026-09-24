@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import com.jellycine.shared.util.media.GenreDisplayNames
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -573,7 +574,6 @@ private fun PosterCard(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        WarmImageUrl(imageUrl = imageUrl, allowRgb565 = true)
 
         Card(
             modifier = Modifier
@@ -920,7 +920,7 @@ private fun SortBottomSheet(
                 ) {
                     availableGenres.forEach { genre ->
                         MediaFilterChip(
-                            label = genre,
+                            label = GenreDisplayNames.displayName(LocalContext.current, genre) ?: genre,
                             isSelected = selectedGenres.contains(genre),
                             onClick = { onGenreToggle(genre) }
                         )

@@ -595,4 +595,5 @@
     <string name="settings_logs_subtitle">共享诊断日志</string>
     <string name="logs_share">分享</string>
     <string name="interface_theme_music_volume">音量</string>
+    <string name="genre_labels">动作|冒险|动画|喜剧|犯罪|纪录片|剧情|家庭|奇幻|历史|恐怖|音乐|悬疑|爱情|科幻|惊悚|战争|西部|黑色电影|音乐剧|体育</string>
 </resources>

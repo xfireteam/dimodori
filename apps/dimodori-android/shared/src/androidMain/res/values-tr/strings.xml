@@ -608,4 +608,5 @@
     <string name="settings_logs_subtitle">Tanılama günlüklerini paylaşma</string>
     <string name="logs_share">Paylaş</string>
     <string name="interface_theme_music_volume">Hacim</string>
+    <string name="genre_labels">Aksiyon|Macera|Animasyon|Komedi|Suç|Belgesel|Dram|Aile|Fantastik|Tarih|Korku|Müzik|Gizem|Romantik|Bilim kurgu|Gerilim|Savaş|Western|Film noir|Müzikal|Spor</string>
 </resources>

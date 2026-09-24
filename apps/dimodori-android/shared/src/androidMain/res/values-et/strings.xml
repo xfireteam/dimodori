@@ -608,4 +608,5 @@
     <string name="settings_logs_subtitle">Diagnostikalogide jagamine</string>
     <string name="logs_share">Jaga</string>
     <string name="interface_theme_music_volume">Helitugevus</string>
+    <string name="genre_labels">Märul|Seiklus|Animatsioon|Komöödia|Krimi|Dokumentaal|Draama|Pere|Fantaasia|Ajalugu|Õudus|Muusika|Müsteerium|Romantika|Ulme|Thriller|Sõda|Vestern|Film noir|Muusikal|Sport</string>
 </resources>

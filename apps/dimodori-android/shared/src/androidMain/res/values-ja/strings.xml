@@ -595,4 +595,5 @@
     <string name="settings_logs_subtitle">診断ログの共有</string>
     <string name="logs_share">シェア</string>
     <string name="interface_theme_music_volume">ボリューム</string>
+    <string name="genre_labels">アクション|アドベンチャー|アニメーション|コメディ|犯罪|ドキュメンタリー|ドラマ|ファミリー|ファンタジー|歴史|ホラー|音楽|ミステリー|ロマンス|SF|スリラー|戦争|西部劇|フィルム・ノワール|ミュージカル|スポーツ</string>
 </resources>

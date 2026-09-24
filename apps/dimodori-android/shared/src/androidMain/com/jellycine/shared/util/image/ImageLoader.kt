@@ -101,7 +101,6 @@ fun JellyfinPosterImage(
     onErrorStateChange: (Boolean) -> Unit = {}
 ) {
     var imageState by remember(imageUrl) { mutableStateOf<AsyncImagePainter.State>(AsyncImagePainter.State.Empty) }
-    WarmImageUrl(imageUrl = imageUrl, allowRgb565 = true)
 
     // Notify parent about loading and error state changes
     LaunchedEffect(imageState) {

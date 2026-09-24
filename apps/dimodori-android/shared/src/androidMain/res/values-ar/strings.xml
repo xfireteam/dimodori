@@ -660,4 +660,5 @@
     <string name="settings_logs_subtitle">مشاركة سجلات التشخيص</string>
     <string name="logs_share">شارك</string>
     <string name="interface_theme_music_volume">مستوى الصوت</string>
+    <string name="genre_labels">أكشن|مغامرة|رسوم متحركة|كوميديا|جريمة|وثائقي|دراما|عائلي|فانتازيا|تاريخي|رعب|موسيقى|غموض|رومانسي|خيال علمي|إثارة|حرب|غربي|فيلم نوار|موسيقي|رياضة</string>
 </resources>
