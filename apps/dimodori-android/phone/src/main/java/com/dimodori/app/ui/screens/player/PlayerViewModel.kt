@@ -14,6 +14,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.HttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.MergingMediaSource
 import androidx.media3.ui.AspectRatioFrameLayout
@@ -102,6 +103,7 @@ class PlayerViewModel @Inject constructor(
     private var nextEpisodePrefetchJob: Job? = null
     private var nextEpisodePrefetchSignature: String? = null
     private var mpvWatchdogJob: Job? = null
+    private var remoteStartupJob: Job? = null
     private var hasRenderedFirstFrame = false
     private var mpvExternalSubtitleUrls: Map<Int, String> = emptyMap()
     private var remotePlaybackRequestKey: String? = null
@@ -146,6 +148,8 @@ class PlayerViewModel @Inject constructor(
         startPlayback: Boolean = true,
         forcedPlayerEngine: String? = null
     ) {
+        remoteStartupJob?.cancel()
+        remoteStartupJob = null
         viewModelScope.launch {
             try {
                 _playerState.value = _playerState.value.copy(
@@ -307,11 +311,16 @@ class PlayerViewModel @Inject constructor(
                         maxStreamingBitrate = maxStreamingBitrate,
                         audioStreamIndex = resolvedPreferredAudioStreamIndex,
                         subtitleStreamIndex = activePreferredSubtitleStreamIndex,
-                        audioTranscodeMode = audioTranscodeMode
+                        audioTranscodeMode = audioTranscodeMode,
+                        preferDeviceProfile = itemDetails?.path
+                            ?.substringBefore('?')
+                            ?.endsWith(".strm", ignoreCase = true) == true
                     )
                     if (playbackInfoResult.isFailure) {
-                        val error = playbackInfoResult.exceptionOrNull()?.message ?: "No se pudo obtener la información de reproducción"
-                        _playerState.value = _playerState.value.copy(isLoading = false, error = error)
+                        _playerState.value = _playerState.value.copy(
+                            isLoading = false,
+                            error = "No se pudo obtener la información de reproducción del servidor."
+                        )
                         return@launch
                     }
 
@@ -350,8 +359,10 @@ class PlayerViewModel @Inject constructor(
                         includeAccessToken = isMpvPlayback()
                     )
                     if (playbackRequestResult.isFailure) {
-                        val error = playbackRequestResult.exceptionOrNull()?.message ?: "No se pudo obtener la solicitud de reproducción"
-                        _playerState.value = _playerState.value.copy(isLoading = false, error = error)
+                        _playerState.value = _playerState.value.copy(
+                            isLoading = false,
+                            error = "No se pudo preparar la fuente de reproducción."
+                        )
                         return@launch
                     }
 
@@ -499,6 +510,32 @@ class PlayerViewModel @Inject constructor(
                     isHdrEnabled = isHdrPlayback,
                     hdrFormat = hdrFormat
                 )
+                if (primaryMediaSource?.isRemote == true && startPlayback) {
+                    val expectedExo = exoPlayer
+                    val expectedMpv = mpvPlayer
+                    remoteStartupJob = viewModelScope.launch {
+                        delay(60_000L)
+                        if (
+                            exoPlayer === expectedExo &&
+                            mpvPlayer === expectedMpv &&
+                            playbackSession.mediaId == mediaId &&
+                            _playerState.value.isLoading &&
+                            !_playerState.value.hasStartedPlayback &&
+                            _playerState.value.error == null
+                        ) {
+                            Log.w(TAG, "Remote stream did not start within 60 seconds")
+                            expectedExo?.playWhenReady = false
+                            expectedExo?.stop()
+                            expectedMpv?.pause()
+                            _playerState.value = _playerState.value.copy(
+                                isLoading = false,
+                                isPlaying = false,
+                                playWhenReady = false,
+                                error = "La fuente remota no responde. Comprueba el enlace o la transcodificación del servidor."
+                            )
+                        }
+                    }
+                }
                 if (usesMpv) {
                     updateApiTrackInformation()
                 }
@@ -513,10 +550,10 @@ class PlayerViewModel @Inject constructor(
                 )
 
             } catch (e: Exception) {
-                Log.e(TAG, "Player initialization failed", e)
+                Log.e(TAG, "Player initialization failed: ${e.javaClass.simpleName}")
                 _playerState.value = _playerState.value.copy(
                     isLoading = false,
-                    error = e.message ?: "Ocurrió un error desconocido"
+                    error = "No se pudo iniciar la reproducción."
                 )
             }
         }
@@ -1021,6 +1058,8 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun releasePlayer() {
+        remoteStartupJob?.cancel()
+        remoteStartupJob = null
         persistPosition()
         playbackReporter.reportPlaybackStopped()
         cancelNextEpisodePrefetch()
@@ -1211,10 +1250,13 @@ class PlayerViewModel @Inject constructor(
     private fun createMpvListener(): MpvPlayerController.Listener {
         return object : MpvPlayerController.Listener {
             override fun onBuffering() {
-                _playerState.value = _playerState.value.copy(isLoading = true)
+                if (_playerState.value.error == null) {
+                    _playerState.value = _playerState.value.copy(isLoading = true)
+                }
             }
 
             override fun onReady() {
+                if (_playerState.value.error != null) return
                 val wasPlaying = _playerState.value.isPlaying
                 _playerState.value = _playerState.value.copy(
                     isLoading = false,
@@ -1439,6 +1481,7 @@ class PlayerViewModel @Inject constructor(
 
         override fun onPlaybackStateChanged(playbackState: Int) {
             val currentState = _playerState.value
+            if (currentState.error != null) return
             val wasPlaying = currentState.isPlaying
             val playWhenReady = exoPlayer?.playWhenReady == true
             val isNowPlaying = playbackState == Player.STATE_READY && playWhenReady
@@ -1518,11 +1561,16 @@ class PlayerViewModel @Inject constructor(
 
         override fun onPlayerError(error: androidx.media3.common.PlaybackException) {
             hasRenderedFirstFrame = false
+            val httpStatus = (error.cause as? HttpDataSource.InvalidResponseCodeException)?.responseCode
+            Log.w(
+                TAG,
+                "Playback failed: ${error.errorCodeName}; cause=${error.cause?.javaClass?.simpleName}; status=$httpStatus"
+            )
             if (triggerMpvFallback()) {
                 return
             }
             _playerState.value = _playerState.value.copy(
-                error = error.message ?: "Ocurrió un error de reproducción",
+                error = "No se pudo reproducir el video (${error.errorCodeName}). Comprueba la fuente o la transcodificación.",
                 isLoading = false,
                 playWhenReady = false,
                 isPlaying = false

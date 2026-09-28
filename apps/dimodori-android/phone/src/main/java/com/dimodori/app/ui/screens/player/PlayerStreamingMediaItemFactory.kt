@@ -40,7 +40,7 @@ internal fun streamingMediaItem(
                 requestHeaders = requestHeaders
             )
             if (subtitleConfiguration != null) {
-                Log.d(TAG, "Adding external subtitle configuration: ${subtitleConfiguration.uri}")
+                Log.d(TAG, "Adding external subtitle configuration")
                 builder.setSubtitleConfigurations(listOf(subtitleConfiguration))
             }
         }
@@ -122,7 +122,7 @@ private fun subtitleConfiguration(
             val sourceId = mediaSourceId?.replace("-", "") ?: itemId.replace("-", "")
             "Videos/$guidItemId/$sourceId/Subtitles/$index/0/Stream.$codec"
         }
-        Log.d(TAG, "Constructed delivery URL (isEmby=$isEmby): $deliveryUrl")
+        Log.d(TAG, "Constructed subtitle delivery path (isEmby=$isEmby)")
     }
 
     if (deliveryUrl == null) return null

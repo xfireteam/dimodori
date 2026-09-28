@@ -2,11 +2,13 @@ package com.jellycine.data.model
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import com.jellycine.data.R
 import com.jellycine.data.network.ServerType
 import com.jellycine.data.util.buildServerUrl
 import com.jellycine.data.util.getServerUrl
 import com.jellycine.data.util.removeQueryParameter
+import java.net.URI
 
 private const val API_KEY_QUERY_PARAM = "api_key"
 
@@ -98,7 +100,10 @@ internal object PlaybackUrlBuilder {
         ).mapCatching { streamingUrl ->
             PlaybackRequest(
                 url = streamingUrl,
-                requestHeaders = if (options.includeAccessToken) {
+                requestHeaders = if (
+                    options.includeAccessToken ||
+                    isExternalPlaybackUrl(streamingUrl, authContext.serverUrl)
+                ) {
                     emptyMap()
                 } else {
                     buildPlaybackRequestHeaders(authContext)
@@ -141,6 +146,23 @@ internal object PlaybackUrlBuilder {
         )
     }
 
+    private fun isExternalPlaybackUrl(url: String, serverUrl: String): Boolean {
+        val source = runCatching { URI.create(url) }.getOrNull() ?: return false
+        val server = runCatching { URI.create(serverUrl) }.getOrNull() ?: return false
+        if (source.host.isNullOrBlank()) return false
+        if (server.host.isNullOrBlank()) return true
+        return !source.host.equals(server.host, ignoreCase = true) ||
+            !source.scheme.equals(server.scheme, ignoreCase = true) ||
+            effectivePort(source) != effectivePort(server)
+    }
+
+    private fun effectivePort(uri: URI): Int = when {
+        uri.port >= 0 -> uri.port
+        uri.scheme.equals("https", ignoreCase = true) -> 443
+        uri.scheme.equals("http", ignoreCase = true) -> 80
+        else -> -1
+    }
+
     private fun buildStreamingUrl(
         context: Context,
         authContext: PlaybackAuthContext,
@@ -161,6 +183,15 @@ internal object PlaybackUrlBuilder {
                 audioTranscodeMode = options.audioTranscodeMode,
                 selectedAudioStream = selectedAudioStream
             )
+            if (authContext.serverType == ServerType.EMBY && mediaSource.isRemote == true) {
+                Log.i(
+                    "PlaybackUrlBuilder",
+                    "Remote source: direct=${mediaSource.supportsDirectPlay}, " +
+                        "stream=${mediaSource.supportsDirectStream}, " +
+                        "transcode=${!mediaSource.transcodingUrl.isNullOrBlank()}, " +
+                        "headers=${!mediaSource.requiredHttpHeaders.isNullOrEmpty()}"
+                )
+            }
 
             val serverTranscodingUrl = !mediaSource.transcodingUrl.isNullOrBlank() &&
                 (
@@ -175,6 +206,9 @@ internal object PlaybackUrlBuilder {
                     url = mediaSource.transcodingUrl
                 )
                 if (!resolvedTranscodingUrl.isNullOrBlank()) {
+                    if (mediaSource.isRemote == true) {
+                        Log.i("PlaybackUrlBuilder", "Remote source: server transcode selected")
+                    }
                     val selectedTranscodingUrl = if (authContext.serverType == ServerType.JELLYFIN) {
                         resolvedTranscodingUrl
                     } else {
@@ -193,6 +227,29 @@ internal object PlaybackUrlBuilder {
                             options = options
                         )
                     )
+                }
+            }
+
+            // Emby STRM items may expose the actual HTTP stream as a remote media source.
+            // Keep server streaming for local files, transcoding, or sources needing special headers.
+            if (
+                authContext.serverType == ServerType.EMBY &&
+                mediaSource.isRemote == true &&
+                mediaSource.supportsDirectPlay == true &&
+                !hasQualityCap &&
+                !needsAudioTranscoding &&
+                mediaSource.requiredHttpHeaders.isNullOrEmpty()
+            ) {
+                mediaSource.path?.trim()?.let { remoteUrl ->
+                    val remoteUri = runCatching { URI.create(remoteUrl) }.getOrNull()
+                    if (
+                        remoteUri?.scheme?.lowercase() in setOf("http", "https") &&
+                        !remoteUri?.host.isNullOrBlank() &&
+                        isExternalPlaybackUrl(remoteUrl, authContext.serverUrl)
+                    ) {
+                        Log.i("PlaybackUrlBuilder", "Remote source: external HTTP direct play selected")
+                        return Result.success(remoteUrl)
+                    }
                 }
             }
 
@@ -222,6 +279,9 @@ internal object PlaybackUrlBuilder {
                 queryParams = streamQueryParams,
                 useStaticStream = mediaSource.supportsDirectPlay == true
             )
+            if (mediaSource.isRemote == true) {
+                Log.i("PlaybackUrlBuilder", "Remote source: server stream selected")
+            }
 
             Result.success(streamingUrl)
         } catch (error: Exception) {
@@ -252,6 +312,7 @@ internal object PlaybackUrlBuilder {
         options: PlaybackStreamOptions
     ): String {
         if (!options.includeAccessToken) return url
+        if (isExternalPlaybackUrl(url, authContext.serverUrl)) return url
         val apiKey = authContext.accessToken?.takeIf { it.isNotBlank() } ?: return url
         if (url.apiKey() != null) return url
         return Uri.parse(url).buildUpon()

@@ -1,6 +1,7 @@
 package com.jellycine.data.repository
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -1605,7 +1606,8 @@ class MediaRepository(private val context: Context) {
         maxStreamingBitrate: Int? = null,
         audioStreamIndex: Int? = null,
         subtitleStreamIndex: Int? = null,
-        audioTranscodeMode: AudioTranscodeMode = AudioTranscodeMode.AUTO
+        audioTranscodeMode: AudioTranscodeMode = AudioTranscodeMode.AUTO,
+        preferDeviceProfile: Boolean = false
     ): Result<com.jellycine.data.model.PlaybackInfoResponse> {
         return try {
             val session = getApiSession() ?: return Result.failure(Exception(string(R.string.data_error_session_not_available)))
@@ -1618,7 +1620,7 @@ class MediaRepository(private val context: Context) {
             val preferGetPlaybackInfo = (
                 serverType == ServerType.EMBY || serverType == ServerType.JELLYFIN
             ) &&
-                !forceTranscode && audioTranscodeMode == AudioTranscodeMode.AUTO
+                !preferDeviceProfile && !forceTranscode && audioTranscodeMode == AudioTranscodeMode.AUTO
             val enableDirectPlay = if (forceTranscode) false else true
             val enableDirectStream = if (forceTranscode) false else true
             val enableTranscoding = true
@@ -1663,6 +1665,13 @@ class MediaRepository(private val context: Context) {
                 itemId = itemId,
                 request = playbackInfoRequest
             )
+            if (preferDeviceProfile) {
+                Log.i(
+                    "MediaRepository",
+                    "Device profile PlaybackInfo: POST status=${postResponse.code()}, " +
+                        "sources=${postResponse.body()?.mediaSources?.size ?: 0}"
+                )
+            }
 
             if (postResponse.isSuccessful && postResponse.body() != null) {
                 val responseBody = PlaybackUrlBuilder.playbackInfoUrls(
@@ -1682,6 +1691,13 @@ class MediaRepository(private val context: Context) {
                 enableDirectStream = enableDirectStream,
                 enableTranscoding = enableTranscoding
             )
+            if (preferDeviceProfile) {
+                Log.i(
+                    "MediaRepository",
+                    "Device profile PlaybackInfo: fallback GET status=${getResponse.code()}, " +
+                        "sources=${getResponse.body()?.mediaSources?.size ?: 0}"
+                )
+            }
 
             if (getResponse.isSuccessful && getResponse.body() != null) {
                 val responseBody = PlaybackUrlBuilder.playbackInfoUrls(
