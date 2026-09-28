@@ -64,6 +64,7 @@ import kotlinx.coroutines.launch
 fun DetailContent(
     item: BaseItemDto,
     isLoading: Boolean = false,
+    autoFocusPlay: Boolean = true,
     forceMergeVersions: Boolean = false,
     trackSelectionSyncVersion: Int = 0,
     onBackPressed: () -> Unit = {},
@@ -454,12 +455,25 @@ fun DetailContent(
         }
     }
 
-    val playFocusRequester = remember { FocusRequester() }
+    val playFocusRequester = remember(item.id) { FocusRequester() }
     val favoriteFocusRequester = remember { FocusRequester() }
     val watchedFocusRequester = remember { FocusRequester() }
     val profileFocusRequester = remember { FocusRequester() }
     var contentPanelPage by remember { mutableStateOf(0) }
     val showContentPanel = contentPanelPage > 0
+    var initialPlayFocusRequested by remember(item.id) { mutableStateOf(false) }
+    var playButtonReady by remember(item.id) { mutableStateOf(false) }
+
+    LaunchedEffect(item.id, isLoading, isSeries, showContentPanel, autoFocusPlay, playButtonReady) {
+        if (
+            !initialPlayFocusRequested && autoFocusPlay && !isLoading &&
+            !isSeries && !showContentPanel && playButtonReady && !item.id.isNullOrBlank()
+        ) {
+            if (playFocusRequester.requestFocus()) {
+                initialPlayFocusRequested = true
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -732,6 +746,7 @@ fun DetailContent(
                             isFavorite = isFavorite,
                             playFocusRequester = playFocusRequester,
                             favoriteFocusRequester = favoriteFocusRequester,
+                            onPlayButtonReady = { playButtonReady = true },
                             onPlayClick = {
                                 val (selectedAudioStreamIndex, selectedSubtitleStreamIndex) =
                                     persistTrackSelection(

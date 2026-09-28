@@ -39,6 +39,7 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,6 +50,7 @@ internal fun DetailHeroActions(
     isFavorite: Boolean,
     playFocusRequester: FocusRequester,
     favoriteFocusRequester: FocusRequester,
+    onPlayButtonReady: () -> Unit = {},
     onPlayClick: () -> Unit,
     onFavoriteClick: () -> Unit,
     onDownPressed: () -> Unit = {},
@@ -64,6 +66,7 @@ internal fun DetailHeroActions(
             icon = Icons.Rounded.PlayArrow,
             isPrimary = true,
             focusRequester = playFocusRequester,
+            onReady = onPlayButtonReady,
             focusProperties = {
                 right = favoriteFocusRequester
             },
@@ -133,6 +136,7 @@ private fun HeroPillButton(
     icon: ImageVector,
     isPrimary: Boolean,
     focusRequester: FocusRequester,
+    onReady: () -> Unit = {},
     focusProperties: androidx.compose.ui.focus.FocusProperties.() -> Unit,
     onClick: () -> Unit,
     onDownPressed: () -> Unit = {},
@@ -178,6 +182,7 @@ private fun HeroPillButton(
                 else Modifier
             )
             .focusRequester(focusRequester)
+            .onGloballyPositioned { onReady() }
             .focusProperties(focusProperties)
             .onFocusChanged { isFocused = it.isFocused }
             .onPreviewKeyEvent { event ->

@@ -100,6 +100,7 @@ fun DetailScreenContainer(
     var error by remember { mutableStateOf<String?>(null) }
     var showPlayer by remember { mutableStateOf(false) }
     var playbackItemId by remember { mutableStateOf<String?>(null) }
+    var suppressInitialFocusForItemId by remember(itemId) { mutableStateOf<String?>(null) }
     var availablePreviousEpisodeId by remember { mutableStateOf<String?>(null) }
     var availableNextEpisodeId by remember { mutableStateOf<String?>(null) }
     var preferredAudioStreamIndex by rememberSaveable { mutableStateOf<Int?>(null) }
@@ -205,6 +206,7 @@ fun DetailScreenContainer(
         subtitleStreamIndex: Int?
     ) {
         val activeItemId = targetItem?.id?.takeIf { it.isNotBlank() } ?: fallbackItemId
+        suppressInitialFocusForItemId = activeItemId
         preferredAudioStreamIndex = audioStreamIndex
         preferredSubtitleStreamIndex = subtitleStreamIndex
         playbackItemId = activeItemId
@@ -420,6 +422,7 @@ fun DetailScreenContainer(
                                 DetailScreen(
                                     item = currentItem,
                                     isLoading = isLoading,
+                                    autoFocusPlay = currentItem.id != suppressInitialFocusForItemId,
                                     forceMergeVersions = forceMergeVersions,
                                     trackSelectionSyncVersion = trackSelectionSyncVersion,
                                     onBackPressed = handleBackNavigation,
@@ -465,6 +468,7 @@ fun DetailScreenContainer(
                                         DetailScreen(
                                             item = episodeItem!!,
                                             isLoading = isEpisodeLoading,
+                                            autoFocusPlay = episodeItem?.id != suppressInitialFocusForItemId,
                                             trackSelectionSyncVersion = trackSelectionSyncVersion,
                                             onBackPressed = handleBackNavigation,
                                             onPlayClick = { audioStreamIndex, subtitleStreamIndex ->
@@ -510,6 +514,7 @@ fun DetailScreenContainer(
 fun DetailScreen(
     item: BaseItemDto,
     isLoading: Boolean = false,
+    autoFocusPlay: Boolean = true,
     forceMergeVersions: Boolean = false,
     trackSelectionSyncVersion: Int = 0,
     onBackPressed: () -> Unit = {},
@@ -523,6 +528,7 @@ fun DetailScreen(
     DetailContent(
         item = item,
         isLoading = isLoading,
+        autoFocusPlay = autoFocusPlay,
         forceMergeVersions = forceMergeVersions,
         trackSelectionSyncVersion = trackSelectionSyncVersion,
         onBackPressed = onBackPressed,
