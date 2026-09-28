@@ -809,7 +809,8 @@ private fun ValueSliderSettingsItem(
             valueRange = valueRange.first.toFloat()..valueRange.last.toFloat(),
             steps = sliderSteps,
             accentColor = accentColor,
-            inactiveTrackColor = accentColor.copy(alpha = 0.25f)
+            inactiveTrackColor = accentColor.copy(alpha = 0.25f),
+            enableVerticalDpadNavigation = true
         )
 
         Spacer(modifier = Modifier.height(6.dp))
