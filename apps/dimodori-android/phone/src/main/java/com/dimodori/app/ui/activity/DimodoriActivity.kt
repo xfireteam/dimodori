@@ -2,6 +2,7 @@ package com.dimodori.app.ui.activity
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -23,6 +24,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.util.UnstableApi
 import com.dimodori.app.locale.AppLanguageManager
+import com.dimodori.app.ui.launch.TvLaunchRouter
 import com.jellycine.shared.ui.theme.DimodoriTheme
 import com.dimodori.app.ui.navigation.AppNavigation
 import com.dimodori.app.ui.splash.SplashScreen
@@ -52,6 +54,13 @@ class DimodoriActivity : ComponentActivity() {
         val splashScreen = installSplashScreen()
 
         super.onCreate(savedInstanceState)
+        if (TvLaunchRouter.isTelevision(this)) {
+            // Transfer the system splash to TV without drawing the touch UI.
+            splashScreen.setKeepOnScreenCondition { true }
+            openTv(intent)
+            return
+        }
+
         AppLanguageManager.applySavedLanguage(this)
         requestNotificationPermission()
 
@@ -106,6 +115,20 @@ class DimodoriActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        if (TvLaunchRouter.isTelevision(this)) {
+            openTv(intent)
+        }
+    }
+
+    private fun openTv(sourceIntent: Intent) {
+        startActivity(TvLaunchRouter.createTvIntent(this, sourceIntent))
+        // Never leave the mobile entry underneath TV in the Back stack.
+        finish()
     }
 
     private fun requestNotificationPermission() {

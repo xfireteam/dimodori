@@ -1,6 +1,7 @@
 package com.dimodori.app.tv.ui.activity
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -92,6 +93,13 @@ class DimodoriTvActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        // A generic launcher may route back to this existing TV activity.
+        // Keep its navigation/session alive, but retain the latest launch data.
+        setIntent(intent)
     }
 
 }
