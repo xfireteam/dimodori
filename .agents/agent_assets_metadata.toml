@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "FFTkeqrWVg7KPjsbjbql_"
+uri = "file://apps/dimodori-android/docs/android-tv-play-visibility.md"
+type = "text"
+title = "Diagnóstico de visibilidad en Android TV"
+description = "Resultados verificados, límites de la auditoría, texto corregido para la ficha de Play y pasos para comprobar aprobación y entrega del AAB."
+logical_id = "846313c5-7284-45c7-9b3c-294c1a081846"
+content_hash = "sha256:eb83ea0c32c065971f0f250171294a4c7fe07cde2f655a9434f4fec20cee2e6a"
+size = 6807
+mtime_ms = 1791211164627
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:4fda0509-8bc9-44f1-87c4-8bb40471b4e6/846313c5-7284-45c7-9b3c-294c1a081846/b95b6a23-4645-4525-a1cf-1bd0f36bed77"
+storage_version_token = "1791211215016305"
+content_type = "text/markdown"
