@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pip_enter">Reproductor flotante</string>
+    <string name="pip_unavailable">La ventana flotante no está disponible. Revisa el permiso de imagen en imagen de la app en los ajustes de Android.</string>
+    <string name="pip_play">Reproducir</string>
+    <string name="pip_pause">Pausar</string>
+</resources>

@@ -37,6 +37,9 @@ import com.jellycine.player.core.PlayerUtils
 import com.jellycine.player.core.RemoteTrailerUrl
 import com.jellycine.player.preferences.PlayerPreferences
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -104,6 +107,7 @@ class PlayerViewModel @Inject constructor(
     private var nextEpisodePrefetchSignature: String? = null
     private var mpvWatchdogJob: Job? = null
     private var remoteStartupJob: Job? = null
+    private var playerInitializationJob: Job? = null
     private var hasRenderedFirstFrame = false
     private var mpvExternalSubtitleUrls: Map<Int, String> = emptyMap()
     private var remotePlaybackRequestKey: String? = null
@@ -150,7 +154,8 @@ class PlayerViewModel @Inject constructor(
     ) {
         remoteStartupJob?.cancel()
         remoteStartupJob = null
-        viewModelScope.launch {
+        playerInitializationJob?.cancel()
+        playerInitializationJob = viewModelScope.launch {
             try {
                 _playerState.value = _playerState.value.copy(
                     isLoading = true,
@@ -429,6 +434,10 @@ class PlayerViewModel @Inject constructor(
                     mediaSourceId = sessionMediaSourceId
                 )
 
+                currentCoroutineContext().ensureActive()
+                // A leave/close can happen while server requests are in flight.
+                // Do not start hidden audio after that pause or cancelled load.
+                val shouldStartPlayback = startPlayback && _playerState.value.playWhenReady
                 bufferedHighWaterMarkMs = 0L
                 if (isMpvPlayback()) {
                     val selectedAudioStreamIndex = _preferredStreamIndexes.value.audioStreamIndex
@@ -451,7 +460,7 @@ class PlayerViewModel @Inject constructor(
                                 mpvExternalSubtitleUrls::get
                             ),
                             startPositionMs = playerStartPositionMs,
-                            startPlayback = startPlayback
+                            startPlayback = shouldStartPlayback
                         )
                     }
                 } else {
@@ -471,7 +480,7 @@ class PlayerViewModel @Inject constructor(
                             seekTo(playerStartPositionMs)
                         }
 
-                        playWhenReady = startPlayback
+                        playWhenReady = shouldStartPlayback
                     }
                 }
 
@@ -493,7 +502,7 @@ class PlayerViewModel @Inject constructor(
                 _playerState.value = _playerState.value.copy(
                     isLoading = true,
                     isPlaying = false,
-                    playWhenReady = startPlayback,
+                    playWhenReady = shouldStartPlayback,
                     hasStartedPlayback = false,
                     mediaTitle = mediaTitle,
                     mediaLogoUrl = mediaLogoUrl,
@@ -550,6 +559,7 @@ class PlayerViewModel @Inject constructor(
                 )
 
             } catch (e: Exception) {
+                if (e is CancellationException) throw e
                 Log.e(TAG, "Player initialization failed: ${e.javaClass.simpleName}")
                 _playerState.value = _playerState.value.copy(
                     isLoading = false,
@@ -611,6 +621,7 @@ class PlayerViewModel @Inject constructor(
                     }
                     ?: videoSource
 
+                val shouldStartRemotePlayback = startPlayback && _playerState.value.playWhenReady
                 exoPlayer = PlayerUtils.createPlayer(
                     context = context,
                     bufferOverride = PlayerUtils.PlaybackBufferOverride(
@@ -628,7 +639,7 @@ class PlayerViewModel @Inject constructor(
                         .build()
                     setMediaSource(playbackMediaSource)
                     prepare()
-                    playWhenReady = startPlayback
+                    playWhenReady = shouldStartRemotePlayback
                 }
 
                 applyStartMaximizedSetting(context)
@@ -784,9 +795,8 @@ class PlayerViewModel @Inject constructor(
     fun pause() {
         exoPlayer?.pause()
         mpvPlayer?.pause()
-        if (isMpvPlayback()) {
-            _playerState.value = _playerState.value.copy(isPlaying = false, playWhenReady = false)
-        }
+        // Also record pause before an engine exists, during asynchronous loading.
+        _playerState.value = _playerState.value.copy(isPlaying = false, playWhenReady = false)
         persistPosition()
     }
 
@@ -1058,6 +1068,8 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun releasePlayer() {
+        playerInitializationJob?.cancel()
+        playerInitializationJob = null
         remoteStartupJob?.cancel()
         remoteStartupJob = null
         persistPosition()
@@ -1625,6 +1637,19 @@ class PlayerViewModel @Inject constructor(
 
     fun getSourceVideoHeight(): Int? {
         return PlayerMetadata.getSourceVideoHeight(apiMediaStreams)
+    }
+
+    fun getVideoAspectRatio(): Float? {
+        exoPlayer?.videoSize?.let {
+            if (it.width > 0 && it.height > 0) {
+                return it.width.toFloat() * it.pixelWidthHeightRatio / it.height
+            }
+        }
+        mpvPlayer?.videoAspectRatio?.let { return it }
+        val video = apiMediaStreams?.firstOrNull { it.type.equals("Video", ignoreCase = true) }
+        val width = video?.width ?: 0
+        val height = video?.height ?: 0
+        return if (width > 0 && height > 0) width.toFloat() / height else null
     }
 
 }

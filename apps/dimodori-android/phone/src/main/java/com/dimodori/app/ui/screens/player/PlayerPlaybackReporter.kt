@@ -5,6 +5,8 @@ import com.jellycine.data.repository.MediaRepository
 import com.jellycine.shared.playback.UserDataRefreshSignals
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -79,20 +81,24 @@ internal class PlayerPlaybackReporter(
         val sessionSnapshot = session
         val mediaId = sessionSnapshot.mediaId ?: return
         if (sessionSnapshot.isOfflinePlayback || !hasReportedStart) return
+        val finalPositionTicks = positionProvider() * TICKS_PER_MILLISECOND
 
         hasReportedStart = false
         progressReportingJob?.cancel()
         progressReportingJob = null
 
-        scope.launch {
+        // The player and its ViewModel can be cleared immediately after a PiP
+        // dismissal. Snapshot position now and let this bounded final report
+        // complete independently of the cancelled playback scope.
+        CoroutineScope(Dispatchers.IO).launch {
             try {
-                val result = mediaRepository.reportPlaybackStopped(
+                val result = withTimeout(15_000L) { mediaRepository.reportPlaybackStopped(
                     itemId = mediaId,
-                    positionTicks = positionProvider() * TICKS_PER_MILLISECOND,
+                    positionTicks = finalPositionTicks,
                     playSessionId = sessionSnapshot.playSessionId,
                     mediaSourceId = sessionSnapshot.mediaSourceId,
                     failed = failed
-                )
+                ) }
                 if (result.isSuccess) {
                     UserDataRefreshSignals.notifyUserDataChanged(mediaId)
                 } else {

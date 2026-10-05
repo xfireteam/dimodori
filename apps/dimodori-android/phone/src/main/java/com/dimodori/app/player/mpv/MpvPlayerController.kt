@@ -118,6 +118,14 @@ class MpvPlayerController(
         this.listener = listener
     }
 
+    val videoAspectRatio: Float?
+        get() {
+            if (released) return null
+            val width = mpv.getPropertyDouble("video-params/dw") ?: return null
+            val height = mpv.getPropertyDouble("video-params/dh") ?: return null
+            return if (width > 0 && height > 0) (width / height).toFloat() else null
+        }
+
     fun attachSurface(surface: Surface, width: Int, height: Int) {
         if (released) return
         mpv.attachSurface(surface)

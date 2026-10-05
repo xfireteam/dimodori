@@ -33,6 +33,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.dimodori.app.R as AppR
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -78,6 +79,7 @@ fun ControlsOverlay(
     onShowAudioTrackSelection: () -> Unit = {},
     onShowSubtitleTrackSelection: () -> Unit = {},
     onCycleAspectRatio: () -> Unit = {},
+    onEnterPip: (() -> Unit)? = null,
     onSeekBackward: () -> Unit = {},
     onSeekForward: () -> Unit = {},
     seekBackwardSeconds: Int = 30,
@@ -193,6 +195,16 @@ fun ControlsOverlay(
                             tint = Color.White,
                             modifier = Modifier.size(24.dp)
                         )
+                    }
+                    if (onEnterPip != null) {
+                        IconButton(onClick = onEnterPip) {
+                            Icon(
+                                imageVector = Icons.Outlined.PictureInPictureAlt,
+                                contentDescription = stringResource(AppR.string.pip_enter),
+                                tint = Color.White,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
                     }
                     if (showPlaybackSettingsButton) {
                         IconButton(onClick = onShowPlaybackSettings) {

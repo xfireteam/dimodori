@@ -1,6 +1,8 @@
 package com.dimodori.app.ui.screens.player
 
 import android.app.Activity
+import android.content.pm.PackageManager
+import android.graphics.Rect
 import android.content.Context
 import android.media.AudioManager
 import android.provider.Settings
@@ -18,6 +20,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
@@ -120,6 +124,24 @@ fun PlayerScreen(
     // Player state from ViewModel
     val playerState by viewModel.playerState.collectAsState()
     val preferredStreamIndexes by viewModel.preferredStreamIndexes.collectAsState()
+    var pipBounds by remember { mutableStateOf<Rect?>(null) }
+    val videoAspect = viewModel.getVideoAspectRatio()
+    val pipEligible = remoteMediaUrl.isNullOrBlank() &&
+        playerState.hasStartedPlayback && playerState.error == null &&
+        videoAspect != null && (viewModel.exoPlayer != null || viewModel.mpvPlayer != null)
+    val pip = rememberPlayerPip(
+        viewModel = viewModel,
+        eligible = pipEligible,
+        playing = playerState.playWhenReady,
+        ratio = videoAspect ?: (16f / 9f),
+        bounds = pipBounds,
+        onClose = {
+            viewModel.releasePlayer()
+            onBackPressed?.invoke()
+        },
+    )
+    val pipUi = pip?.showPipUi == true
+    val keepPlaybackOnPause = pip?.keepPlaybackOnPause == true
     val sourceVideoHeight = viewModel.getSourceVideoHeight()
     val availableStreamingQualityOptions = remember(
         sourceVideoHeight,
@@ -349,7 +371,7 @@ fun PlayerScreen(
     }
 
     // Back handler
-    BackHandler {
+    BackHandler(enabled = !pipUi) {
         viewModel.releasePlayer()
         onBackPressed?.invoke()
     }
@@ -359,15 +381,20 @@ fun PlayerScreen(
             .fillMaxSize()
             .background(Color.Black)
             .focusable()
+            .onGloballyPositioned {
+                val rect = it.boundsInWindow()
+                pipBounds = Rect(rect.left.toInt(), rect.top.toInt(), rect.right.toInt(), rect.bottom.toInt())
+            }
     ) {
         VideoSurface(
             player = viewModel.exoPlayer,
             mpvPlayer = viewModel.mpvPlayer,
             lifecycle = lifecycle,
-            scale = playerState.videoScale,
-            offsetX = playerState.videoOffsetX,
-            offsetY = playerState.videoOffsetY,
-            resizeMode = viewModel.getCurrentResizeMode(),
+            keepPlaybackOnPause = keepPlaybackOnPause,
+            scale = if (pipUi) 1f else playerState.videoScale,
+            offsetX = if (pipUi) 0f else playerState.videoOffsetX,
+            offsetY = if (pipUi) 0f else playerState.videoOffsetY,
+            resizeMode = if (pipUi) androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_FIT else viewModel.getCurrentResizeMode(),
             isHdr = playerState.isHdrEnabled,
             onVolumeChange = { level ->
                 if (!playerState.isLocked) {
@@ -428,6 +455,7 @@ fun PlayerScreen(
             modifier = Modifier.fillMaxSize()
         )
 
+        if (!pipUi) {
         PlayerOverlayHost(
             uiState = uiState,
             playerState = playerState,
@@ -466,7 +494,10 @@ fun PlayerScreen(
                 showAudioTranscodingDialog = true
             },
             onShowAudioTrackDialog = { showAudioTrackDialog = true },
-            onShowSubtitleTrackDialog = { showSubtitleTrackDialog = true }
+            onShowSubtitleTrackDialog = { showSubtitleTrackDialog = true },
+            onEnterPip = if (pipEligible &&
+                context.packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
+            ) { { pip?.enterManually(); Unit } } else null
         )
 
         PlayerDialogsHost(
@@ -502,6 +533,7 @@ fun PlayerScreen(
             },
             onDismissMediaInfo = { showMediaInfo = false }
         )
+        }
     }
 }
 

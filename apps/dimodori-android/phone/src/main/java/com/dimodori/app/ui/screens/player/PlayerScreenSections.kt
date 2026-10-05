@@ -356,7 +356,8 @@ internal fun BoxScope.PlayerOverlayHost(
     onShowStreamingQualityDialog: () -> Unit,
     onShowAudioTranscodingDialog: () -> Unit,
     onShowAudioTrackDialog: () -> Unit,
-    onShowSubtitleTrackDialog: () -> Unit
+    onShowSubtitleTrackDialog: () -> Unit,
+    onEnterPip: (() -> Unit)? = null
 ) {
     var nextEpisodeButtonProgress by remember(
         activeCreditsSegment?.startMs,
@@ -456,6 +457,7 @@ internal fun BoxScope.PlayerOverlayHost(
                 resetAutoHideTimer()
                 viewModel.cycleAspectRatio()
             },
+            onEnterPip = onEnterPip,
             onSeekBackward = {
                 resetAutoHideTimer()
                 viewModel.seekBackward()

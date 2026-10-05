@@ -3,6 +3,8 @@ package com.dimodori.app.ui.activity
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
+import android.app.PictureInPictureUiState
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -25,6 +27,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.util.UnstableApi
 import com.dimodori.app.locale.AppLanguageManager
 import com.dimodori.app.ui.launch.TvLaunchRouter
+import com.dimodori.app.ui.playerpip.PlayerPipController
 import com.jellycine.shared.ui.theme.DimodoriTheme
 import com.dimodori.app.ui.navigation.AppNavigation
 import com.dimodori.app.ui.splash.SplashScreen
@@ -37,6 +40,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 @UnstableApi
 @AndroidEntryPoint
 class DimodoriActivity : ComponentActivity() {
+    val playerPip by lazy { PlayerPipController(this) }
 
     private val notificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -123,6 +127,45 @@ class DimodoriActivity : ComponentActivity() {
         if (TvLaunchRouter.isTelevision(this)) {
             openTv(intent)
         }
+    }
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        playerPip.onUserLeaveHint()
+    }
+
+    override fun onPause() {
+        playerPip.onPause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        playerPip.onResume()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        playerPip.onStop()
+    }
+
+    override fun onPictureInPictureModeChanged(inPip: Boolean, newConfig: Configuration) {
+        super.onPictureInPictureModeChanged(inPip, newConfig)
+        playerPip.onModeChanged(inPip)
+    }
+
+    override fun onPictureInPictureUiStateChanged(pipState: PictureInPictureUiState) {
+        if (Build.VERSION.SDK_INT >= 31) {
+            super.onPictureInPictureUiStateChanged(pipState)
+        }
+        if (Build.VERSION.SDK_INT >= 35) {
+            playerPip.onUiTransition(pipState.isTransitioningToPip)
+        }
+    }
+
+    override fun onDestroy() {
+        playerPip.destroy()
+        super.onDestroy()
     }
 
     private fun openTv(sourceIntent: Intent) {

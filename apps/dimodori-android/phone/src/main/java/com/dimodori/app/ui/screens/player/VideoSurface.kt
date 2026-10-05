@@ -32,6 +32,7 @@ fun VideoSurface(
     player: ExoPlayer?,
     mpvPlayer: MpvPlayerController? = null,
     lifecycle: Lifecycle.Event,
+    keepPlaybackOnPause: Boolean = false,
     scale: Float,
     offsetX: Float,
     offsetY: Float,
@@ -83,6 +84,7 @@ fun VideoSurface(
             MpvVideoSurface(
                 player = mpvPlayer,
                 lifecycle = lifecycle,
+                keepPlaybackOnPause = keepPlaybackOnPause,
                 resizeMode = resizeMode,
                 audioManager = audioManager,
                 isHdr = isHdr,
@@ -100,6 +102,7 @@ fun VideoSurface(
             ExoPlayerView(
                 player = player,
                 lifecycle = lifecycle,
+                keepPlaybackOnPause = keepPlaybackOnPause,
                 resizeMode = resizeMode,
                 audioManager = audioManager,
                 onToggleControls = onToggleControls,
@@ -122,6 +125,7 @@ fun VideoSurface(
 private fun ExoPlayerView(
     player: ExoPlayer?,
     lifecycle: Lifecycle.Event,
+    keepPlaybackOnPause: Boolean,
     resizeMode: Int,
     audioManager: AudioManager,
     onToggleControls: () -> Unit,
@@ -176,8 +180,10 @@ private fun ExoPlayerView(
 
             when (lifecycle) {
                 Lifecycle.Event.ON_PAUSE -> {
-                    playerView.onPause()
-                    playerView.player?.pause()
+                    if (!keepPlaybackOnPause) {
+                        playerView.onPause()
+                        playerView.player?.pause()
+                    }
                 }
                 Lifecycle.Event.ON_RESUME -> playerView.onResume()
                 else -> Unit

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pip_enter">Floating player</string>
+    <string name="pip_unavailable">Picture-in-picture is unavailable. Check the app’s picture-in-picture permission in Android settings.</string>
+    <string name="pip_play">Play</string>
+    <string name="pip_pause">Pause</string>
+</resources>

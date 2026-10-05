@@ -19,6 +19,7 @@ import com.dimodori.app.player.mpv.MpvPlayerController
 fun MpvVideoSurface(
     player: MpvPlayerController,
     lifecycle: Lifecycle.Event,
+    keepPlaybackOnPause: Boolean = false,
     resizeMode: Int,
     audioManager: AudioManager,
     @Suppress("UNUSED_PARAMETER") isHdr: Boolean,
@@ -81,7 +82,7 @@ fun MpvVideoSurface(
         update = {
             player.applySubtitlePreferences()
             player.setZoomMode(resizeMode == AspectRatioFrameLayout.RESIZE_MODE_ZOOM)
-            if (lifecycle == Lifecycle.Event.ON_PAUSE) {
+            if (lifecycle == Lifecycle.Event.ON_PAUSE && !keepPlaybackOnPause) {
                 player.pause()
             }
         },
