@@ -67,6 +67,7 @@ import com.jellycine.data.model.SeerrCatalog
 import com.dimodori.app.ui.components.common.SeerrTopBadges
 import com.dimodori.app.ui.screens.dashboard.favorites.FAVORITES_VIEW_ALL_PARENT_ID
 import kotlinx.coroutines.launch
+import com.dimodori.app.ui.navigation.ScreenBackHandler
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -124,6 +125,7 @@ fun ViewAllScreen(
             ?.logoUrl
     }
     var showSortSheet by remember { mutableStateOf(false) }
+    ScreenBackHandler(enabled = !showSortSheet, onBack = onBackPressed)
     val gridState = rememberLazyGridState()
     val coroutineScope = rememberCoroutineScope()
     val resolvedTitle = title.takeIf { it.isNotBlank() } ?: stringResource(R.string.view_all_title)

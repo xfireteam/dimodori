@@ -458,6 +458,7 @@ fun AppNavigation() {
                 enterTransition = { textTransition(450) },
                 exitTransition = { textExitTransition(350) }
             ) {
+                ScreenBackHandler { navController.popBackStack() }
                 PlayerSettingsScreen(
                     onBackPressed = {
                         navController.popBackStack()
@@ -473,6 +474,7 @@ fun AppNavigation() {
                 enterTransition = { textTransition(450) },
                 exitTransition = { textExitTransition(350) }
             ) {
+                ScreenBackHandler { navController.popBackStack() }
                 SubtitleSettingsScreen(
                     onBackPressed = {
                         navController.popBackStack()
@@ -497,6 +499,7 @@ fun AppNavigation() {
                 enterTransition = { textTransition(450) },
                 exitTransition = { textExitTransition(350) }
             ) {
+                ScreenBackHandler { navController.popBackStack() }
                 InterfaceSettingsScreen(
                     onBackPressed = {
                         navController.popBackStack()
@@ -509,6 +512,7 @@ fun AppNavigation() {
                 enterTransition = { textTransition(450) },
                 exitTransition = { textExitTransition(350) }
             ) {
+                ScreenBackHandler { navController.popBackStack() }
                 ConnectionsSettingsScreen(
                     onBackPressed = {
                         navController.popBackStack()
@@ -524,6 +528,7 @@ fun AppNavigation() {
                 enterTransition = { textTransition(450) },
                 exitTransition = { textExitTransition(350) }
             ) {
+                ScreenBackHandler { navController.popBackStack() }
                 CacheSettingsScreen(
                     onBackPressed = {
                         navController.popBackStack()
@@ -536,6 +541,7 @@ fun AppNavigation() {
                 enterTransition = { textTransition(450) },
                 exitTransition = { textExitTransition(350) }
             ) {
+                ScreenBackHandler { navController.popBackStack() }
                 AboutScreen(
                     onBackPressed = {
                         navController.popBackStack()
@@ -548,6 +554,7 @@ fun AppNavigation() {
                 enterTransition = { textTransition(450) },
                 exitTransition = { textExitTransition(350) }
             ) {
+                ScreenBackHandler { navController.popBackStack() }
                 ServerInfoScreen(
                     onBackPressed = {
                         navController.popBackStack()
@@ -560,6 +567,7 @@ fun AppNavigation() {
                 enterTransition = { textTransition(450) },
                 exitTransition = { textExitTransition(350) }
             ) {
+                ScreenBackHandler { navController.popBackStack() }
                 ScreenTimeScreen(
                     onBack = { navController.popBackStack() }
                 )

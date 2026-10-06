@@ -165,9 +165,7 @@ internal fun PlayerScreenEffects(
             shouldUseHdrColorMode
         ) {
             activity.window.colorMode = ActivityInfo.COLOR_MODE_HDR
-            if (Build.VERSION.SDK_INT >= 34) {
-                activity.window.setDesiredHdrHeadroom(4.0f)
-            }
+            setDesiredHdrHeadroomCompat(activity.window, 4.0f)
         }
 
         onDispose {
@@ -177,9 +175,7 @@ internal fun PlayerScreenEffects(
                 originalColorMode != null
             ) {
                 activity.window.colorMode = originalColorMode
-                if (Build.VERSION.SDK_INT >= 34) {
-                    activity.window.setDesiredHdrHeadroom(1.0f)
-                }
+                setDesiredHdrHeadroomCompat(activity.window, 1.0f)
             }
         }
     }

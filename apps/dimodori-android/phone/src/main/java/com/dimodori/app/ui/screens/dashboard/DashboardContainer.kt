@@ -577,6 +577,13 @@ fun DashboardContainer(
                 }
             }
 
+            DashboardHomeBackHandler(
+                route = currentRoute,
+                homeRoute = DashboardDestination.Home.route,
+                hasOverlay = showAccountSheet || showUserSwitchDialog,
+                onHome = { navigateToDestination(DashboardDestination.Home) },
+            )
+
             // Curved Bottom Navigation
             Box(
                 modifier = Modifier
