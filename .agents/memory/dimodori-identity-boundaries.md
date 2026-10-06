@@ -9,6 +9,16 @@ DIMODORI uses one Android app identity, `com.dimodori.app`, for phones, tablets,
 
 **How to apply:** Keep one application module/ID, route TV through its dedicated Leanback activity, and preserve the separate TV UI package. Use neutral “media server” wording where provider names should not be visible. Before renaming an old identifier, determine whether it is app-owned branding or a protocol/library contract.
 
+Incorporar actualizaciones de JellyCine de forma selectiva, sin reemplazar las
+mejoras propias de DIMODORI.
+
+**Why:** El usuario pidió aprovechar las actualizaciones «sin reemplazar las
+mejoras que hicimos».
+
+**How to apply:** Comparar cambios entre versiones de upstream y adaptar solo
+los necesarios al fork; no sustituir módulos completos ni restaurar su
+identidad, firma o estructura separada de móvil/TV.
+
 Do not treat the launcher category as proof of device type: the generic entry
 must also be safe on a TV, not just the Leanback entry.
 
