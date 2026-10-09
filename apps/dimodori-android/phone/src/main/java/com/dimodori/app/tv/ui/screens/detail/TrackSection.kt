@@ -1,7 +1,7 @@
 package com.dimodori.app.tv.ui.screens.detail
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.focusable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,30 +15,30 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuAnchorType
-import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onPreviewKeyEvent
-import androidx.compose.ui.input.key.type
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.PopupProperties
 import com.jellycine.data.model.MediaStream
 import com.jellycine.player.core.defaultSubtitleDisplayTitle
 import com.jellycine.player.core.mediaStreamDisplayTitles
@@ -152,7 +152,6 @@ internal fun TrackField(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun OptionSelectorRow(
     label: String,
@@ -164,6 +163,21 @@ internal fun OptionSelectorRow(
 ) {
     var expanded by remember { mutableStateOf(false) }
     var isFocused by remember { mutableStateOf(false) }
+    var restoreAnchorFocus by remember { mutableStateOf(false) }
+    val anchorFocusRequester = remember { FocusRequester() }
+    val optionFocusRequesters = remember(options) { options.map { FocusRequester() } }
+    val closeSelector: () -> Unit = {
+        expanded = false
+        restoreAnchorFocus = true
+    }
+
+    LaunchedEffect(expanded, restoreAnchorFocus) {
+        if (!expanded && restoreAnchorFocus) {
+            withFrameNanos { }
+            anchorFocusRequester.requestFocus()
+            restoreAnchorFocus = false
+        }
+    }
 
     Row(
         modifier = modifier,
@@ -178,30 +192,14 @@ internal fun OptionSelectorRow(
 
         Spacer(modifier = Modifier.width(10.dp))
 
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = it }
-        ) {
+        Box {
             Surface(
+                onClick = { expanded = true },
                 modifier = Modifier
-                    .menuAnchor(
-                        type = ExposedDropdownMenuAnchorType.PrimaryNotEditable,
-                        enabled = true
-                    )
                     .heightIn(min = 34.dp)
+                    .focusRequester(anchorFocusRequester)
                     .onFocusChanged { isFocused = it.isFocused }
-                    .onPreviewKeyEvent { event ->
-                        if (event.type == KeyEventType.KeyDown) {
-                            when (event.key) {
-                                Key.Enter, Key.NumPadEnter, Key.DirectionCenter -> {
-                                    expanded = true
-                                    true
-                                }
-                                else -> false
-                            }
-                        } else false
-                    }
-                    .focusable(),
+                    .trackSelectorActivation { expanded = true },
                 color = if (isFocused) Color(0xFF3A3A40) else Color(0xFF2A2A2E),
                 shape = RoundedCornerShape(8.dp),
                 border = if (isFocused) BorderStroke(1.5.dp, Color.White.copy(alpha = 0.6f)) else null
@@ -233,13 +231,32 @@ internal fun OptionSelectorRow(
                 }
             }
 
-            ExposedDropdownMenu(
+            // No editable-field anchor/toggle: this is a remote-controlled
+            // selector. The popup owns focus and Back while it is open.
+            DropdownMenu(
                 expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier.widthIn(min = 200.dp)
+                onDismissRequest = closeSelector,
+                properties = PopupProperties(focusable = true),
+                modifier = Modifier.widthIn(min = 200.dp).heightIn(max = 320.dp)
             ) {
-                options.forEach { option ->
+                LaunchedEffect(expanded, options, selectedOption) {
+                    if (expanded && optionFocusRequesters.isNotEmpty()) {
+                        withFrameNanos { }
+                        val index = options.indexOf(selectedOption).coerceAtLeast(0)
+                        optionFocusRequesters[index].requestFocus()
+                    }
+                }
+                options.forEachIndexed { index, option ->
+                    val selectOption: () -> Unit = {
+                        // Close before a video/version callback can navigate.
+                        closeSelector()
+                        onOptionSelected(option)
+                    }
                     DropdownMenuItem(
+                        modifier = Modifier
+                            .focusRequester(optionFocusRequesters[index])
+                            .trackSelectorActivation(selectOption)
+                            .semantics { selected = option == selectedOption },
                         text = {
                             Text(
                                 text = displayTrackOption(option),
@@ -247,10 +264,7 @@ internal fun OptionSelectorRow(
                                 overflow = TextOverflow.Ellipsis
                             )
                         },
-                        onClick = {
-                            onOptionSelected(option)
-                            expanded = false
-                        }
+                        onClick = selectOption
                     )
                 }
             }
