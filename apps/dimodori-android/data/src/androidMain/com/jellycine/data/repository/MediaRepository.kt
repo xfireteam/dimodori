@@ -1181,19 +1181,52 @@ class MediaRepository(private val context: Context) {
     }
 
     suspend fun getRecentlyAddedMovies(limit: Int = 10): Result<List<BaseItemDto>> {
-        return getLatestItems(
-            includeItemTypes = "Movie",
-            limit = limit,
-            fields = "ChildCount,RecursiveItemCount,EpisodeCount,Genres,CommunityRating,ProductionYear,Overview"
-        )
+        return getRecentlyAddedTitles("Movie", limit)
     }
 
     suspend fun getRecentlyAddedSeries(limit: Int = 10): Result<List<BaseItemDto>> {
-        return getLatestItems(
-            includeItemTypes = "Series",
-            limit = limit,
-            fields = "ChildCount,RecursiveItemCount,EpisodeCount,Genres,CommunityRating,ProductionYear,Overview"
-        )
+        return getRecentlyAddedTitles("Series", limit)
+    }
+
+    private suspend fun getRecentlyAddedTitles(
+        itemType: String,
+        limit: Int
+    ): Result<List<BaseItemDto>> {
+        if (limit <= 0) return Result.success(emptyList())
+        return try {
+            // Capture API and user together. /Latest can group episodes into old
+            // series; querying titles by DateCreated avoids that on both servers.
+            val session = getApiSession()
+                ?: return Result.failure(Exception(string(R.string.data_error_session_not_available)))
+            val response = session.api.getUserItems(
+                userId = session.userId,
+                parentId = null,
+                includeItemTypes = itemType,
+                recursive = true,
+                sortBy = "DateCreated",
+                sortOrder = "Descending",
+                limit = limit,
+                fields = "DateCreated,ChildCount,RecursiveItemCount,EpisodeCount,Genres,CommunityRating,ProductionYear,OfficialRating,Overview",
+                enableUserData = true
+            )
+            if (response.isSuccessful && response.body() != null) {
+                Result.success(
+                    response.body()!!.items.orEmpty()
+                        .filter {
+                            it.type.equals(itemType, ignoreCase = true) &&
+                                !it.id.isNullOrBlank() && !it.name.isNullOrBlank()
+                        }
+                        .distinctBy { it.id }
+                        .take(limit)
+                )
+            } else {
+                Result.failure(Exception(string(R.string.media_error_fetch_user_items_failed, response.code())))
+            }
+        } catch (error: CancellationException) {
+            throw error
+        } catch (error: Exception) {
+            Result.failure(error)
+        }
     }
 
     suspend fun getRecentlyAddedEpisodes(limit: Int = 10): Result<List<BaseItemDto>> {

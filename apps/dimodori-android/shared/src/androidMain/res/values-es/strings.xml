@@ -156,6 +156,9 @@
     <string name="dashboard_next_up">Próxima</string>
     <string name="dashboard_failed_next_up">No se pudo cargar la siguiente</string>
     <string name="dashboard_recently_added">Agregado recientemente - %1$s</string>
+    <string name="dashboard_recent_series">Últimas series agregadas</string>
+    <string name="dashboard_recent_movies">Últimas películas agregadas</string>
+    <string name="dashboard_failed_recent_titles">No se pudieron cargar los títulos recién agregados</string>
     <string name="dashboard_view_all">Ver todos</string>
     <string name="dashboard_no_items_found">No se ha encontrado ningún artículo</string>
     <string name="dashboard_failed_load_my_media">No se pudo cargar mi contenido multimedia</string>

@@ -162,6 +162,9 @@
     <string name="dashboard_next_up">Next Up</string>
     <string name="dashboard_failed_next_up">Failed to load next up</string>
     <string name="dashboard_recently_added">Recently Added - %1$s</string>
+    <string name="dashboard_recent_series">Recently Added Series</string>
+    <string name="dashboard_recent_movies">Recently Added Movies</string>
+    <string name="dashboard_failed_recent_titles">Unable to load recently added titles</string>
     <string name="dashboard_view_all">View All</string>
     <string name="dashboard_no_items_found">No items found</string>
     <string name="dashboard_failed_load_my_media">Failed to load My Media</string>

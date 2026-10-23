@@ -1482,6 +1482,35 @@ fun Dashboard(
             )
         }
 
+        val recentSeriesKey = "home_recent_series_v1:${sessionSnapshot.activeServerId.orEmpty()}"
+        val recentMoviesKey = "home_recent_movies_v1:${sessionSnapshot.activeServerId.orEmpty()}"
+        val recentTitlesEnabled = isTabActive && selectedCategory == HomeCategory.HOME &&
+            isNetworkAvailable && sessionSnapshot.activeServerId != null
+        val recentSeriesQuery = useQuery(
+            key = recentSeriesKey,
+            config = QueryConfig(
+                staleTime = 60_000L,
+                enabled = recentTitlesEnabled,
+                requestTimeoutMs = networkRequestTimeoutMs
+            )
+        ) {
+            val result = mediaRepository.getRecentlyAddedSeries(limit = 24)
+            currentCoroutineContext().ensureActive()
+            result.getOrThrow()
+        }
+        val recentMoviesQuery = useQuery(
+            key = recentMoviesKey,
+            config = QueryConfig(
+                staleTime = 60_000L,
+                enabled = recentTitlesEnabled,
+                requestTimeoutMs = networkRequestTimeoutMs
+            )
+        ) {
+            val result = mediaRepository.getRecentlyAddedMovies(limit = 24)
+            currentCoroutineContext().ensureActive()
+            result.getOrThrow()
+        }
+
         val nextUpQuery = useQuery(
             key = "home_next_up_api_v1",
             config = QueryConfig(
@@ -1678,6 +1707,8 @@ fun Dashboard(
         LaunchedEffect(isTabActive, selectedCategory, isNetworkAvailable) {
             if (isTabActive && selectedCategory == HomeCategory.HOME && isNetworkAvailable) {
                 queryManager.invalidateQuery("home_library_burst")
+                queryManager.invalidateQuery(recentSeriesKey)
+                queryManager.invalidateQuery(recentMoviesKey)
                 if (continueWatchingEnabled) {
                     val cachedContinueWatching =
                         queryManager.getQuery<List<BaseItemDto>>("continue_watching_resume_api_v2")
@@ -1701,6 +1732,8 @@ fun Dashboard(
             if (userDataRefreshEvent == null) return@LaunchedEffect
 
             queryManager.invalidateQuery("home_library_burst")
+            queryManager.invalidateQuery(recentSeriesKey)
+            queryManager.invalidateQuery(recentMoviesKey)
             if (continueWatchingEnabled) {
                 queryManager.invalidateQuery("continue_watching_resume_api_v2")
             }
@@ -1887,6 +1920,50 @@ fun Dashboard(
                     }
                 }
 
+                val hasRecentSeriesCards = selectedCategory == HomeCategory.HOME &&
+                    sessionSnapshot.activeServerId != null && !recentSeriesQuery.data.isNullOrEmpty()
+                val hasRecentMoviesCards = selectedCategory == HomeCategory.HOME &&
+                    sessionSnapshot.activeServerId != null && !recentMoviesQuery.data.isNullOrEmpty()
+                val recentTitlesOwnEntry = hasRecentSeriesCards || hasRecentMoviesCards
+                // Loading/error placeholders in earlier rows are not focus targets.
+                val earlierRowsHaveCards = MyMediaLibraries.isNotEmpty() ||
+                    (continueWatchingEnabled && ContinueWatchingItems.isNotEmpty())
+
+                if (selectedCategory == HomeCategory.HOME && sessionSnapshot.activeServerId != null) {
+                    item(key = recentSeriesKey) {
+                        RecentTitlesSection(
+                            titleRes = R.string.dashboard_recent_series,
+                            items = recentSeriesQuery.data.orEmpty(),
+                            isLoading = recentSeriesQuery.isLoading,
+                            isError = recentSeriesQuery.isError,
+                            mediaRepository = mediaRepository,
+                            disablePosterEnhancers = disablePosterEnhancers,
+                            initialFocusRequester = if (!earlierRowsHaveCards)
+                                contentEntryFocusRequester else null,
+                            returnFocusRequester = if (!earlierRowsHaveCards)
+                                heroActionEntryFocusRequester else null,
+                            onReturnTargetChanged = onHomeReturnTargetChanged,
+                            onItemClick = onNavigateToDetail
+                        )
+                    }
+                    item(key = recentMoviesKey) {
+                        RecentTitlesSection(
+                            titleRes = R.string.dashboard_recent_movies,
+                            items = recentMoviesQuery.data.orEmpty(),
+                            isLoading = recentMoviesQuery.isLoading,
+                            isError = recentMoviesQuery.isError,
+                            mediaRepository = mediaRepository,
+                            disablePosterEnhancers = disablePosterEnhancers,
+                            initialFocusRequester = if (!earlierRowsHaveCards && !hasRecentSeriesCards)
+                                contentEntryFocusRequester else null,
+                            returnFocusRequester = if (!earlierRowsHaveCards && !hasRecentSeriesCards)
+                                heroActionEntryFocusRequester else null,
+                            onReturnTargetChanged = onHomeReturnTargetChanged,
+                            onItemClick = onNavigateToDetail
+                        )
+                    }
+                }
+
                 if (ShowNextUpSection) {
                     item(key = "next_up_section") {
                         Column(
@@ -1900,8 +1977,8 @@ fun Dashboard(
                                 items = NextUpItems,
                                 isLoading = nextUpQuery.isLoading && NextUpItems.isEmpty(),
                                 error = if (nextUpQuery.isError) nextUpQuery.error else null,
-                                initialFocusRequester = if (!ShowMyMediaSection && !ShowContinueWatchingSection) contentEntryFocusRequester else null,
-                                returnFocusRequester = if (!ShowMyMediaSection && !ShowContinueWatchingSection) heroActionEntryFocusRequester else null,
+                                initialFocusRequester = if (!ShowMyMediaSection && !ShowContinueWatchingSection && !recentTitlesOwnEntry) contentEntryFocusRequester else null,
+                                returnFocusRequester = if (!ShowMyMediaSection && !ShowContinueWatchingSection && !recentTitlesOwnEntry) heroActionEntryFocusRequester else null,
                                 onReturnTargetChanged = onHomeReturnTargetChanged,
                                 onItemClick = onNavigateToDetail
                             )
@@ -1910,7 +1987,7 @@ fun Dashboard(
                 }
 
                 if (selectedCategory == HomeCategory.HOME) {
-                    val topPadding = if (!ShowMyMediaSection && !ShowContinueWatchingSection && !ShowNextUpSection) 16.dp else 0.dp
+                    val topPadding = if (!ShowMyMediaSection && !ShowContinueWatchingSection && !ShowNextUpSection && !recentTitlesOwnEntry) 16.dp else 0.dp
 
                     if (topPadding > 0.dp) {
                         item(key = "home_libraries_top_padding") {
@@ -1948,6 +2025,7 @@ fun Dashboard(
                                     index == 0 &&
                                     !ShowMyMediaSection &&
                                     !ShowContinueWatchingSection &&
+                                    !recentTitlesOwnEntry &&
                                     !ShowNextUpSection
                                 ) {
                                     contentEntryFocusRequester
@@ -1958,6 +2036,7 @@ fun Dashboard(
                                     index == 0 &&
                                         !ShowMyMediaSection &&
                                         !ShowContinueWatchingSection &&
+                                        !recentTitlesOwnEntry &&
                                         !ShowNextUpSection
                                 ) {
                                     heroActionEntryFocusRequester
@@ -2756,7 +2835,7 @@ private fun HomeLibrarySectionData.toUiSection(): HomeLibrarySectionUi {
     )
 }
 
-private fun entryCardModifier(
+internal fun entryCardModifier(
     cardFocusRequester: FocusRequester,
     initialFocusRequester: FocusRequester?,
     returnFocusRequester: FocusRequester?,

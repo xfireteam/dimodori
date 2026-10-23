@@ -1,4 +1,5 @@
 package com.dimodori.app.ui.screens.dashboard.home
+import com.dimodori.app.ui.components.common.RecentHomeSection
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -1478,6 +1479,35 @@ fun Dashboard(
             )
         }
 
+        val recentSeriesKey = "home_recent_series_v1:${sessionSnapshot.activeServerId.orEmpty()}"
+        val recentMoviesKey = "home_recent_movies_v1:${sessionSnapshot.activeServerId.orEmpty()}"
+        val recentTitlesEnabled = isTabActive && selectedCategory == HomeCategory.HOME &&
+            isNetworkAvailable && sessionSnapshot.activeServerId != null
+        val recentSeriesQuery = useQuery(
+            key = recentSeriesKey,
+            config = QueryConfig(
+                staleTime = 60_000L,
+                enabled = recentTitlesEnabled,
+                requestTimeoutMs = networkRequestTimeoutMs
+            )
+        ) {
+            val result = mediaRepository.getRecentlyAddedSeries(limit = 24)
+            currentCoroutineContext().ensureActive()
+            result.getOrThrow()
+        }
+        val recentMoviesQuery = useQuery(
+            key = recentMoviesKey,
+            config = QueryConfig(
+                staleTime = 60_000L,
+                enabled = recentTitlesEnabled,
+                requestTimeoutMs = networkRequestTimeoutMs
+            )
+        ) {
+            val result = mediaRepository.getRecentlyAddedMovies(limit = 24)
+            currentCoroutineContext().ensureActive()
+            result.getOrThrow()
+        }
+
         val nextUpQuery = useQuery(
             key = "home_next_up_api_v1",
             config = QueryConfig(
@@ -1692,6 +1722,8 @@ fun Dashboard(
         LaunchedEffect(isTabActive, selectedCategory, isNetworkAvailable) {
             if (isTabActive && selectedCategory == HomeCategory.HOME && isNetworkAvailable) {
                 queryManager.invalidateQuery("home_library_burst")
+                queryManager.invalidateQuery(recentSeriesKey)
+                queryManager.invalidateQuery(recentMoviesKey)
                 if (continueWatchingEnabled) {
                     val cachedContinueWatching =
                         queryManager.getQuery<List<BaseItemDto>>("continue_watching_resume_api_v2")
@@ -1715,6 +1747,8 @@ fun Dashboard(
             if (userDataRefreshEvent == null) return@LaunchedEffect
 
             queryManager.invalidateQuery("home_library_burst")
+            queryManager.invalidateQuery(recentSeriesKey)
+            queryManager.invalidateQuery(recentMoviesKey)
             if (continueWatchingEnabled) {
                 queryManager.invalidateQuery("continue_watching_resume_api_v2")
             }
@@ -1905,6 +1939,39 @@ fun Dashboard(
                                 isLoading = continueWatchingQuery.isLoading && ContinueWatchingItems.isEmpty(),
                                 error = if (continueWatchingQuery.isError) continueWatchingQuery.error else null,
                                 onItemClick = onNavigateToDetail
+                            )
+                        }
+                    }
+                }
+
+                if (selectedCategory == HomeCategory.HOME && sessionSnapshot.activeServerId != null) {
+                    item(key = recentSeriesKey) {
+                        RecentHomeSection(
+                            titleRes = R.string.dashboard_recent_series,
+                            items = recentSeriesQuery.data.orEmpty(),
+                            isLoading = recentSeriesQuery.isLoading,
+                            isError = recentSeriesQuery.isError
+                        ) { _, item ->
+                            LibraryItemCard(
+                                item = item,
+                                mediaRepository = mediaRepository,
+                                disableImageEnhancers = disablePosterEnhancers,
+                                onClick = { onNavigateToDetail(item) }
+                            )
+                        }
+                    }
+                    item(key = recentMoviesKey) {
+                        RecentHomeSection(
+                            titleRes = R.string.dashboard_recent_movies,
+                            items = recentMoviesQuery.data.orEmpty(),
+                            isLoading = recentMoviesQuery.isLoading,
+                            isError = recentMoviesQuery.isError
+                        ) { _, item ->
+                            LibraryItemCard(
+                                item = item,
+                                mediaRepository = mediaRepository,
+                                disableImageEnhancers = disablePosterEnhancers,
+                                onClick = { onNavigateToDetail(item) }
                             )
                         }
                     }
