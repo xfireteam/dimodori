@@ -754,6 +754,7 @@ private fun ConnectionForm(
                     Text(stringResource(R.string.auth_connect_to_server))
                 }
             }
+            ConnectionSupportLink()
         }
     }
 }
