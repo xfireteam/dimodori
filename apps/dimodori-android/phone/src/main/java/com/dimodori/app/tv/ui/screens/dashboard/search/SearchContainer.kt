@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -43,6 +42,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.withResumed
 import com.jellycine.shared.R
 import com.jellycine.shared.util.image.disableEmbyPosterEnhancers
 import com.jellycine.data.model.BaseItemDto
@@ -128,10 +128,34 @@ fun SearchContainer(
     val disablePosterEnhancers = disableEmbyPosterEnhancers()
     val pagerFocusRequester = remember { FocusRequester() }
     val searchIconFocusRequester = remember { FocusRequester() }
+    val voiceFocusRequester = remember { FocusRequester() }
     val keyboardFocusRequester = remember { FocusRequester() }
     val lifecycleOwner = LocalLifecycleOwner.current
 
     var isKeyboardOpen by remember { mutableStateOf(false) }
+    var restoreVoiceFocus by remember { mutableStateOf(false) }
+    val startVoiceSearch = rememberVoiceSearch(
+        currentScope = {
+            authRepository.getActiveSessionSnapshot().let {
+                VoiceSearchScope(it.activeServerId, it.username)
+            }
+        },
+        onQuery = { query ->
+            viewModel.updateSearchQuery(query)
+            isKeyboardOpen = true
+        },
+        onReturned = { restoreVoiceFocus = true },
+    )
+
+    LaunchedEffect(restoreVoiceFocus, isKeyboardOpen) {
+        if (restoreVoiceFocus) {
+            lifecycleOwner.lifecycle.withResumed { }
+            // Let the result/keyboard branch attach its new focus targets first.
+            withFrameNanos { }
+            voiceFocusRequester.requestFocus()
+            restoreVoiceFocus = false
+        }
+    }
     val isSearchActive = searchQuery.isNotEmpty()
     val hasSearchResults = remember(
         uiState.movieResults, uiState.showResults, uiState.episodeResults,
@@ -220,10 +244,12 @@ fun SearchContainer(
                     }
                 }
 
-                SearchIconButton(
-                    focusRequester = searchIconFocusRequester,
-                    onClick = { isKeyboardOpen = true },
-                    onDownPressed = { pagerFocusRequester.requestFocus() }
+                SearchActions(
+                    searchFocusRequester = searchIconFocusRequester,
+                    voiceFocusRequester = voiceFocusRequester,
+                    onSearch = { isKeyboardOpen = true },
+                    onVoice = startVoiceSearch,
+                    onDown = { pagerFocusRequester.requestFocus() },
                 )
             }
         }
@@ -260,6 +286,14 @@ fun SearchContainer(
                         .fillMaxSize()
                         .padding(start = 16.dp, top = 24.dp, end = 32.dp, bottom = 24.dp)
                 ) {
+                    SearchActions(
+                        searchFocusRequester = searchIconFocusRequester,
+                        voiceFocusRequester = voiceFocusRequester,
+                        onSearch = { keyboardFocusRequester.requestFocus() },
+                        onVoice = startVoiceSearch,
+                        onDown = { keyboardFocusRequester.requestFocus() },
+                        modifier = Modifier.align(Alignment.End).padding(bottom = 12.dp),
+                    )
                     Surface(
                         color = Color.White.copy(alpha = 0.08f),
                         shape = RoundedCornerShape(8.dp),
@@ -330,7 +364,7 @@ fun SearchContainer(
                                 )
                                 Spacer(modifier = Modifier.height(12.dp))
                                 Text(
-                                    text = "Empieza a escribir para buscar",
+                                    text = stringResource(R.string.search_empty_default),
                                     color = Color.White.copy(alpha = 0.4f),
                                     fontSize = 15.sp
                                 )
@@ -339,44 +373,6 @@ fun SearchContainer(
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun SearchIconButton(
-    focusRequester: FocusRequester,
-    onClick: () -> Unit,
-    onDownPressed: () -> Unit = {}
-) {
-    var isFocused by remember { mutableStateOf(false) }
-
-    Surface(
-        modifier = Modifier
-            .size(48.dp)
-            .focusRequester(focusRequester)
-            .onFocusChanged { isFocused = it.isFocused }
-            .onPreviewKeyEvent { event ->
-                if (event.type == KeyEventType.KeyDown) {
-                    when (event.key) {
-                        Key.Enter, Key.NumPadEnter, Key.DirectionCenter -> { onClick(); true }
-                        Key.DirectionDown -> { onDownPressed(); true }
-                        else -> false
-                    }
-                } else false
-            }
-            .clickable { onClick() }
-            .focusable(),
-        color = if (isFocused) Color.White else Color.White.copy(alpha = 0.15f),
-        shape = CircleShape
-    ) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = stringResource(R.string.search),
-                tint = if (isFocused) Color.Black else Color.White,
-                modifier = Modifier.size(22.dp)
-            )
         }
     }
 }

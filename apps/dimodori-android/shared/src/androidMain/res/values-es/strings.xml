@@ -128,6 +128,11 @@
     <string name="my_media">Mis medios</string>
     <string name="suggestions">Sugerencias</string>
     <string name="search_hint">Buscar...</string>
+    <string name="tv_voice_search">Buscar por voz</string>
+    <string name="tv_voice_search_prompt">Di el título de una película o serie</string>
+    <string name="tv_voice_search_empty">No se reconocieron palabras. Inténtalo de nuevo o usa el teclado.</string>
+    <string name="tv_voice_search_failed">No se pudo completar la búsqueda por voz. Inténtalo de nuevo o usa el teclado.</string>
+    <string name="tv_voice_search_unavailable">El reconocimiento de voz no está disponible en este dispositivo. Puedes usar el teclado.</string>
     <string name="clear_search">Borrar búsqueda</string>
     <string name="search_empty_default">Empieza a escribir para buscar películas y series</string>
     <string name="search_no_results">No se han encontrado resultados</string>

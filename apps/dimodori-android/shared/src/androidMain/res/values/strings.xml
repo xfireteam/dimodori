@@ -133,6 +133,11 @@
     <string name="my_media">My Media</string>
     <string name="suggestions">Suggestions</string>
     <string name="search_hint">Search...</string>
+    <string name="tv_voice_search">Search by voice</string>
+    <string name="tv_voice_search_prompt">Say a movie or series title</string>
+    <string name="tv_voice_search_empty">No words recognized. Try again or use the keyboard.</string>
+    <string name="tv_voice_search_failed">Voice search could not finish. Try again or use the keyboard.</string>
+    <string name="tv_voice_search_unavailable">Voice recognition is not available on this device. You can use the keyboard.</string>
     <string name="clear_search">Clear search</string>
     <string name="search_empty_default">Start typing to search for movies and shows</string>
     <string name="search_no_results">No results found</string>
