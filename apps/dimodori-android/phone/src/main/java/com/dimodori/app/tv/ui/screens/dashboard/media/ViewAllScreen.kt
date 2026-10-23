@@ -1,4 +1,5 @@
 package com.dimodori.app.tv.ui.screens.dashboard.media
+import com.dimodori.app.tv.ui.focus.*
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -441,6 +442,7 @@ private fun RecentlyAddedCard(
     mediaRepository: MediaRepository,
     onClick: () -> Unit = {}
 ) {
+    val whiteOutlineFocus = rememberTvContentFocus()
     val context = LocalContext.current
     val disablePosterEnhancers = DisableEmbyPosterEnhancers()
     var imageUrl by remember(item.id) { mutableStateOf<String?>(null) }
@@ -471,7 +473,9 @@ private fun RecentlyAddedCard(
     Card(
         modifier = Modifier
             .width(120.dp)
-            .height(180.dp),
+            .height(180.dp)
+            .tvContentFocusObserver(whiteOutlineFocus)
+            .tvContentFocusOutline(item.type, whiteOutlineFocus, RoundedCornerShape(12.dp)),
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent
         ),
@@ -533,6 +537,7 @@ private fun PosterCard(
     watchedViewAll: Boolean = false,
     onClick: () -> Unit = {}
 ) {
+    val whiteOutlineFocus = rememberTvContentFocus()
     val context = LocalContext.current
     val disablePosterEnhancers = DisableEmbyPosterEnhancers()
     var imageUrl by remember(item.id, watchedViewAll) { mutableStateOf<String?>(null) }
@@ -578,7 +583,9 @@ private fun PosterCard(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(2f / 3f),
+                .aspectRatio(2f / 3f)
+                .tvContentFocusObserver(whiteOutlineFocus)
+                .tvContentFocusOutline(item.type, whiteOutlineFocus, RoundedCornerShape(16.dp)),
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(
                 containerColor = Color.Transparent

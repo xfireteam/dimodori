@@ -1,4 +1,6 @@
 package com.dimodori.app.tv.ui.screens.detail
+import androidx.compose.ui.Modifier
+import com.dimodori.app.tv.ui.focus.tvContentFocusOutline
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -68,13 +70,19 @@ internal fun Recommendations(
             similarItems = directorTitles,
             mediaRepository = mediaRepository,
             onItemClick = onItemClick,
-            title = "Dirigida por ${primaryDirector.name}"
+            title = "Dirigida por ${primaryDirector.name}",
+            imageFocusModifier = { type, focused, shape ->
+                Modifier.tvContentFocusOutline(type, focused, shape)
+            }
         )
     }
 
     SimilarItemsSection(
         similarItems = similarItems,
         mediaRepository = mediaRepository,
-        onItemClick = onItemClick
+        onItemClick = onItemClick,
+        imageFocusModifier = { type, focused, shape ->
+            Modifier.tvContentFocusOutline(type, focused, shape)
+        }
     )
 }

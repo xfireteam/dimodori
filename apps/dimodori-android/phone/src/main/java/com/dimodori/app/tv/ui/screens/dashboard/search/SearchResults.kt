@@ -1,4 +1,5 @@
 package com.dimodori.app.tv.ui.screens.dashboard.search
+import com.dimodori.app.tv.ui.focus.*
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -234,6 +235,7 @@ private fun SearchResultCard(
     item: BaseItemDto,
     onItemClick: () -> Unit
 ) {
+    val whiteOutlineFocus = rememberTvContentFocus()
     val unknownTitle = stringResource(R.string.search_result_unknown_title)
     val unknownEpisode = stringResource(R.string.search_result_unknown_episode)
     val context = LocalContext.current
@@ -241,12 +243,14 @@ private fun SearchResultCard(
     Column(
         modifier = Modifier
             .width(120.dp)
+            .tvContentFocusObserver(whiteOutlineFocus)
             .clickable { onItemClick() }
     ) {
         Card(
             modifier = Modifier
                 .width(120.dp)
-                .aspectRatio(0.67f),
+                .aspectRatio(0.67f)
+                .tvContentFocusOutline(item.type, whiteOutlineFocus, RoundedCornerShape(12.dp)),
             colors = CardDefaults.cardColors(
                 containerColor = Color.Gray.copy(alpha = 0.2f)
             ),
@@ -301,6 +305,7 @@ private fun EpisodeResultCard(
     item: BaseItemDto,
     onItemClick: () -> Unit
 ) {
+    val whiteOutlineFocus = rememberTvContentFocus()
     val unknownTitle = stringResource(R.string.search_result_unknown_title)
     val unknownEpisode = stringResource(R.string.search_result_unknown_episode)
     val context = LocalContext.current
@@ -308,12 +313,14 @@ private fun EpisodeResultCard(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .tvContentFocusObserver(whiteOutlineFocus)
             .clickable { onItemClick() }
             .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Card(
-            modifier = Modifier.size(80.dp, 60.dp),
+            modifier = Modifier.size(80.dp, 60.dp)
+                .tvContentFocusOutline(item.type, whiteOutlineFocus, RoundedCornerShape(8.dp)),
             colors = CardDefaults.cardColors(
                 containerColor = Color.Gray.copy(alpha = 0.2f)
             ),
@@ -374,17 +381,20 @@ private fun SearchSeerrResultCard(
     item: SeerrRecommendationTitle,
     onItemClick: () -> Unit
 ) {
+    val whiteOutlineFocus = rememberTvContentFocus()
     val posterUrl = remember(item.posterUrl) { item.posterUrl?.takeIf { it.isNotBlank() } }
 
     Column(
         modifier = Modifier
             .width(120.dp)
+            .tvContentFocusObserver(whiteOutlineFocus)
             .clickable { onItemClick() }
     ) {
         Card(
             modifier = Modifier
                 .width(120.dp)
-                .aspectRatio(0.67f),
+                .aspectRatio(0.67f)
+                .tvContentFocusOutline(item.mediaType, whiteOutlineFocus, RoundedCornerShape(12.dp)),
             colors = CardDefaults.cardColors(
                 containerColor = Color.Gray.copy(alpha = 0.2f)
             ),

@@ -1,4 +1,5 @@
 package com.dimodori.app.tv.ui.screens.detail
+import com.dimodori.app.tv.ui.focus.*
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -43,6 +44,7 @@ fun EpisodeCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
+    val whiteOutlineFocus = rememberTvContentFocus()
     val context = LocalContext.current
     var episodeImageUrl by remember(episode.id) { mutableStateOf<String?>(null) }
     var hasImageLoadError by remember(episode.id) { mutableStateOf(false) }
@@ -60,7 +62,7 @@ fun EpisodeCard(
 
     AnimatedCard(
         onClick = onClick,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().tvContentFocusObserver(whiteOutlineFocus),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFF1A1A1A)
         ),
@@ -78,6 +80,7 @@ fun EpisodeCard(
                     .width(120.dp)
                     .height(68.dp)
                     .clip(RoundedCornerShape(8.dp))
+                    .tvContentFocusOutline(episode.type, whiteOutlineFocus, RoundedCornerShape(8.dp))
             ) {
                 if (episodeImageUrl != null && !hasImageLoadError) {
                     JellyfinPosterImage(

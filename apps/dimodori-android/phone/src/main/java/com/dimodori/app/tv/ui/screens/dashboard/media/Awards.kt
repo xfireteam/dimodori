@@ -1,4 +1,5 @@
 package com.dimodori.app.tv.ui.screens.dashboard.media
+import com.dimodori.app.tv.ui.focus.*
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
@@ -401,12 +402,15 @@ private fun AwardTvCard(
     item: SeerrRecommendationTitle,
     onClick: () -> Unit
 ) {
+    val whiteOutlineFocus = rememberTvContentFocus()
     val posterUrl = remember(item.posterUrl) { item.posterUrl?.takeIf { it.isNotBlank() } }
     val cardShape = RoundedCornerShape(10.dp)
 
-    Column(modifier = Modifier.width(116.dp).clickable(onClick = onClick)) {
+    Column(modifier = Modifier.width(116.dp)
+        .tvContentFocusObserver(whiteOutlineFocus).clickable(onClick = onClick)) {
         Card(
-            modifier = Modifier.fillMaxWidth().height(166.dp),
+            modifier = Modifier.fillMaxWidth().height(166.dp)
+                .tvContentFocusOutline(item.mediaType, whiteOutlineFocus, cardShape),
             shape = cardShape,
             colors = CardDefaults.cardColors(containerColor = Color(0xFF23232A))
         ) {

@@ -1,4 +1,5 @@
 package com.dimodori.app.tv.ui.screens.dashboard.favorites
+import com.dimodori.app.tv.ui.focus.*
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -327,6 +328,7 @@ private fun FavoriteItemCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
+    val whiteOutlineFocus = rememberTvContentFocus()
     val context = LocalContext.current
 
     val targetImageId = remember(item) {
@@ -386,7 +388,9 @@ private fun FavoriteItemCard(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(0.68f),
+                .aspectRatio(0.68f)
+                .tvContentFocusObserver(whiteOutlineFocus)
+                .tvContentFocusOutline(item.type, whiteOutlineFocus, RoundedCornerShape(16.dp)),
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(containerColor = Color.Transparent),
             elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),

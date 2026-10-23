@@ -1,4 +1,5 @@
 package com.dimodori.app.tv.ui.screens.detail
+import com.dimodori.app.tv.ui.focus.*
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -442,6 +443,7 @@ private fun PersonTitleCard(
     mediaRepository: MediaRepository,
     onClick: () -> Unit
 ) {
+    val whiteOutlineFocus = rememberTvContentFocus()
     val context = LocalContext.current
     val imageItemId = when {
         item.type?.equals("Episode", ignoreCase = true) == true && !item.seriesId.isNullOrBlank() -> item.seriesId
@@ -485,6 +487,7 @@ private fun PersonTitleCard(
     Column(
         modifier = Modifier
             .width(128.dp)
+            .tvContentFocusObserver(whiteOutlineFocus)
             .clickable(
                 enabled = !item.id.isNullOrBlank(),
                 onClick = onClick
@@ -493,7 +496,8 @@ private fun PersonTitleCard(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(186.dp),
+                .height(186.dp)
+                .tvContentFocusOutline(item.type, whiteOutlineFocus, RoundedCornerShape(12.dp)),
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(containerColor = Color(0xFF242734))
         ) {

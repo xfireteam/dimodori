@@ -30,6 +30,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -61,7 +66,9 @@ fun SimilarItemsSection(
     onItemClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     title: String? = null,
-    seerrItems: List<SeerrRecommendationTitle> = emptyList()
+    seerrItems: List<SeerrRecommendationTitle> = emptyList(),
+    // Opt-in decoration only; mobile and all existing callers stay unchanged.
+    imageFocusModifier: ((String?, Boolean, Shape) -> Modifier)? = null
 ) {
     if (similarItems.isEmpty() && seerrItems.isEmpty()) return
     val sectionTitle = title ?: stringResource(R.string.detail_similar_items_title)
@@ -90,6 +97,7 @@ fun SimilarItemsSection(
                 SimilarTitleCard(
                     item = similarItem,
                     mediaRepository = mediaRepository,
+                    imageFocusModifier = imageFocusModifier,
                     onClick = {
                         similarItem.id?.let(onItemClick)
                     }
@@ -98,7 +106,8 @@ fun SimilarItemsSection(
 
             seerrTitleItems(
                 items = seerrItems,
-                onItemClick = onItemClick
+                onItemClick = onItemClick,
+                imageFocusModifier = imageFocusModifier
             )
         }
     }
@@ -106,7 +115,8 @@ fun SimilarItemsSection(
 
 private fun LazyListScope.seerrTitleItems(
     items: List<SeerrRecommendationTitle>,
-    onItemClick: (String) -> Unit
+    onItemClick: (String) -> Unit,
+    imageFocusModifier: ((String?, Boolean, Shape) -> Modifier)? = null
 ) {
     itemsIndexed(
         items = items,
@@ -118,6 +128,7 @@ private fun LazyListScope.seerrTitleItems(
     ) { _, item ->
         SeerrRecommendationCard(
             item = item,
+            imageFocusModifier = imageFocusModifier,
             onClick = {
                 val itemId = item.jellyfinMediaId?.takeIf { it.isNotBlank() }
                     ?: SeerrItemIds.detailId(tmdbId = item.tmdbId, mediaType = item.mediaType)
@@ -131,8 +142,13 @@ private fun LazyListScope.seerrTitleItems(
 private fun SimilarTitleCard(
     item: BaseItemDto,
     mediaRepository: MediaRepository,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    imageFocusModifier: ((String?, Boolean, Shape) -> Modifier)? = null
 ) {
+    var imageFocused by remember { mutableStateOf(false) }
+    val focusObserver = if (imageFocusModifier != null) {
+        Modifier.onFocusChanged { imageFocused = it.hasFocus }
+    } else Modifier
     val context = LocalContext.current
     val imageItemId = remember(item.id, item.type, item.seriesId) {
         when {
@@ -156,6 +172,7 @@ private fun SimilarTitleCard(
     Column(
         modifier = Modifier
             .width(116.dp)
+            .then(focusObserver)
             .clickable(
                 enabled = !item.id.isNullOrBlank(),
                 onClick = onClick
@@ -164,7 +181,10 @@ private fun SimilarTitleCard(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(166.dp),
+                .height(166.dp)
+                .then(imageFocusModifier?.invoke(
+                    item.type, imageFocused, RoundedCornerShape(10.dp)
+                ) ?: Modifier),
             shape = RoundedCornerShape(10.dp),
             colors = CardDefaults.cardColors(
                 containerColor = Color(0xFF2A2A2A)
@@ -232,19 +252,28 @@ private fun SimilarTitleCard(
 private fun SeerrRecommendationCard(
     item: SeerrRecommendationTitle,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    imageFocusModifier: ((String?, Boolean, Shape) -> Modifier)? = null
 ) {
+    var imageFocused by remember { mutableStateOf(false) }
+    val focusObserver = if (imageFocusModifier != null) {
+        Modifier.onFocusChanged { imageFocused = it.hasFocus }
+    } else Modifier
     val posterUrl = remember(item.posterUrl) { item.posterUrl?.takeIf { it.isNotBlank() } }
 
     Column(
         modifier = modifier
             .width(116.dp)
+            .then(focusObserver)
             .clickable(onClick = onClick)
     ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(166.dp),
+                .height(166.dp)
+                .then(imageFocusModifier?.invoke(
+                    item.mediaType, imageFocused, RoundedCornerShape(10.dp)
+                ) ?: Modifier),
             shape = RoundedCornerShape(10.dp),
             colors = CardDefaults.cardColors(
                 containerColor = Color(0xFF23232A)

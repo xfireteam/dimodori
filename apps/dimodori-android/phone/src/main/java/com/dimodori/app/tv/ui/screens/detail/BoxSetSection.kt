@@ -1,4 +1,5 @@
 package com.dimodori.app.tv.ui.screens.detail
+import com.dimodori.app.tv.ui.focus.*
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -100,6 +101,7 @@ private fun BoxSetMovieCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val whiteOutlineFocus = rememberTvContentFocus()
     val context = LocalContext.current
     var posterUrl by remember(item.id) { mutableStateOf<String?>(null) }
 
@@ -127,7 +129,7 @@ private fun BoxSetMovieCard(
 
     Card(
         onClick = onClick,
-        modifier = modifier.width(150.dp),
+        modifier = modifier.width(150.dp).tvContentFocusObserver(whiteOutlineFocus),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A1A)),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -138,6 +140,10 @@ private fun BoxSetMovieCard(
                     .fillMaxWidth()
                     .aspectRatio(2f / 3f)
                     .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
+                    .tvContentFocusOutline(
+                        item.type, whiteOutlineFocus,
+                        RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)
+                    )
             ) {
                 posterUrl?.let { url ->
                     JellyfinPosterImage(

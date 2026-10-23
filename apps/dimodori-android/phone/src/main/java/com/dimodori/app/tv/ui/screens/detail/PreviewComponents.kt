@@ -1,4 +1,5 @@
 package com.dimodori.app.tv.ui.screens.detail
+import com.dimodori.app.tv.ui.focus.*
 
 import androidx.compose.animation.core.*
 import androidx.compose.animation.fadeIn
@@ -47,6 +48,7 @@ fun EpisodePreviewCard(
     thumbnailHeight: Dp = 158.dp,
     modifier: Modifier = Modifier
 ) {
+    val whiteOutlineFocus = rememberTvContentFocus()
     val context = LocalContext.current
     var episodeImageUrl by remember(episode.id) { mutableStateOf<String?>(null) }
     var isHovered by remember { mutableStateOf(false) }
@@ -74,6 +76,7 @@ fun EpisodePreviewCard(
         onClick = onClick,
         modifier = modifier
             .width(cardWidth)
+            .tvContentFocusObserver(whiteOutlineFocus)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onLongPress = {
@@ -95,6 +98,10 @@ fun EpisodePreviewCard(
                         .fillMaxWidth()
                         .height(thumbnailHeight)
                         .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
+                        .tvContentFocusOutline(
+                            episode.type, whiteOutlineFocus,
+                            RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)
+                        )
                 ) {
                     episodeImageUrl?.let { imageUrl ->
                         JellyfinPosterImage(

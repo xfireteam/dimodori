@@ -1,4 +1,5 @@
 package com.dimodori.app.tv.ui.screens.dashboard.home
+import com.dimodori.app.tv.ui.focus.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -2569,6 +2570,7 @@ private fun ContinueWatchingCard(
     mediaRepository: MediaRepository,
     onClick: () -> Unit = {}
 ) {
+    val whiteOutlineFocus = rememberTvContentFocus()
     val stableItem = remember(item.id, item.userData) { StableBaseItem.from(item) }
     val unknownTitle = stringResource(R.string.search_result_unknown_title)
     val unknownEpisode = stringResource(R.string.search_result_unknown_episode)
@@ -2628,7 +2630,9 @@ private fun ContinueWatchingCard(
         Card(
             modifier = cardModifier
                 .width(200.dp)
-                .height(120.dp),
+                .height(120.dp)
+                .tvContentFocusObserver(whiteOutlineFocus)
+                .tvContentFocusOutline(item.type, whiteOutlineFocus, RoundedCornerShape(12.dp)),
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(
                 containerColor = Color.Transparent
@@ -2938,6 +2942,7 @@ internal fun LibraryItemCard(
     watchedFeedStyle: Boolean = false,
     onClick: () -> Unit = {}
 ) {
+    val whiteOutlineFocus = rememberTvContentFocus()
     val stableItem = remember(item.id, item.userData) { StableBaseItem.from(item) }
     val useWatchedEpisodeImage = watchedFeedStyle && item.type == "Episode"
     val useWatchedSeriesBadge = watchedFeedStyle && item.type == "Series"
@@ -3006,6 +3011,8 @@ internal fun LibraryItemCard(
             modifier = cardModifier
                 .width(displayWidth)
                 .height(displayHeight)
+                .tvContentFocusObserver(whiteOutlineFocus)
+                .tvContentFocusOutline(item.type, whiteOutlineFocus, RoundedCornerShape(12.dp))
                 .onFocusChanged { state ->
                     isFocused = state.isFocused
                     if (!state.isFocused) navigatingVertically = false

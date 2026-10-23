@@ -1,4 +1,5 @@
 package com.dimodori.app.tv.ui.screens.detail
+import com.dimodori.app.tv.ui.focus.*
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -952,6 +953,7 @@ private fun SeasonEpisodeRow(
     onLeftPressed: (() -> Unit)? = null,
     onDownPressed: (() -> Unit)? = null
 ) {
+    val whiteOutlineFocus = rememberTvContentFocus()
     val context = LocalContext.current
     var episodeImageUrl by remember(episode.id) { mutableStateOf<String?>(null) }
 
@@ -969,6 +971,7 @@ private fun SeasonEpisodeRow(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
+            .tvContentFocusObserver(whiteOutlineFocus)
             .onPreviewKeyEvent { event ->
                 if (event.type == KeyEventType.KeyDown) {
                     when (event.key) {
@@ -1000,6 +1003,7 @@ private fun SeasonEpisodeRow(
                     .height(100.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color(0xFF1E1E1E))
+                    .tvContentFocusOutline(episode.type, whiteOutlineFocus, RoundedCornerShape(8.dp))
             ) {
                 JellyfinPosterImage(
                     context = context,
