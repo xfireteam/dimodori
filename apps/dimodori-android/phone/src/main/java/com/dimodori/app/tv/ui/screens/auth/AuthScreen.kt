@@ -27,10 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
-import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.Visibility
-import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -39,7 +36,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -56,6 +52,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -64,8 +62,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -597,7 +593,7 @@ private fun ConnectionForm(
 }
 
 @Composable
-private fun LoginForm(
+internal fun LoginForm(
     username: String,
     password: String,
     isLoading: Boolean,
@@ -611,8 +607,9 @@ private fun LoginForm(
     onQuickConnect: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var isPasswordVisible by remember { mutableStateOf(false) }
     val isBusy = isLoading || isQuickConnectLoading
+    val signInFocus = remember { FocusRequester() }
+    val quickConnectFocus = remember { FocusRequester() }
 
     Column(
         modifier = modifier,
@@ -632,31 +629,15 @@ private fun LoginForm(
             colors = tvTextFieldColors()
         )
 
-        OutlinedTextField(
-            value = password,
-            onValueChange = onPasswordChange,
-            label = { Text(stringResource(R.string.password)) },
-            leadingIcon = {
-                Icon(imageVector = Icons.Rounded.Lock, contentDescription = null)
-            },
-            visualTransformation = if (isPasswordVisible) VisualTransformation.None
-                else PasswordVisualTransformation(),
-            trailingIcon = {
-                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
-                    Icon(
-                        imageVector = if (isPasswordVisible) Icons.Rounded.VisibilityOff
-                            else Icons.Rounded.Visibility,
-                        contentDescription = if (isPasswordVisible)
-                            stringResource(R.string.auth_hide_password)
-                        else stringResource(R.string.auth_show_password)
-                    )
-                }
-            },
-            modifier = Modifier.fillMaxWidth(),
+        TvPasswordField(
+            password = password,
+            onPasswordChange = onPasswordChange,
             enabled = !isBusy,
-            singleLine = true,
-            shape = RoundedCornerShape(12.dp),
-            colors = tvTextFieldColors()
+            nextFocusRequester = when {
+                username.isNotBlank() -> signInFocus
+                showQuickConnect -> quickConnectFocus
+                else -> FocusRequester.Default
+            },
         )
 
         AnimatedVisibility(visible = errorMessage != null) {
@@ -671,6 +652,7 @@ private fun LoginForm(
             onClick = onLogin,
             enabled = !isBusy && username.isNotBlank(),
             modifier = Modifier
+                .focusRequester(signInFocus)
                 .fillMaxWidth()
                 .height(52.dp),
             shape = RoundedCornerShape(12.dp),
@@ -701,6 +683,7 @@ private fun LoginForm(
                 onClick = onQuickConnect,
                 enabled = !isBusy,
                 modifier = Modifier
+                    .focusRequester(quickConnectFocus)
                     .fillMaxWidth()
                     .height(52.dp),
                 shape = RoundedCornerShape(12.dp)
@@ -740,7 +723,7 @@ private fun LoginForm(
 }
 
 @Composable
-private fun tvTextFieldColors() = OutlinedTextFieldDefaults.colors(
+internal fun tvTextFieldColors() = OutlinedTextFieldDefaults.colors(
     focusedTextColor = Color.White,
     unfocusedTextColor = Color.White,
     focusedLabelColor = JellyBlue,

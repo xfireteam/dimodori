@@ -2,5 +2,5 @@
 - [Remote selector policy](remote-selector-policy.md) — the control is intentionally public; Android must default to showing server choices whenever remote config is unavailable or invalid.
 - [TV distribution evidence](tv-distribution-evidence.md) — active tracks and generic catalog support are not proof of TV approval or published-AAB delivery eligibility.
 - [Mobile PiP scope](mobile-pip-scope.md) — native floating video, not hidden background audio; keep both engines and preserve final progress on close.
-- [TV remote menu input](tv-remote-menu-input.md) — own the full opening press before popup focus transfer; repeats must not select, and Back restores the originating control.
+- [TV remote input](tv-remote-menu-input.md) — own full presses before focus transfer; preserve open-keyboard navigation when adding editor controls.
 - [TV white focus outline](tv-focus-outline-scope.md) — the user limited the white focus border to movie and episode cards, not series or other controls.
